@@ -1,3 +1,5 @@
+import React, { KeyboardEvent } from 'react'
+
 export interface TableRowProp {
     index: Number
 }
@@ -18,9 +20,13 @@ const TableRows = ({ count, renderRow }: VirtualTableProp) => (
     </>
 )
 
+const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    console.log("Hallo", e)
+}
+
 const VirtualTable = ({count, renderRow }: VirtualTableProp) => (
     <div className="App">
-        <div className="tableroot" tabIndex={1}>
+        <div className="tableroot" tabIndex={1} onKeyDown={onKeyDown}>
             <table>
                 <thead>
                 </thead>
@@ -37,3 +43,4 @@ export default VirtualTable
 
 // TODO Steuerung des markierten Eintrages über Tastatur
 // TODO Suchfunktion eines Eintrages (Markieren)
+// TODO ResizeEventHook
