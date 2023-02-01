@@ -6,7 +6,6 @@
   "license": "MIT",
   "repository": "uriegel/virtual-table",
   "main": "dist/index.js",
-  "private": true,
   "files": [
     "dist"
   ],
@@ -27,9 +26,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "publish": "tsc -p src/component"
+    "typescript": "tsc -p src/component",
+    "do publish test": "npm run typescript && npm publish --dry-run",
+    "do publish": "npm run typescript && npm publish"
   },
   "eslintConfig": {
     "extends": [
