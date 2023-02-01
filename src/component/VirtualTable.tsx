@@ -1,5 +1,6 @@
-import React, { KeyboardEvent, useState } from 'react'
+import React, { KeyboardEvent, useRef, useState } from 'react'
 import './VirtualTable.css'
+import useResizeObserver from '@react-hook/resize-observer'
 
 export interface TableRowProp {
     index: Number
@@ -35,6 +36,8 @@ export const useVirtualTableState = () => {
 
 const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
     
+    const table = useRef<HTMLDivElement>(null)
+
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         console.log("Hallo", e)
         switch (e.code) {
@@ -50,19 +53,19 @@ const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
                 break
         }
     }
+
+    useResizeObserver(table, e => console.log("Resize", e.contentBoxSize[0]))
     
     return (
-        <div className="App">
-            <div className="tableroot" tabIndex={1} onKeyDown={onKeyDown}>
-                <table>
-                    <thead>
-                    </thead>
-                    <tbody>
-                        <TableRows count={count} renderRow={renderRow} state={state} />
-                    </tbody>
-                </table>
-                <input id="restrictionInput" className="invisible none" />
-            </div>
+        <div className="tableroot" ref={table} tabIndex={1} onKeyDown={onKeyDown}>
+            <table>
+                <thead>
+                </thead>
+                <tbody>
+                    <TableRows count={count} renderRow={renderRow} state={state} />
+                </tbody>
+            </table>
+            <input id="restrictionInput" className="invisible none" />
         </div>
     )
 }
