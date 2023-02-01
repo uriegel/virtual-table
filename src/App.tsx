@@ -11,7 +11,7 @@ const TableRow = ({ index } : TableRowProp) => (
 const App = () => (
 	<div className="App">
 		Hallo
-		<VirtualTable count={8} renderRow={TableRow} />
+		<VirtualTable count={8} renderRow={TableRow} position={0} />
 	</div>
 )
 

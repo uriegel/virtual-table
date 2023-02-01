@@ -1,0 +1,10 @@
+tr.selected {
+    background-color: burlywood;
+}
+.tableroot:focus {
+    outline: none;
+}
+
+td span {
+    user-select: none;
+}
