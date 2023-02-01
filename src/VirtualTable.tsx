@@ -1,5 +1,4 @@
-import { stat } from 'fs'
-import React, { Dispatch, KeyboardEvent, SetStateAction, useState } from 'react'
+import React, { KeyboardEvent, useState } from 'react'
 import './VirtualTable.css'
 
 export interface TableRowProp {
