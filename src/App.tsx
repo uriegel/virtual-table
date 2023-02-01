@@ -1,18 +1,30 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import './App.css'
-import VirtualTable, { TableRowProp } from './VirtualTable'
+import VirtualTable, { TableRowProp, useVirtualTableState } from './VirtualTable'
 
 const TableRow = ({ index } : TableRowProp) => (
     <td>
-        {`Der ${index}. Eintrag aus der App`}
+        {`Der ${index}. Eintrag`}
     </td>
 )
 
-const App = () => (
-	<div className="App">
-		Hallo
-		<VirtualTable count={8} renderRow={TableRow} position={0} />
-	</div>
-)
+const App = () => {
+
+	const state = useVirtualTableState()
+
+	const search = (e: ChangeEvent<HTMLInputElement>) => {
+		console.log("Tschänscht", e.target.value)
+		const num = Number.parseInt(e.target.value)
+		console.log("Num", num)
+		state.setPosition(num)
+	}
+
+	return (
+		<div className="App">
+			<input type={'text'} onChange={search} />
+			<VirtualTable count={8} renderRow={TableRow} state={state} />
+		</div>
+	)
+}
 
 export default App

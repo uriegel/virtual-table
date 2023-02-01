@@ -1,39 +1,51 @@
-import React, { KeyboardEvent, useState } from 'react'
+import { stat } from 'fs'
+import React, { Dispatch, KeyboardEvent, SetStateAction, useState } from 'react'
 import './VirtualTable.css'
 
 export interface TableRowProp {
     index: Number
 }
 
-interface VirtualTableProp {
+interface TableRowsProp {
     count: number
-    position: number
+    state: VirtualTableState
     renderRow: (props: TableRowProp)=>JSX.Element
 }
 
-const TableRows = ({ count, renderRow, position }: VirtualTableProp) => (
+const TableRows = ({ count, renderRow, state }: TableRowsProp) => (
     <>
         {[...Array(count).keys()]
             .map(n => (
-                <tr key={n} className={position == n ? 'selected'  : ''}>
+                <tr key={n} className={state.position == n ? 'selected'  : ''}>
                     {renderRow({ index: n })} 
                 </tr>))}
     </>
 )
 
-const VirtualTable = ({ count, renderRow }: VirtualTableProp) => {
-    const [ position, setPosition ] = useState(0)
+interface VirtualTableState {
+    position: number,
+    setPosition: (pos: number)=>void
+}
 
+export const useVirtualTableState = () => {
+    const [position, setPosition] = useState(0)
+    return {
+        position, setPosition 
+    } as VirtualTableState
+}
+
+const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
+    
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         console.log("Hallo", e)
         switch (e.code) {
             case "ArrowDown":
-                setPosition(Math.min(count - 1, position + 1))
+                state.setPosition(Math.min(count - 1, state.position + 1))
                 e.preventDefault()
                 e.stopPropagation()
                 break
             case "ArrowUp":
-                setPosition(Math.max(0, position - 1))
+                state.setPosition(Math.max(0, state.position - 1))
                 e.preventDefault()
                 e.stopPropagation()
                 break
@@ -47,7 +59,7 @@ const VirtualTable = ({ count, renderRow }: VirtualTableProp) => {
                     <thead>
                     </thead>
                     <tbody>
-                        <TableRows count={count} renderRow={renderRow} position={position} />
+                        <TableRows count={count} renderRow={renderRow} state={state} />
                     </tbody>
                 </table>
                 <input id="restrictionInput" className="invisible none" />
@@ -58,5 +70,4 @@ const VirtualTable = ({ count, renderRow }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Suchfunktion eines Eintrages (Markieren)
 // TODO ResizeEventHook
