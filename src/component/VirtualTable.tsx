@@ -57,7 +57,7 @@ const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
     useResizeObserver(table, e => console.log("Resize", e.contentBoxSize[0]))
     
     return (
-        <div className="tableroot" ref={table} tabIndex={1} onKeyDown={onKeyDown}>
+        <div className="vtr__tableroot" ref={table} tabIndex={1} onKeyDown={onKeyDown}>
             <table>
                 <thead>
                 </thead>

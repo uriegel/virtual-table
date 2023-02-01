@@ -1,14 +1,11 @@
-.tableroot tr.selected {
+.vtr__tableroot tr.selected {
     background-color: burlywood;
 }
-.tableroot:focus {
+.vtr__tableroot:focus {
     outline: none;
 }
 
-.tableroot td span {
+.vtr__tableroot td span {
     user-select: none;
 }
 
-.tableroot span {
-    color: red;
-}

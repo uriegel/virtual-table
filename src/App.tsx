@@ -25,17 +25,6 @@ const App = () => {
 	return (
 		<div className="App">
 			<input type={'text'} onChange={search} />
-			<table>
-				<tbody>
-					<tr>
-						<td><span>Hallo</span></td>
-					</tr>
-						<td><span>Hallo</span></td>	
-					<tr>
-						<td><span>Hallo</span></td>
-					</tr>
-				</tbody>
-			</table>
 			<VirtualTable count={8} renderRow={TableRow} state={state} />
 		</div>
 	)
