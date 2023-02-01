@@ -70,3 +70,4 @@ const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
 export default VirtualTable
 
 // TODO ResizeEventHook
+// TODO copy VirtualTyble.css -> dist
