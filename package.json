@@ -1,6 +1,6 @@
 {
   "name": "virtual-table-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A virtual list view implementation with multiple columns",
   "author": "uriegel",
   "license": "MIT",
@@ -25,10 +25,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "typescript": "tsc -p src/component",
-    "do publish test": "npm run typescript && npm publish --dry-run",
-    "do publish": "npm run typescript && npm publish"
+    "copy": "cp src/component/VirtualTable.css dist/",
+    "do publish test": "npm run typescript && npm run copy &&  npm publish --dry-run",
+    "do publish": "npm run typescript && npm run copy && npm publish"
   },
   "eslintConfig": {
     "extends": [
