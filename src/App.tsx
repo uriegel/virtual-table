@@ -1,11 +1,17 @@
 import React from 'react'
 import './App.css'
-import VirtualTable from './VirtualTable'
+import VirtualTable, { TableRowProp } from './VirtualTable'
 
-const App = () =>  (
+const TableRow = ({ index } : TableRowProp) => (
+    <td>
+        {`Der ${index}. Eintrag aus der App`}
+    </td>
+)
+
+const App = () => (
 	<div className="App">
 		Hallo
-		<VirtualTable />
+		<VirtualTable count={8} renderRow={TableRow} />
 	</div>
 )
 

@@ -1,36 +1,31 @@
-interface TableRowProp {
+export interface TableRowProp {
     index: Number
 }
 
-interface TableRowsProp {
+interface VirtualTableProp {
     count: Number
+    renderRow: (props: TableRowProp)=>JSX.Element
 }
 
-const TableRow = ({ index } : TableRowProp) => (
-    <td>
-        {`Der ${index}. Eintrag`}
-    </td>
-)
-
-const TableRows = ({ count }: TableRowsProp) => (
+const TableRows = ({ count, renderRow }: VirtualTableProp) => (
     <>
      {
         [...Array(count).keys()]
             .map(n => (
                 <tr key={n}>
-                    <TableRow index={n} />
+                    {renderRow({ index: n })} 
                 </tr>))}
     </>
 )
 
-const VirtualTable = () => (
+const VirtualTable = ({count, renderRow }: VirtualTableProp) => (
     <div className="App">
         <div className="tableroot" tabIndex={1}>
             <table>
                 <thead>
                 </thead>
                 <tbody>
-                    <TableRows count={5}/>
+                    <TableRows count={count} renderRow ={renderRow} />
                 </tbody>
             </table>
             <input id="restrictionInput" className="invisible none" />
@@ -41,5 +36,4 @@ const VirtualTable = () => (
 export default VirtualTable
 
 // TODO Steuerung des markierten Eintrages über Tastatur
-// TODO td auslagern zum Konsumenten (slot)
 // TODO Suchfunktion eines Eintrages (Markieren)
