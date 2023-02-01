@@ -3,8 +3,11 @@ import './App.css'
 import VirtualTable, { TableRowProp, useVirtualTableState } from './component/VirtualTable'
 
 const TableRow = ({ index } : TableRowProp) => (
-    <td>
-        {`Der ${index}. Eintrag`}
+	<td>
+		<span>
+			{`Der ${index}. Eintrag`}
+		</span>
+        
     </td>
 )
 
@@ -22,6 +25,17 @@ const App = () => {
 	return (
 		<div className="App">
 			<input type={'text'} onChange={search} />
+			<table>
+				<tbody>
+					<tr>
+						<td><span>Hallo</span></td>
+					</tr>
+						<td><span>Hallo</span></td>	
+					<tr>
+						<td><span>Hallo</span></td>
+					</tr>
+				</tbody>
+			</table>
 			<VirtualTable count={8} renderRow={TableRow} state={state} />
 		</div>
 	)
