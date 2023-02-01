@@ -1,12 +1,12 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
+import VirtualTable from './VirtualTable'
 
-function App() {
-  return (
-    <div className="App">
-      Hallo
-    </div>
-  );
-}
+const App = () =>  (
+	<div className="App">
+		Hallo
+		<VirtualTable />
+	</div>
+)
 
-export default App;
+export default App
