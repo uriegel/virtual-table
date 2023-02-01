@@ -1,7 +1,15 @@
 {
-  "name": "virtual-table",
-  "version": "0.1.0",
+  "name": "virtual-table-react",
+  "version": "0.0.1",
+  "description": "A virtual list view implementation with multiple columns",
+  "author": "uriegel",
+  "license": "MIT",
+  "repository": "uriegel/virtual-table",
+  "main": "dist/index.js",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -20,7 +28,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "publish": "tsc -p src/component"
   },
   "eslintConfig": {
     "extends": [

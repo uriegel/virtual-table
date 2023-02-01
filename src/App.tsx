@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react'
 import './App.css'
-import VirtualTable, { TableRowProp, useVirtualTableState } from './VirtualTable'
+import VirtualTable, { TableRowProp, useVirtualTableState } from './component/VirtualTable'
 
 const TableRow = ({ index } : TableRowProp) => (
     <td>
