@@ -70,4 +70,5 @@ const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
 export default VirtualTable
 
 // TODO make public
+// TODO setTimeout setPosition
 // TODO ResizeEventHook
