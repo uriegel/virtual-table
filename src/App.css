@@ -2,5 +2,13 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: wheat;
+}
+
+.tableContainer {
+    flex-grow: 1;
+    position: relative;
+    margin: 20px;
+    background-color: aqua;
 }
 

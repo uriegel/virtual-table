@@ -87,7 +87,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
     console.log("Rendering Virtual Table")
     return (
-            <div className="vtr__tableroot" ref={tableRoot} tabIndex={1} onKeyDown={onKeyDown}>
+            <div className="vtr__tableroot" ref={tableRoot} tabIndex={0} onKeyDown={onKeyDown}>
                 <table>
                     <thead>
                     </thead>
@@ -101,6 +101,4 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Table is blinking when outer div is focused
-// TODO Compare with non react version
-// TODO ResizeEventHook
+// TODO Adapt table item count after measuring
