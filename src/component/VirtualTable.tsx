@@ -59,9 +59,11 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
             
     useResizeObserver(tableRoot, e => {
         console.log("Resize", itemHeightRef.current)
-        const count = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
+        const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
         if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
-            setStartOffset(Math.max(0, positionRef.current - count + 2))    
+            setStartOffset(Math.max(0, positionRef.current - itemsCount + 2))   
+        else if (count - startOffsetRef.current < itemsCount)
+            setStartOffset(Math.max(0, count - itemsCount + 1))   
     })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -77,7 +79,27 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                 e.preventDefault()
                 e.stopPropagation()
                 break
-        }
+            case "PageDown":
+                setPosition(state.position + itemsDisplayCount - 1)
+                e.preventDefault()
+                e.stopPropagation()
+                break
+            case "PageUp":
+                setPosition(state.position -  itemsDisplayCount + 1)
+                e.preventDefault()
+                e.stopPropagation()
+                break
+            case "End":
+                setPosition(count - 1)
+                e.preventDefault()
+                e.stopPropagation()
+                break
+            case "Home":
+                setPosition(0)
+                e.preventDefault()
+                e.stopPropagation()
+                break
+            }
     }
 
     const scrollIntoViewBottom = (newPos: number) => 
@@ -120,7 +142,6 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         return count
     }
         
-
     const MeasureRow = () => {
         const tr = useRef<HTMLTableRowElement>(null)
 
@@ -154,6 +175,6 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Scroll down when resizing and too few items when resizing
-// TODO PageUp/PageDown Home/End
-// TODO Scrollbar
+// TODO Scrollbar switching on and off
+// TODO Scrollbar controlling grip
+// TODO Scrollbar settingposition with grip
