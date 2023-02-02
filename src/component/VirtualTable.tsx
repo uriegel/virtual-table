@@ -1,5 +1,4 @@
-import React, { KeyboardEvent, useRef, useState } from 'react'
-import useStateRef from 'react-usestateref'
+import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
 import './VirtualTable.css'
 import * as R from'ramda'
 import useResizeObserver from '@react-hook/resize-observer'
@@ -22,6 +21,7 @@ interface VirtualTableState {
 export const useVirtualTableState = () => {
     const [position, setPosition] = useState(0)
     return {
+
         position, setPosition
     } as VirtualTableState
 }
@@ -30,15 +30,39 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
     
     const tableRoot = useRef<HTMLDivElement>(null)
 
-    const [itemHeight, setItemHeight, itemHeightRef] = useStateRef(0)
+    const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
 
+    const itemHeightRef = useRef(0)
+    const itemsDisplayCountRef = useRef(0)
+    const positionRef = useRef(0)
+    const startOffsetRef = useRef(0)
+
+    useEffect(() => {
+        itemHeightRef.current = itemHeight
+        if (itemHeight)
+            setItemsCount(tableRoot.current?.clientHeight, itemHeight)
+    }, [itemHeight])
+
+    useEffect(() => {
+        positionRef.current = state.position
+    }, [state.position])
+
+    useEffect(() => {
+        itemsDisplayCountRef.current = itemsDisplayCount
+    }, [itemsDisplayCount])
+
+    useEffect(() => {
+        startOffsetRef.current = startOffset
+    }, [startOffset])
+            
     useResizeObserver(tableRoot, e => {
         console.log("Resize", itemHeightRef.current)
-        setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
-//        setStartOffset(state.positionRef.current - itemsDisplayCountRef.current + 2)
-    })
+        const count = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
+        if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
+            setStartOffset(Math.max(0, positionRef.current - count + 2))    
+    })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         console.log("onKeyDown", e)
@@ -90,8 +114,12 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         </>
     )
 
-    const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => 
-        setItemsDisplayCount(Math.floor((clientHeight || 0) / itemsHeight) + 1) 
+    const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => {
+        const count = Math.floor((clientHeight || 0) / itemsHeight) + 1
+        setItemsDisplayCount(count) 
+        return count
+    }
+        
 
     const MeasureRow = () => {
         const tr = useRef<HTMLTableRowElement>(null)
@@ -126,6 +154,6 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO ScrollIntoView when resizing
+// TODO Scroll down when resizing and too few items when resizing
 // TODO PageUp/PageDown Home/End
 // TODO Scrollbar

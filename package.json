@@ -20,7 +20,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "@react-hook/resize-observer": "^1.2.6",
+    "@types/ramda": "^0.28.22",
+    "ramda": "^0.28.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -49,11 +52,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "dependencies": {
-    "@react-hook/resize-observer": "^1.2.6",
-    "@types/ramda": "^0.28.22",
-    "ramda": "^0.28.0",
-    "react-usestateref": "^1.0.8"
   }
 }
