@@ -49,12 +49,14 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         }
     }
 
-    useResizeObserver(tableRoot, e => console.log("Resize", e.contentBoxSize[0]))
+    useResizeObserver(tableRoot, e => {
+        console.log("Resize")
+        retrieveItemsCount(e.contentBoxSize[0].blockSize, itemHeight)
+    })
 
     const getDisplayItems = () => 
         R.slice(startOffset, itemsDisplayCount-startOffset, [...Array(count).keys()])
-    
-    
+        
     const TableRowsComponent = () => 
         itemHeight > 0
         ? TableRows()  
@@ -70,12 +72,17 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         </>
     )
 
+    const retrieveItemsCount = (clientHeight: number|undefined, itemsHeight: number) => 
+        setItemsDisplayCount(Math.floor((clientHeight ?? 0) / itemsHeight) + 1) 
+
     const MeasureRow = () => {
         const tr = useRef<HTMLTableRowElement>(null)
 
         useResizeObserver(tr, e => {
-            console.log("Resize tr", e.contentBoxSize[0], tableRoot.current?.clientHeight)
-            setItemHeight(e.contentBoxSize[0].blockSize)
+            if (e.contentBoxSize[0].blockSize > 0) {
+                setItemHeight(e.contentBoxSize[0].blockSize)
+                retrieveItemsCount(tableRoot.current?.clientHeight, e.contentBoxSize[0].blockSize)
+            }
         })
 //        if (itemsDisplayCount.length > 0)
         return (
@@ -101,4 +108,5 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Adapt table item count after measuring
+// TODO Scrolling when changing position
+// TODO ScrollIntoView when resizing
