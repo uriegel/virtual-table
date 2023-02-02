@@ -101,4 +101,6 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
+// TODO Table is blinking when outer div is focused
+// TODO Compare with non react version
 // TODO ResizeEventHook
