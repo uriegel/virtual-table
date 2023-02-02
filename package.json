@@ -53,6 +53,7 @@
   "dependencies": {
     "@react-hook/resize-observer": "^1.2.6",
     "@types/ramda": "^0.28.22",
-    "ramda": "^0.28.0"
+    "ramda": "^0.28.0",
+    "react-usestateref": "^1.0.8"
   }
 }
