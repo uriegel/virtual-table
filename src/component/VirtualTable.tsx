@@ -1,26 +1,17 @@
 import React, { KeyboardEvent, useRef, useState } from 'react'
 import './VirtualTable.css'
+import * as R from'ramda'
 import useResizeObserver from '@react-hook/resize-observer'
 
 export interface TableRowProp {
     index: Number
 }
 
-interface TableRowsProp {
+interface VirtualTableProp {
     count: number
     state: VirtualTableState
     renderRow: (props: TableRowProp)=>JSX.Element
 }
-
-const TableRows = ({ count, renderRow, state }: TableRowsProp) => (
-    <>
-        {[...Array(count).keys()]
-            .map(n => (
-                <tr key={n} className={state.position == n ? 'selected'  : ''}>
-                    {renderRow({ index: n })} 
-                </tr>))}
-    </>
-)
 
 interface VirtualTableState {
     position: number,
@@ -34,9 +25,13 @@ export const useVirtualTableState = () => {
     } as VirtualTableState
 }
 
-const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
+const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
     
-    const table = useRef<HTMLDivElement>(null)
+    const tableRoot = useRef<HTMLDivElement>(null)
+
+    const [itemHeight, setItemHeight] = useState(0)
+    const [startOffset, setStartOffset] = useState(0)
+    const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         console.log("Hallo", e)
@@ -54,19 +49,53 @@ const VirtualTable = ({ count, renderRow, state }: TableRowsProp) => {
         }
     }
 
-    useResizeObserver(table, e => console.log("Resize", e.contentBoxSize[0]))
+    useResizeObserver(tableRoot, e => console.log("Resize", e.contentBoxSize[0]))
+
+    const getDisplayItems = () => 
+        R.slice(startOffset, itemsDisplayCount-startOffset, [...Array(count).keys()])
     
+    
+    const TableRowsComponent = () => 
+        itemHeight > 0
+        ? TableRows()  
+        : MeasureRow()
+    
+    const TableRows = () => (
+        <>
+            {getDisplayItems()
+                .map(n => (
+                    <tr key={n} className={state.position == n ? 'selected' : ''}>
+                        {renderRow({ index: n })} 
+                    </tr>))}
+        </>
+    )
+
+    const MeasureRow = () => {
+        const tr = useRef<HTMLTableRowElement>(null)
+
+        useResizeObserver(tr, e => {
+            console.log("Resize tr", e.contentBoxSize[0], tableRoot.current?.clientHeight)
+            setItemHeight(e.contentBoxSize[0].blockSize)
+        })
+//        if (itemsDisplayCount.length > 0)
+        return (
+            <tr ref={tr}>
+                {renderRow({ index: 0 })}
+            </tr>
+        )
+    }
+
+    console.log("Rendering Virtual Table")
     return (
-        <div className="vtr__tableroot" ref={table} tabIndex={1} onKeyDown={onKeyDown}>
-            <table>
-                <thead>
-                </thead>
-                <tbody>
-                    <TableRows count={count} renderRow={renderRow} state={state} />
-                </tbody>
-            </table>
-            <input id="restrictionInput" className="invisible none" />
-        </div>
+            <div className="vtr__tableroot" ref={tableRoot} tabIndex={1} onKeyDown={onKeyDown}>
+                <table>
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <TableRowsComponent />
+                    </tbody>
+                </table>
+            </div>
     )
 }
 

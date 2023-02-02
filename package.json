@@ -51,6 +51,8 @@
     ]
   },
   "dependencies": {
-    "@react-hook/resize-observer": "^1.2.6"
+    "@react-hook/resize-observer": "^1.2.6",
+    "@types/ramda": "^0.28.22",
+    "ramda": "^0.28.0"
   }
 }
