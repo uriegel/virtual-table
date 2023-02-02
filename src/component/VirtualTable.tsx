@@ -18,6 +18,11 @@ interface VirtualTableState {
     setPosition: (pos: number) => void
 }
 
+interface ScrollbarProp {
+    count: number
+    displayCount: number
+}
+
 export const useVirtualTableState = () => {
     const [position, setPosition] = useState(0)
     return {
@@ -159,6 +164,11 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         )
     }
 
+    const Scrollbar = ({ count, displayCount }: ScrollbarProp) => {
+        return (
+            <div className={`vtr__scrollbar ${count < displayCount ? 'hidden' : ''}`}></div>
+    )} 
+
     console.log("Rendering Virtual Table")
     return (
             <div className="vtr__tableroot" ref={tableRoot} tabIndex={0} onKeyDown={onKeyDown}>
@@ -169,6 +179,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                         <TableRowsComponent />
                     </tbody>
                 </table>
+                <Scrollbar count={count} displayCount={itemsDisplayCount} />
             </div>
     )
 }
@@ -176,5 +187,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 export default VirtualTable
 
 // TODO Scrollbar switching on and off
+// TODO Table with one header
+// TODO Scrollbar calc height
 // TODO Scrollbar controlling grip
 // TODO Scrollbar settingposition with grip

@@ -26,7 +26,7 @@ const App = () => {
 		<div className="App">
 			<input type={'text'} onChange={search} />
 			<div className="tableContainer">
-				<VirtualTable count={100} renderRow={TableRow} state={virtualTableState} />
+				<VirtualTable count={20} renderRow={TableRow} state={virtualTableState} />
 			</div>
 		</div>
 	)

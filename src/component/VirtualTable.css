@@ -24,3 +24,25 @@
     table-layout: fixed;
     width: 100%;
 }
+
+.vtr__scrollbar {
+    top: 0px;
+    width: 16px;
+    right: 0px;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    background-color: yellow;
+    outline-width: 0px;
+    outline-style: none;    
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s;
+    transform-origin: right top;
+    bottom: 0px;    
+}
+
+.vtr__scrollbar.hidden {
+    transform: scale(0);
+}
