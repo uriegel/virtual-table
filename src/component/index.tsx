@@ -3,9 +3,11 @@ import './VirtualTable.css'
 import useResizeObserver from '@react-hook/resize-observer'
 import { TableRowsComponent } from './TableRowsComponent'
 import { Scrollbar } from './Scrollbar'
+import { Columns } from './Columns'
 
 export interface TableRowProp {
     index: Number
+    col: number
 }
 
 interface VirtualTableProp {
@@ -147,9 +149,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                 onKeyDown={onKeyDown} onWheel={onWheel}>
             <table>
                 <thead ref={tableHead}>
-                    <tr>
-                        <td>Header</td>
-                    </tr>
+                    <Columns />
                 </thead>
                 <tbody>
                 <TableRowsComponent count={count} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}

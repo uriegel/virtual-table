@@ -2,12 +2,11 @@ import { ChangeEvent } from 'react'
 import './App.css'
 import VirtualTable, { TableRowProp, useVirtualTableState } from './component/index'
 
-const TableRow = ({ index } : TableRowProp) => (
+const TableRow = ({ index, col } : TableRowProp) => (
 	<td>
 		<span>
-			{`Der ${index}. Eintrag`}
+			{`Der ${index}. Eintrag (${col})` }
 		</span>
-        
     </td>
 )
 

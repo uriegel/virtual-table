@@ -21,7 +21,7 @@ export const MeasureRow = ({renderRow, setItemHeight, setItemsCount, tableRoot}:
 //        if (itemsDisplayCount.length > 0)
     return (
         <tr ref={tr}>
-            {renderRow({ index: 0 })}
+            {renderRow({ index: 0, col: 0 })}
         </tr>
     )
 }

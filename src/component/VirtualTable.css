@@ -30,6 +30,12 @@
     color: white;
 }
 
+.vtr--tableroot th {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: gray;
+}
+
 .vtr--scrollbar {
     width: 16px;
     right: 0px;

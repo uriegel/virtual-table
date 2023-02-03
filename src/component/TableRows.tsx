@@ -19,7 +19,9 @@ export const TableRows = ({ renderRow, position, count, itemsDisplayCount, start
         {getDisplayItems(position, startOffset, itemsDisplayCount, count)
             .map(n => (
                 <tr key={n} className={position == n ? 'selected' : ''}>
-                    {renderRow({ index: n })} 
+                    {renderRow({ index: n, col: 0 })} 
+                    {renderRow({ index: n, col: 1 })} 
+                    {renderRow({ index: n, col: 2 })} 
                 </tr>))}
     </>
 )
