@@ -148,5 +148,6 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Scrollbar controlling grip
-// TODO Scrollbar settingposition with grip
+// TODO Scrollbar grip adjusted to size and count
+// TODO Scrollbar showing position
+// TODO Scrollbar setting position with grip
