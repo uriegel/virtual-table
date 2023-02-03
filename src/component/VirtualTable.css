@@ -25,12 +25,17 @@
     width: 100%;
 }
 
+.vtr__tableroot thead {
+    background-color: rgb(153, 153, 250);
+    color: white;
+}
+
 .vtr__scrollbar {
     width: 16px;
     right: 0px;
     position: absolute;
     overflow: hidden;
-    background-color: rgba(12, 35, 245, 0.418);
+    background-color: rgba(132, 175, 15, 0.418);
     outline-width: 0px;
     outline-style: none;    
     user-select: none;
