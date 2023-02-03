@@ -2,7 +2,7 @@ import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
 import './VirtualTable.css'
 import useResizeObserver from '@react-hook/resize-observer'
 import { TableRowsComponent } from './TableRowsComponent'
-import { table } from 'console'
+import { Scrollbar } from './Scrollbar'
 
 export interface TableRowProp {
     index: Number
@@ -17,11 +17,6 @@ interface VirtualTableProp {
 interface VirtualTableState {
     position: number,
     setPosition: (pos: number) => void
-}
-
-interface ScrollbarProp {
-    count: number
-    displayCount: number
 }
 
 export const useVirtualTableState = () => {
@@ -129,11 +124,6 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         setItemsDisplayCount(count) 
         return count
     }
-        
-    const Scrollbar = ({ count, displayCount }: ScrollbarProp) => {
-        return (
-            <div className={`vtr__scrollbar ${count < displayCount ? 'hidden' : ''}`}></div>
-    )} 
 
     console.log("Rendering Virtual Table")
     return (
@@ -154,7 +144,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Scrollbar switching on and off
+// TODO Test in test application with exported npm
 // TODO Table with one header
 // TODO Scrollbar calc height
 // TODO Scrollbar controlling grip
