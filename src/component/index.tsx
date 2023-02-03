@@ -40,6 +40,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
     const itemsDisplayCountRef = useRef(0)
     const positionRef = useRef(0)
     const startOffsetRef = useRef(0)
+    const tableHeight = useRef(0)
 
     useEffect(() => {
         itemHeightRef.current = itemHeight
@@ -62,6 +63,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
     useResizeObserver(tableRoot, e => {
         console.log("Resize", itemHeightRef.current, tableHead.current?.clientHeight)
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
+        tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
         if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
             setStartOffset(Math.max(0, positionRef.current - itemsCount + 2))   
         else if (count - startOffsetRef.current < itemsCount)
@@ -141,12 +143,12 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                     startOffset={startOffset} tableRoot={tableRoot} />
                 </tbody>
             </table>
-            <Scrollbar count={count} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0} />
+            <Scrollbar count={count} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}
+                scrollPosition={startOffset} scrollbarHeight={tableHeight.current} />
         </div>
     )
 }
 
 export default VirtualTable
 
-// TODO Scrollbar showing position
 // TODO Scrollbar setting position with grip
