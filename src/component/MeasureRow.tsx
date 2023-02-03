@@ -1,6 +1,6 @@
 import React, { RefObject, useRef } from 'react'
 import useResizeObserver from '@react-hook/resize-observer'
-import { TableRowProp } from './VirtualTable'
+import { TableRowProp } from './index'
 
 interface MeasureRowProp {
     setItemHeight: (height: number) => void

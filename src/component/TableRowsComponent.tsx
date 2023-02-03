@@ -1,7 +1,7 @@
 import { RefObject } from 'react'
 import { MeasureRow } from './MeasureRow'
 import { TableRows } from './TableRows'
-import { TableRowProp } from './VirtualTable'
+import { TableRowProp } from './index'
 
 interface TableRowsComponentProps {
     itemHeight: number

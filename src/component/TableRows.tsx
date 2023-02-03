@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import React from 'react'
-import { TableRowProp } from './VirtualTable'
+import { TableRowProp } from './index'
 
 interface TableRowsProp {
     position: Number
