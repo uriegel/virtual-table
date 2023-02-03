@@ -30,6 +30,7 @@ export const useVirtualTableState = () => {
 const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
     
     const tableRoot = useRef<HTMLDivElement>(null)
+    const tableHead = useRef<HTMLTableSectionElement>(null)
 
     const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
@@ -59,7 +60,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
     }, [startOffset])
             
     useResizeObserver(tableRoot, e => {
-        console.log("Resize", itemHeightRef.current)
+        console.log("Resize", itemHeightRef.current, tableHead.current?.clientHeight)
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
         if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
             setStartOffset(Math.max(0, positionRef.current - itemsCount + 2))   
@@ -120,32 +121,32 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
     }
 
     const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => {
-        const count = Math.floor((clientHeight || 0) / itemsHeight) + 1
+        const count = Math.floor(((clientHeight || 0) - (tableHead.current?.clientHeight || 0)) / itemsHeight) + 1
         setItemsDisplayCount(count) 
         return count
     }
 
     console.log("Rendering Virtual Table")
     return (
-            <div className="vtr__tableroot" ref={tableRoot} tabIndex={0} onKeyDown={onKeyDown}>
-                <table>
-                    <thead>
-                    </thead>
-                    <tbody>
-                    <TableRowsComponent count={count} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
-                        position={state.position} renderRow={renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
-                        startOffset={startOffset} tableRoot={tableRoot} />
-                    </tbody>
-                </table>
-                <Scrollbar count={count} displayCount={itemsDisplayCount} />
-            </div>
+        <div className="vtr__tableroot" ref={tableRoot} tabIndex={0} onKeyDown={onKeyDown}>
+            <table>
+                <thead ref={tableHead}>
+                    <tr>
+                        <td>Header</td>
+                    </tr>
+                </thead>
+                <tbody>
+                <TableRowsComponent count={count} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
+                    position={state.position} renderRow={renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                    startOffset={startOffset} tableRoot={tableRoot} />
+                </tbody>
+            </table>
+            <Scrollbar count={count} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0} />
+        </div>
     )
 }
 
 export default VirtualTable
 
-// TODO Test in test application with exported npm
-// TODO Table with one header
-// TODO Scrollbar calc height
 // TODO Scrollbar controlling grip
 // TODO Scrollbar settingposition with grip
