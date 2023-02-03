@@ -1,7 +1,8 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
 import './VirtualTable.css'
-import * as R from'ramda'
 import useResizeObserver from '@react-hook/resize-observer'
+import { TableRowsComponent } from './TableRowsComponent'
+import { table } from 'console'
 
 export interface TableRowProp {
     index: Number
@@ -123,47 +124,12 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         state.setPosition(newPos)
     }
 
-    const getDisplayItems = () => 
-        R.slice(startOffset, itemsDisplayCount + startOffset, [...Array(count).keys()])
-        
-    const TableRowsComponent = () => 
-        itemHeight > 0
-        ? TableRows()  
-        : MeasureRow()
-    
-    const TableRows = () => (
-        <>
-            {getDisplayItems()
-                .map(n => (
-                    <tr key={n} className={state.position == n ? 'selected' : ''}>
-                        {renderRow({ index: n })} 
-                    </tr>))}
-        </>
-    )
-
     const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => {
         const count = Math.floor((clientHeight || 0) / itemsHeight) + 1
         setItemsDisplayCount(count) 
         return count
     }
         
-    const MeasureRow = () => {
-        const tr = useRef<HTMLTableRowElement>(null)
-
-        useResizeObserver(tr, e => {
-            if (e.contentBoxSize[0].blockSize > 0) {
-                setItemHeight(e.contentBoxSize[0].blockSize)
-                setItemsCount(tableRoot.current?.clientHeight, e.contentBoxSize[0].blockSize)
-            }
-        })
-//        if (itemsDisplayCount.length > 0)
-        return (
-            <tr ref={tr}>
-                {renderRow({ index: 0 })}
-            </tr>
-        )
-    }
-
     const Scrollbar = ({ count, displayCount }: ScrollbarProp) => {
         return (
             <div className={`vtr__scrollbar ${count < displayCount ? 'hidden' : ''}`}></div>
@@ -176,7 +142,9 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                     <thead>
                     </thead>
                     <tbody>
-                        <TableRowsComponent />
+                    <TableRowsComponent count={count} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
+                        position={state.position} renderRow={renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                        startOffset={startOffset} tableRoot={tableRoot} />
                     </tbody>
                 </table>
                 <Scrollbar count={count} displayCount={itemsDisplayCount} />

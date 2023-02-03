@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 import './App.css'
 import VirtualTable, { TableRowProp, useVirtualTableState } from './component/VirtualTable'
 
