@@ -128,9 +128,23 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         return count
     }
 
+    const onWheel = (revt: React.WheelEvent) => {
+		const evt = revt.nativeEvent
+		if (count > itemsDisplayCount) {
+			var delta = evt.deltaY / Math.abs(evt.deltaY) * 3
+			let newPos = startOffset + delta
+			if (newPos < 0)
+				newPos = 0
+			if (newPos > count - itemsDisplayCount + 1) 
+				newPos = count - itemsDisplayCount + 1
+				setStartOffset(newPos)
+		}        
+	}			
+
     console.log("Rendering Virtual Table")
     return (
-        <div className="vtr--tableroot" ref={tableRoot} tabIndex={0} onKeyDown={onKeyDown}>
+        <div className="vtr--tableroot" ref={tableRoot} tabIndex={0}
+                onKeyDown={onKeyDown} onWheel={onWheel}>
             <table>
                 <thead ref={tableHead}>
                     <tr>
@@ -144,11 +158,12 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                 </tbody>
             </table>
             <Scrollbar count={count} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}
-                scrollPosition={startOffset} scrollbarHeight={tableHeight.current} />
+                scrollPosition={startOffset} scrollbarHeight={tableHeight.current}
+                setScrollPosition={setStartOffset} />
         </div>
     )
 }
 
 export default VirtualTable
 
-// TODO Scrollbar setting position with grip
+// TODO Scrollbar pageup, pagedown
