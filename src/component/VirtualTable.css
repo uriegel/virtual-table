@@ -1,4 +1,4 @@
-.vtr__tableroot {
+.vtr--tableroot {
     background-color: white;
     position: absolute;
     width: 100%;
@@ -8,34 +8,34 @@
     overflow: hidden;
     user-select: none;
 }
-.vtr__tableroot tr.selected {
+.vtr--tableroot tr.selected {
     background-color: burlywood;
 }
-.vtr__tableroot:focus {
+.vtr--tableroot:focus {
     outline: none;
 }
 
-.vtr__tableroot td {
+.vtr--tableroot td {
     user-select: none;
 }
 
-.vtr__tableroot table {
+.vtr--tableroot table {
     border-spacing: 0px;
     table-layout: fixed;
     width: 100%;
 }
 
-.vtr__tableroot thead {
+.vtr--tableroot thead {
     background-color: rgb(153, 153, 250);
     color: white;
 }
 
-.vtr__scrollbar {
+.vtr--scrollbar {
     width: 16px;
     right: 0px;
     position: absolute;
     overflow: hidden;
-    background-color: rgba(132, 175, 15, 0.418);
+    background-color: rgba(132, 175, 15, 0.445);
     outline-width: 0px;
     outline-style: none;    
     user-select: none;
@@ -46,7 +46,13 @@
     bottom: 0px;    
 }
 
-.vtr__scrollbar.hidden {
+.vtr--scrollbar.hidden {
     transform: scale(0);
     opacity: 0;
+}
+
+.vtr--scrollbar-grid {
+    position: absolute;
+    width: 16px;
+    background-color: blue;
 }

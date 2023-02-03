@@ -128,7 +128,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
     console.log("Rendering Virtual Table")
     return (
-        <div className="vtr__tableroot" ref={tableRoot} tabIndex={0} onKeyDown={onKeyDown}>
+        <div className="vtr--tableroot" ref={tableRoot} tabIndex={0} onKeyDown={onKeyDown}>
             <table>
                 <thead ref={tableHead}>
                     <tr>
@@ -148,6 +148,5 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Scrollbar grip adjusted to size and count
 // TODO Scrollbar showing position
 // TODO Scrollbar setting position with grip
