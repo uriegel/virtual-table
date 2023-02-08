@@ -61,7 +61,7 @@ export const Columns = ({columns }: ColumnsProps) => {
                     const firstWidth = 
                         column.style.width
                         ? parseFloat(column.style.width.substring(0, column.style.width.length - 1))
-                        : 100 / columns .length
+                        : 100 / columns.length
                     const secondWidth = 
                         nextColumn.style.width
                         ? parseFloat(nextColumn.style.width.substring(0, nextColumn.style.width.length - 1))
@@ -123,9 +123,9 @@ export const Columns = ({columns }: ColumnsProps) => {
 
     return (
         <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
+            {
+                columns.map(n => (<th key={n.name}>{n.name}</th>))
+            }
         </tr>
     )
 }

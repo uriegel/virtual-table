@@ -9,19 +9,13 @@ export interface Column {
     name: string
 }
 
-// TODO: Generic
-export interface Item {
-    name: string
-}
-
-export interface TableRowProp {
+export interface TableRowItem {
     index: Number
-    col: number
 }
 
 interface VirtualTableProp {
     state: VirtualTableState
-    renderRow: (props: TableRowProp)=>JSX.Element
+    renderRow: (props: TableRowItem)=>JSX.Element
 }
 
 interface VirtualTableState {
@@ -29,14 +23,14 @@ interface VirtualTableState {
     setPosition: (pos: number) => void
     columns: Column[]
     setColumns: (columns: Column[])=>void
-    items: Item[]
-    setItems: (items: Item[])=>void
+    items: TableRowItem[]
+    setItems: (items: TableRowItem[])=>void
 }
 
 export const useVirtualTableState = () => {
     const [position, setPosition] = useState(0)
-    const [columns, setColumns] = useState([] as Column[])
-    const [items, setItems] = useState([] as Column[])
+    const [columns, setColumns] = useState([{ name: "" }] as Column[])
+    const [items, setItems] = useState([] as TableRowItem[])
     return {
         position, setPosition, columns, setColumns, items, setItems
     } as VirtualTableState
@@ -165,7 +159,7 @@ const VirtualTable = ({ renderRow, state }: VirtualTableProp) => {
                     <Columns columns={state.columns} />
                 </thead>
                 <tbody>
-                <TableRowsComponent count={state.items.length} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
+                <TableRowsComponent items={state.items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
                     position={state.position} renderRow={renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} />
                 </tbody>
@@ -179,10 +173,9 @@ const VirtualTable = ({ renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO fill items at begin
-// TODO empty columns and empty items
-// TODO fill columns and then items at begin
+// TODO Move renderRow to columnProp
 // TODO change columns
+// TODO Generic Items
 // TODO fill changed items
 // TODO Theming
 // TODO Set items

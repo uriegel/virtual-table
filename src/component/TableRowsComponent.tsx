@@ -1,22 +1,22 @@
 import { RefObject } from 'react'
 import { MeasureRow } from './MeasureRow'
 import { TableRows } from './TableRows'
-import { TableRowProp } from './index'
+import { TableRowItem } from './index'
 
 interface TableRowsComponentProps {
     itemHeight: number
     setItemHeight: (height: number) => void
     setItemsCount: (c1: number| undefined, c2: number) => void
     tableRoot: RefObject<HTMLDivElement>
-    renderRow: (props: TableRowProp) => JSX.Element
+    items: TableRowItem[]
+    renderRow: (props: TableRowItem) => JSX.Element
     position: Number
     startOffset: number
     itemsDisplayCount: number
-    count: number
 }
 
-export const TableRowsComponent = ({ itemHeight, renderRow,
-    setItemHeight, setItemsCount, tableRoot, count, itemsDisplayCount, position, startOffset }: TableRowsComponentProps) => 
+export const TableRowsComponent = ({ itemHeight, renderRow, items, setItemHeight, setItemsCount,
+        tableRoot, itemsDisplayCount, position, startOffset }: TableRowsComponentProps) => 
     itemHeight > 0
-    ? TableRows({ count, itemsDisplayCount, position, startOffset, renderRow })  
+    ? TableRows({ items, itemsDisplayCount, position, startOffset, renderRow })  
     : MeasureRow({renderRow, setItemHeight, setItemsCount, tableRoot})

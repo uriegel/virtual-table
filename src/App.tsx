@@ -1,13 +1,13 @@
 import { ChangeEvent, useEffect } from 'react'
 import './App.css'
-import VirtualTable, { TableRowProp, useVirtualTableState } from './component/index'
+import VirtualTable, { TableRowItem, useVirtualTableState } from './component/index'
 
-const TableRow = ({ index, col } : TableRowProp) => (
-	<td>
-		<span>
-			{`Der ${index}. Eintrag (${col})` }
-		</span>
-    </td>
+const TableRow = ({ index } : TableRowItem) => (
+	<>
+		<td>{`Der ${index}. Eintrag`}</td>
+		<td>{`Datum ${index}`}</td>
+		<td>{`Der ${index}. Eintrag in der 3. Spalte`}</td>
+	</>
 )
 
 const App = () => {
@@ -21,14 +21,18 @@ const App = () => {
 	}
 
 	const setColumns = virtualTableState.setColumns
+	const setItems = virtualTableState.setItems
 
 	useEffect(() => {
 		setColumns([
-			{ name: "col 1" },
-			{ name: "col 2" },
-			{ name: "col 3" }
+			{ name: "Name" },
+			{ name: "Date" },
+			{ name: "Details" }
 		])
-	} , [setColumns])
+
+		const items = [...Array(200).keys()].map(n => ({index: n})) as TableRowItem[]
+		setItems(items)
+	} , [setColumns, setItems])
 
 	return (
 		<div className="App">
