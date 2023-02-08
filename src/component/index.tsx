@@ -167,3 +167,4 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 export default VirtualTable
 
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
+// TODO Set cursor in table view (when resize cursor is set and the cursor went directly to the table view)
