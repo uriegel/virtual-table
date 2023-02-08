@@ -81,20 +81,20 @@ export const Columns = () => {
             }
 
             const onup = (evt: MouseEvent) => {
-                const getWidths = () => {
-                    const ths = Array.from(targetColumn!.parentElement!.children) as HTMLElement[]
-                     return ths.map(th => 
-                         th.style.width 
-                            ? parseFloat(th.style.width.substring(0, th.style.width.length - 1))
-                            : 100 / columns.length
-                     )
-                }
+                // const getWidths = () => {
+                //     const ths = Array.from(targetColumn!.parentElement!.children) as HTMLElement[]
+                //      return ths.map(th => 
+                //          th.style.width 
+                //             ? parseFloat(th.style.width.substring(0, th.style.width.length - 1))
+                //             : 100 / columns.length
+                //      )
+                // }
 
                 window.removeEventListener('mousemove', onmove)
                 window.removeEventListener('mouseup', onup)
                 document.body.style.cursor = 'auto'
                 
-                const widths = getWidths()
+                //const widths = getWidths()
                 
                 // TODO Send event to parent
                 // this.dispatchEvent(new CustomEvent('columnwidths', { detail: widths }))
@@ -114,8 +114,13 @@ export const Columns = () => {
         }
     }
 
+    const onMouseLeave = (e: React.MouseEvent<HTMLTableRowElement>) => {
+        draggingReady.current = false
+        document.body.style.cursor = 'auto'        
+    }
+
     return (
-        <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
+        <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
             <th>Column 1</th>
             <th>Column 2</th>
             <th>Column 3</th>
