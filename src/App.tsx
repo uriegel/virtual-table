@@ -15,7 +15,6 @@ const App = () => {
 	const virtualTableState = useVirtualTableState()
 
 	const search = (e: ChangeEvent<HTMLInputElement>) => {
-		console.log("Tschänscht", e.target.value)
 		const num = Number.parseInt(e.target.value)
 		console.log("Num", num)
 		virtualTableState.setPosition(num)

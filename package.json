@@ -1,54 +1,56 @@
 {
-  "name": "virtual-table-react",
-  "version": "0.1.0",
-  "description": "A virtual list view implementation with multiple columns",
-  "author": "uriegel",
-  "license": "MIT",
-  "repository": "uriegel/virtual-table",
-  "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "dependencies": {
-    "@react-hook/resize-observer": "^1.2.6",
-    "@types/ramda": "^0.28.22",
-    "ramda": "^0.28.0"
-  },
-  "devDependencies": {
-    "@types/node": "^16.18.11",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "typescript": "tsc -p src/component",
-    "copy": "cp src/component/VirtualTable.css dist/",
-    "do publish test": "npm run typescript && npm run copy &&  npm publish --dry-run",
-    "do publish": "npm run typescript && npm run copy && npm publish"
-  },
-  "eslintConfig": {
-    "rules": {
-      "eqeqeq": "off"
-    },
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+    "name": "virtual-table-react",
+    "version": "0.1.0",
+    "description": "A virtual list view implementation with multiple columns",
+    "author": "uriegel",
+    "license": "MIT",
+    "repository": "uriegel/virtual-table",
+    "main": "dist/index.js",
+    "files": [
+        "dist"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "dependencies": {
+        "@react-hook/resize-observer": "^1.2.6",
+        "@types/ramda": "^0.28.22",
+        "ramda": "^0.28.0"
+    },
+    "devDependencies": {
+        "@types/node": "^16.18.11",
+        "@types/react": "^18.0.27",
+        "@types/react-dom": "^18.0.10",
+        "cp": "^0.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-scripts": "5.0.1",
+        "typescript": "^4.9.5"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "do publish test": "npm run typescript && npm run copy &&  npm publish --dry-run",
+        "do publish": "npm run typescript && npm run copy && npm publish",
+        "typescript": "tsc -p src/component",
+        "copy": "cp src/component/VirtualTable.css dist/"
+    },
+    "eslintConfig": {
+        "rules": {
+            "eqeqeq": "off",
+            "no-mixed-operators": "off"
+        },
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+        ]
+    }
 }
