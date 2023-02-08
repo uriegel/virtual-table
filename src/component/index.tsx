@@ -5,13 +5,21 @@ import { TableRowsComponent } from './TableRowsComponent'
 import { Scrollbar } from './Scrollbar'
 import { Columns } from './Columns'
 
+export interface Column {
+    name: string
+}
+
+// TODO: Generic
+export interface Item {
+    name: string
+}
+
 export interface TableRowProp {
     index: Number
     col: number
 }
 
 interface VirtualTableProp {
-    count: number
     state: VirtualTableState
     renderRow: (props: TableRowProp)=>JSX.Element
 }
@@ -19,17 +27,22 @@ interface VirtualTableProp {
 interface VirtualTableState {
     position: number,
     setPosition: (pos: number) => void
+    columns: Column[]
+    setColumns: (columns: Column[])=>void
+    items: Item[]
+    setItems: (items: Item[])=>void
 }
 
 export const useVirtualTableState = () => {
     const [position, setPosition] = useState(0)
+    const [columns, setColumns] = useState([] as Column[])
+    const [items, setItems] = useState([] as Column[])
     return {
-
-        position, setPosition
+        position, setPosition, columns, setColumns, items, setItems
     } as VirtualTableState
 }
 
-const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
+const VirtualTable = ({ renderRow, state }: VirtualTableProp) => {
     
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
@@ -68,8 +81,8 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
         if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
             setStartOffset(Math.max(0, positionRef.current - itemsCount + 2))   
-        else if (count - startOffsetRef.current < itemsCount)
-            setStartOffset(Math.max(0, count - itemsCount + 1))   
+        else if (state.items.length - startOffsetRef.current < itemsCount)
+            setStartOffset(Math.max(0, state.items.length - itemsCount + 1))   
     })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -96,7 +109,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                 e.stopPropagation()
                 break
             case "End":
-                setPosition(count - 1)
+                setPosition(state.items.length - 1)
                 e.preventDefault()
                 e.stopPropagation()
                 break
@@ -115,7 +128,7 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
         setStartOffset(newPos)
 
     const setPosition = (pos: number) => {
-        var newPos = Math.max(Math.min(count - 1, pos), 0)
+        var newPos = Math.max(Math.min(state.items.length - 1, pos), 0)
         console.log("newPos", newPos)
         if (newPos > startOffset + itemsDisplayCount - 2)
             scrollIntoViewBottom(newPos)
@@ -132,13 +145,13 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
     const onWheel = (revt: React.WheelEvent) => {
 		const evt = revt.nativeEvent
-		if (count > itemsDisplayCount) {
+		if (state.items.length > itemsDisplayCount) {
 			var delta = evt.deltaY / Math.abs(evt.deltaY) * 3
 			let newPos = startOffset + delta
 			if (newPos < 0)
 				newPos = 0
-			if (newPos > count - itemsDisplayCount + 1) 
-				newPos = count - itemsDisplayCount + 1
+			if (newPos > state.items.length - itemsDisplayCount + 1) 
+				newPos = state.items.length - itemsDisplayCount + 1
 				setStartOffset(newPos)
 		}        
 	}			
@@ -149,15 +162,15 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
                 onKeyDown={onKeyDown} onWheel={onWheel}>
             <table>
                 <thead ref={tableHead}>
-                    <Columns />
+                    <Columns columns={state.columns} />
                 </thead>
                 <tbody>
-                <TableRowsComponent count={count} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
+                <TableRowsComponent count={state.items.length} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
                     position={state.position} renderRow={renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} />
                 </tbody>
             </table>
-            <Scrollbar count={count} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}
+            <Scrollbar count={state.items.length} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}
                 scrollPosition={startOffset} scrollbarHeight={tableHeight.current}
                 setScrollPosition={setStartOffset} />
         </div>
@@ -166,7 +179,11 @@ const VirtualTable = ({ count, renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Set columns, change columns
+// TODO fill items at begin
+// TODO empty columns and empty items
+// TODO fill columns and then items at begin
+// TODO change columns
+// TODO fill changed items
 // TODO Theming
 // TODO Set items
 // TODO Set items again

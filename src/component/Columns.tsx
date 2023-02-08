@@ -1,9 +1,11 @@
 import React, { useRef } from 'react'
+import { Column } from '.'
 
-// TODO
-const columns = [0, 1, 2]
+interface ColumnsProps {
+    columns: Column[]
+}
 
-export const Columns = () => {
+export const Columns = ({columns }: ColumnsProps) => {
 
     const draggingReady = useRef(false)
 
@@ -59,7 +61,7 @@ export const Columns = () => {
                     const firstWidth = 
                         column.style.width
                         ? parseFloat(column.style.width.substring(0, column.style.width.length - 1))
-                        : 100 / columns.length
+                        : 100 / columns .length
                     const secondWidth = 
                         nextColumn.style.width
                         ? parseFloat(nextColumn.style.width.substring(0, nextColumn.style.width.length - 1))

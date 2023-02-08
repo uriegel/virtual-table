@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import './App.css'
 import VirtualTable, { TableRowProp, useVirtualTableState } from './component/index'
 
@@ -20,11 +20,21 @@ const App = () => {
 		virtualTableState.setPosition(num)
 	}
 
+	const setColumns = virtualTableState.setColumns
+
+	useEffect(() => {
+		setColumns([
+			{ name: "col 1" },
+			{ name: "col 2" },
+			{ name: "col 3" }
+		])
+	} , [setColumns])
+
 	return (
 		<div className="App">
 			<input type={'text'} onChange={search} />
 			<div className="tableContainer">
-				<VirtualTable count={2000} renderRow={TableRow} state={virtualTableState} />
+				<VirtualTable renderRow={TableRow} state={virtualTableState} />
 			</div>
 		</div>
 	)
