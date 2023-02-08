@@ -178,6 +178,5 @@ export default VirtualTable
 // TODO Generic Items
 // TODO fill changed items
 // TODO Theming
-// TODO Set items
-// TODO Set items again
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
+// TODO Set Row class (selected item, hidden item, exif date)
