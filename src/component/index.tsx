@@ -9,34 +9,37 @@ export interface Column {
     name: string
 }
 
+export interface TableColumns {
+    columns: Column[]
+    renderRow: (props: TableRowItem)=>JSX.Element
+}
+
 export interface TableRowItem {
     index: Number
 }
 
 interface VirtualTableProp {
     state: VirtualTableState
-    renderRow: (props: TableRowItem)=>JSX.Element
+    columns: TableColumns
+    setColumns: (cols: TableColumns)=>void
 }
 
 interface VirtualTableState {
     position: number,
     setPosition: (pos: number) => void
-    columns: Column[]
-    setColumns: (columns: Column[])=>void
     items: TableRowItem[]
     setItems: (items: TableRowItem[])=>void
 }
 
 export const useVirtualTableState = () => {
     const [position, setPosition] = useState(0)
-    const [columns, setColumns] = useState([{ name: "" }] as Column[])
     const [items, setItems] = useState([] as TableRowItem[])
     return {
-        position, setPosition, columns, setColumns, items, setItems
+        position, setPosition, items, setItems
     } as VirtualTableState
 }
 
-const VirtualTable = ({ renderRow, state }: VirtualTableProp) => {
+const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
     
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
@@ -156,11 +159,11 @@ const VirtualTable = ({ renderRow, state }: VirtualTableProp) => {
                 onKeyDown={onKeyDown} onWheel={onWheel}>
             <table>
                 <thead ref={tableHead}>
-                    <Columns columns={state.columns} />
+                    <Columns columns={columns.columns} />
                 </thead>
                 <tbody>
                 <TableRowsComponent items={state.items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
-                    position={state.position} renderRow={renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                    position={state.position} renderRow={columns.renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} />
                 </tbody>
             </table>
@@ -173,8 +176,9 @@ const VirtualTable = ({ renderRow, state }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO Move renderRow to columnProp
+// TODO renderRow => renderCol
 // TODO change columns
+// TODO move items to App
 // TODO Generic Items
 // TODO fill changed items
 // TODO Theming

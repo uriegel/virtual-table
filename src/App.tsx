@@ -1,14 +1,6 @@
-import { ChangeEvent, useEffect } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
-import VirtualTable, { TableRowItem, useVirtualTableState } from './component/index'
-
-const TableRow = ({ index } : TableRowItem) => (
-	<>
-		<td>{`Der ${index}. Eintrag`}</td>
-		<td>{`Datum ${index}`}</td>
-		<td>{`Der ${index}. Eintrag in der 3. Spalte`}</td>
-	</>
-)
+import VirtualTable, { Column, TableRowItem, useVirtualTableState } from './component/index'
 
 const App = () => {
 
@@ -20,15 +12,27 @@ const App = () => {
 		virtualTableState.setPosition(num)
 	}
 
-	const setColumns = virtualTableState.setColumns
+	const [columns, setColumns] = useState({
+		columns: [] as Column[],
+		renderRow: (r: TableRowItem) => (<></>)
+	})
 	const setItems = virtualTableState.setItems
 
 	useEffect(() => {
-		setColumns([
-			{ name: "Name" },
-			{ name: "Date" },
-			{ name: "Details" }
-		])
+		setColumns({
+			columns: [
+				{ name: "Name" },
+				{ name: "Date" },
+				{ name: "Details" }
+			],
+			renderRow: ({ index } : TableRowItem) => (
+				<>
+					<td>{`Der ${index}. Eintrag`}</td>
+					<td>{`Datum ${index}`}</td>
+					<td>{`Der ${index}. Eintrag in der 3. Spalte`}</td>
+				</>
+			)
+		})
 
 		const items = [...Array(200).keys()].map(n => ({index: n})) as TableRowItem[]
 		setItems(items)
@@ -38,7 +42,7 @@ const App = () => {
 		<div className="App">
 			<input type={'text'} onChange={search} />
 			<div className="tableContainer">
-				<VirtualTable renderRow={TableRow} state={virtualTableState} />
+				<VirtualTable state={virtualTableState} columns={columns} setColumns={setColumns} />
 			</div>
 		</div>
 	)
