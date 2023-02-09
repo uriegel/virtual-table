@@ -164,6 +164,8 @@ const VirtualTable = ({ columns, position, setPosition, items }: VirtualTablePro
 export default VirtualTable
 
 // TODO set current pos with mouse 
+// TODO Sorting with column click
 // TODO Theming
+// TODO setting column widths per columns id
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
 // TODO Set Row class (selected item, hidden item, exif date)
