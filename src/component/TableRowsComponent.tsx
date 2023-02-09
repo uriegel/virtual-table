@@ -10,13 +10,14 @@ interface TableRowsComponentProps {
     tableRoot: RefObject<HTMLDivElement>
     items: TableRowItem[]
     renderRow: (props: TableRowItem) => JSX.Element
+    measureRow: () => JSX.Element
     position: Number
     startOffset: number
     itemsDisplayCount: number
 }
 
-export const TableRowsComponent = ({ itemHeight, renderRow, items, setItemHeight, setItemsCount,
+export const TableRowsComponent = ({ itemHeight, renderRow, measureRow, items, setItemHeight, setItemsCount,
         tableRoot, itemsDisplayCount, position, startOffset }: TableRowsComponentProps) => 
     itemHeight > 0
     ? TableRows({ items, itemsDisplayCount, position, startOffset, renderRow })  
-    : MeasureRow({renderRow, setItemHeight, setItemsCount, tableRoot})
+    : MeasureRow({measureRow, setItemHeight, setItemsCount, tableRoot})

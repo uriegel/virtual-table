@@ -1,15 +1,14 @@
 import React, { RefObject, useRef } from 'react'
 import useResizeObserver from '@react-hook/resize-observer'
-import { TableRowItem } from './index'
 
 interface MeasureRowProp {
     setItemHeight: (height: number) => void
     setItemsCount: (c1: number| undefined, c2: number) => void
     tableRoot: RefObject<HTMLDivElement>
-    renderRow: (props: TableRowItem)=>JSX.Element
+    measureRow: ()=>JSX.Element
 }
 
-export const MeasureRow = ({renderRow, setItemHeight, setItemsCount, tableRoot}: MeasureRowProp) => {
+export const MeasureRow = ({measureRow, setItemHeight, setItemsCount, tableRoot}: MeasureRowProp) => {
     const tr = useRef<HTMLTableRowElement>(null)
 
     useResizeObserver(tr, e => {
@@ -18,10 +17,10 @@ export const MeasureRow = ({renderRow, setItemHeight, setItemsCount, tableRoot}:
             setItemsCount(tableRoot.current?.clientHeight, e.contentBoxSize[0].blockSize)
         }
     })
-//        if (itemsDisplayCount.length > 0)
+
     return (
         <tr ref={tr}>
-            {renderRow({ index: 0 })}
+            {measureRow()}
         </tr>
     )
 }

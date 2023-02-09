@@ -11,7 +11,8 @@ export interface Column {
 
 export interface TableColumns {
     columns: Column[]
-    renderRow: (props: TableRowItem)=>JSX.Element
+    renderRow: (props: TableRowItem) => JSX.Element
+    measureRow: ()=>JSX.Element
 }
 
 export interface TableRowItem {
@@ -163,7 +164,7 @@ const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
                 </thead>
                 <tbody>
                 <TableRowsComponent items={state.items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
-                    position={state.position} renderRow={columns.renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                    position={state.position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} />
                 </tbody>
             </table>
@@ -176,10 +177,8 @@ const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
 
 export default VirtualTable
 
-// TODO renderRow => renderCol
 // TODO change columns
 // TODO move items to App
-// TODO Generic Items
 // TODO fill changed items
 // TODO Theming
 // TODO Scrollbar pageup, pagedown must stop when reaching grip

@@ -14,7 +14,8 @@ const App = () => {
 
 	const [columns, setColumns] = useState({
 		columns: [] as Column[],
-		renderRow: (r: TableRowItem) => (<></>)
+		renderRow: (r: TableRowItem) => (<></>),
+		measureRow: () => (<></>)
 	})
 	const setItems = virtualTableState.setItems
 
@@ -31,7 +32,8 @@ const App = () => {
 					<td>{`Datum ${index}`}</td>
 					<td>{`Der ${index}. Eintrag in der 3. Spalte`}</td>
 				</>
-			)
+			),
+			measureRow: () => (<td>{`Measure`}</td>)
 		})
 
 		const items = [...Array(200).keys()].map(n => ({index: n})) as TableRowItem[]
