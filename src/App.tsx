@@ -1,13 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import './App.css'
-import VirtualTable, { Column, TableRowItem, useVirtualTableState } from './component/index'
+import VirtualTable, { Column, TableRowItem } from './component/index'
 
 const App = () => {
 
 	const [position, setPosition] = useState(0)
-
-	const virtualTableState = useVirtualTableState()
-
+	const [items, setItems] = useState([] as TableRowItem[])
+	
 	const search = (e: ChangeEvent<HTMLInputElement>) => {
 		const num = Number.parseInt(e.target.value)
 		console.log("Num", num)
@@ -19,8 +18,7 @@ const App = () => {
 		renderRow: (r: TableRowItem) => (<></>),
 		measureRow: () => (<></>)
 	})
-	const setItems = virtualTableState.setItems
-
+	
 	useEffect(() => {
 		setColumns({
 			columns: [
@@ -46,7 +44,7 @@ const App = () => {
 		<div className="App">
 			<input type={'text'} onChange={search} />
 			<div className="tableContainer">
-				<VirtualTable state={virtualTableState} columns={columns} position={position} setPosition={setPosition} />
+				<VirtualTable columns={columns} items={items} position={position} setPosition={setPosition} />
 			</div>
 		</div>
 	)

@@ -20,25 +20,13 @@ export interface TableRowItem {
 }
 
 interface VirtualTableProp {
-    state: VirtualTableState
     columns: TableColumns
     position: number
+    items: TableRowItem[]
     setPosition: (pos: number)=>void
 }
 
-interface VirtualTableState {
-    items: TableRowItem[]
-    setItems: (items: TableRowItem[])=>void
-}
-
-export const useVirtualTableState = () => {
-    const [items, setItems] = useState([] as TableRowItem[])
-    return {
-        items, setItems
-    } as VirtualTableState
-}
-
-const VirtualTable = ({ columns, position, setPosition, state }: VirtualTableProp) => {
+const VirtualTable = ({ columns, position, setPosition, items }: VirtualTableProp) => {
     
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
@@ -77,8 +65,8 @@ const VirtualTable = ({ columns, position, setPosition, state }: VirtualTablePro
         tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
         if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
             setStartOffset(Math.max(0, positionRef.current - itemsCount + 2))   
-        else if (state.items.length - startOffsetRef.current < itemsCount)
-            setStartOffset(Math.max(0, state.items.length - itemsCount + 1))   
+        else if (items.length - startOffsetRef.current < itemsCount)
+            setStartOffset(Math.max(0, items.length - itemsCount + 1))   
     })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -105,7 +93,7 @@ const VirtualTable = ({ columns, position, setPosition, state }: VirtualTablePro
                 e.stopPropagation()
                 break
             case "End":
-                setCheckedPosition(state.items.length - 1)
+                setCheckedPosition(items.length - 1)
                 e.preventDefault()
                 e.stopPropagation()
                 break
@@ -124,7 +112,7 @@ const VirtualTable = ({ columns, position, setPosition, state }: VirtualTablePro
         setStartOffset(newPos)
 
     const setCheckedPosition = (pos: number) => {
-        var newPos = Math.max(Math.min(state.items.length - 1, pos), 0)
+        var newPos = Math.max(Math.min(items.length - 1, pos), 0)
         console.log("newPos", newPos)
         if (newPos > startOffset + itemsDisplayCount - 2)
             scrollIntoViewBottom(newPos)
@@ -141,13 +129,13 @@ const VirtualTable = ({ columns, position, setPosition, state }: VirtualTablePro
 
     const onWheel = (revt: React.WheelEvent) => {
 		const evt = revt.nativeEvent
-		if (state.items.length > itemsDisplayCount) {
+		if (items.length > itemsDisplayCount) {
 			var delta = evt.deltaY / Math.abs(evt.deltaY) * 3
 			let newPos = startOffset + delta
 			if (newPos < 0)
 				newPos = 0
-			if (newPos > state.items.length - itemsDisplayCount + 1) 
-				newPos = state.items.length - itemsDisplayCount + 1
+			if (newPos > items.length - itemsDisplayCount + 1) 
+				newPos = items.length - itemsDisplayCount + 1
 				setStartOffset(newPos)
 		}        
 	}			
@@ -161,12 +149,12 @@ const VirtualTable = ({ columns, position, setPosition, state }: VirtualTablePro
                     <Columns columns={columns.columns} />
                 </thead>
                 <tbody>
-                <TableRowsComponent items={state.items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
+                <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
                     position={position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} />
                 </tbody>
             </table>
-            <Scrollbar count={state.items.length} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}
+            <Scrollbar count={items.length} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}
                 scrollPosition={startOffset} scrollbarHeight={tableHeight.current}
                 setScrollPosition={setStartOffset} />
         </div>
@@ -176,8 +164,8 @@ const VirtualTable = ({ columns, position, setPosition, state }: VirtualTablePro
 export default VirtualTable
 
 // TODO change columns
-// TODO move items to App
 // TODO fill changed items
+// TODO set current pos
 // TODO Theming
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
 // TODO Set Row class (selected item, hidden item, exif date)
