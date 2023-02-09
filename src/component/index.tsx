@@ -22,25 +22,23 @@ export interface TableRowItem {
 interface VirtualTableProp {
     state: VirtualTableState
     columns: TableColumns
-    setColumns: (cols: TableColumns)=>void
+    position: number
+    setPosition: (pos: number)=>void
 }
 
 interface VirtualTableState {
-    position: number,
-    setPosition: (pos: number) => void
     items: TableRowItem[]
     setItems: (items: TableRowItem[])=>void
 }
 
 export const useVirtualTableState = () => {
-    const [position, setPosition] = useState(0)
     const [items, setItems] = useState([] as TableRowItem[])
     return {
-        position, setPosition, items, setItems
+        items, setItems
     } as VirtualTableState
 }
 
-const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
+const VirtualTable = ({ columns, position, setPosition, state }: VirtualTableProp) => {
     
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
@@ -62,8 +60,8 @@ const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
     }, [itemHeight])
 
     useEffect(() => {
-        positionRef.current = state.position
-    }, [state.position])
+        positionRef.current = position
+    }, [position])
 
     useEffect(() => {
         itemsDisplayCountRef.current = itemsDisplayCount
@@ -87,32 +85,32 @@ const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
         console.log("onKeyDown", e)
         switch (e.code) {
             case "ArrowDown":
-                setPosition(state.position + 1)
+                setCheckedPosition(position + 1)
                 e.preventDefault()
                 e.stopPropagation()
                 break
             case "ArrowUp":
-                setPosition(state.position - 1)
+                setCheckedPosition(position - 1)
                 e.preventDefault()
                 e.stopPropagation()
                 break
             case "PageDown":
-                setPosition(state.position + itemsDisplayCount - 1)
+                setCheckedPosition(position + itemsDisplayCount - 1)
                 e.preventDefault()
                 e.stopPropagation()
                 break
             case "PageUp":
-                setPosition(state.position -  itemsDisplayCount + 1)
+                setCheckedPosition(position -  itemsDisplayCount + 1)
                 e.preventDefault()
                 e.stopPropagation()
                 break
             case "End":
-                setPosition(state.items.length - 1)
+                setCheckedPosition(state.items.length - 1)
                 e.preventDefault()
                 e.stopPropagation()
                 break
             case "Home":
-                setPosition(0)
+                setCheckedPosition(0)
                 e.preventDefault()
                 e.stopPropagation()
                 break
@@ -125,14 +123,14 @@ const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
     const scrollIntoViewTop = (newPos: number) => 
         setStartOffset(newPos)
 
-    const setPosition = (pos: number) => {
+    const setCheckedPosition = (pos: number) => {
         var newPos = Math.max(Math.min(state.items.length - 1, pos), 0)
         console.log("newPos", newPos)
         if (newPos > startOffset + itemsDisplayCount - 2)
             scrollIntoViewBottom(newPos)
         else if (newPos < startOffset)
             scrollIntoViewTop(newPos)
-        state.setPosition(newPos)
+        setPosition(newPos)
     }
 
     const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => {
@@ -164,7 +162,7 @@ const VirtualTable = ({ state, columns, setColumns }: VirtualTableProp) => {
                 </thead>
                 <tbody>
                 <TableRowsComponent items={state.items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
-                    position={state.position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                    position={position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} />
                 </tbody>
             </table>

@@ -4,12 +4,14 @@ import VirtualTable, { Column, TableRowItem, useVirtualTableState } from './comp
 
 const App = () => {
 
+	const [position, setPosition] = useState(0)
+
 	const virtualTableState = useVirtualTableState()
 
 	const search = (e: ChangeEvent<HTMLInputElement>) => {
 		const num = Number.parseInt(e.target.value)
 		console.log("Num", num)
-		virtualTableState.setPosition(num)
+		setPosition(num)
 	}
 
 	const [columns, setColumns] = useState({
@@ -44,7 +46,7 @@ const App = () => {
 		<div className="App">
 			<input type={'text'} onChange={search} />
 			<div className="tableContainer">
-				<VirtualTable state={virtualTableState} columns={columns} setColumns={setColumns} />
+				<VirtualTable state={virtualTableState} columns={columns} position={position} setPosition={setPosition} />
 			</div>
 		</div>
 	)
