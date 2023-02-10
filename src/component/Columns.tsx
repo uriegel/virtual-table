@@ -99,7 +99,8 @@ export const Columns = ({columns }: ColumnsProps) => {
                 //const widths = getWidths()
                 
                 // TODO Send event to parent
-                // this.dispatchEvent(new CustomEvent('columnwidths', { detail: widths }))
+                // with callback in props
+                // nooo  this.dispatchEvent(new CustomEvent('columnwidths', { detail: widths }))
                 // TODO Save with ID
                 // if (this.saveWidthIdentifier)
                     // localStorage.setItem(this.saveWidthIdentifier, JSON.stringify(widths)) 
