@@ -187,7 +187,6 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 export default VirtualTable
 
 // TODO Sorting with column click:
-// TODO Column is sortable click changes triangle and sends event per callback (sortAscending::before, sortDescending::before)
 // TODO SubColumn extended sort (Extension)
 // TODO Theming
 // TODO setting column widths per columns id

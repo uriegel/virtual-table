@@ -41,7 +41,7 @@ const App = () => {
 		setItems([])		
 		setColumns({
 			columns: [
-				{ name: "Name" },
+				{ name: "Name", isSortable: true },
 				{ name: "Neue Spalte 1" },
 				{ name: "Neue Spalte 2", isSortable: true, isRightAligned: true },
 				{ name: "Neue Spalte 3" }

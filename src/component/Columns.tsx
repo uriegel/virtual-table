@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Column } from '.'
 
 interface ColumnsProps {
@@ -7,7 +7,12 @@ interface ColumnsProps {
 
 export const Columns = ({columns }: ColumnsProps) => {
 
+    const [sortIndex, setSortIndex] = useState(-1)
+    const [sortDescending, setsortDescending] = useState(false)
+
     const draggingReady = useRef(false)
+
+    useEffect(() => setSortIndex(-1), [columns])
 
     const onMouseMove = (e: React.MouseEvent<HTMLTableRowElement>) => {
         const evt = e.nativeEvent
@@ -122,15 +127,28 @@ export const Columns = ({columns }: ColumnsProps) => {
         document.body.style.cursor = 'auto'        
     }
 
-    const getcolumnClass = (col: Column) => 
-        [col.isSortable ? "sortable" : null, col.isRightAligned ? "rightAligned" : null]
-            .filter(n => !!n)
+    const getcolumnClass = (col: Column, index: number) =>
+        [
+            col.isSortable ? "sortable" : null,
+            col.isRightAligned ? "rightAligned" : null,
+            index == sortIndex ? (sortDescending ? "sortDescending" : "sortAscending") : ""
+        ].filter(n => !!n)
             .join(' ')
+    
+    const onColumnClick = (index: number, isSortable?: boolean) => {
+        if (isSortable) {
+            setSortIndex(index)
+            if (index != sortIndex) 
+                setsortDescending(false)
+            else
+                setsortDescending(!sortDescending)
+        }
+    }
 
     return (
         <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
             {
-                columns.map(n => (<th key={n.name} className={getcolumnClass(n)}>{n.name}</th>))
+                columns.map((n, i) => (<th key={n.name} className={getcolumnClass(n, i)} onClick={()=>onColumnClick(i, n.isSortable)}>{n.name}</th>))
             }
         </tr>
     )
