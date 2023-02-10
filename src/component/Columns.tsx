@@ -122,10 +122,15 @@ export const Columns = ({columns }: ColumnsProps) => {
         document.body.style.cursor = 'auto'        
     }
 
+    const getcolumnClass = (col: Column) => 
+        [col.isSortable ? "sortable" : null, col.isRightAligned ? "rightAligned" : null]
+            .filter(n => !!n)
+            .join(' ')
+
     return (
         <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
             {
-                columns.map(n => (<th key={n.name} className={n.isSortable ? "sortable" : ""}>{n.name}</th>))
+                columns.map(n => (<th key={n.name} className={getcolumnClass(n)}>{n.name}</th>))
             }
         </tr>
     )

@@ -22,7 +22,7 @@ const App = () => {
 			columns: [
 				{ name: "Name", isSortable: true },
 				{ name: "Date" },
-				{ name: "Details" }
+				{ name: "Details", isRightAligned: true }
 			],
 			renderRow: ({ index } : TableRowItem) => (
 				<>
@@ -45,7 +45,7 @@ const App = () => {
 			columns: [
 				{ name: "Name" },
 				{ name: "Neue Spalte 1" },
-				{ name: "Neue Spalte 2" },
+				{ name: "Neue Spalte 2", isSortable: true, isRightAligned: true },
 				{ name: "Neue Spalte 3" }
 			],
 			renderRow: ({ index } : TableRowItem) => (

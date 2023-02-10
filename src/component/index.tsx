@@ -8,6 +8,7 @@ import { Columns } from './Columns'
 export interface Column {
     name: string,
     isSortable?: boolean
+    isRightAligned?: boolean
 }
 
 export interface TableColumns {

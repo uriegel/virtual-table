@@ -64,6 +64,10 @@
     background-color: var(--vtc-caption-background-hover-color);
 }
 
+.vtr--tableroot th.rightAligned {
+    text-align: right;
+}
+
 .vtr--scrollbar {
     width: 16px;
     right: 0px;
