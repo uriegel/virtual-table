@@ -21,18 +21,24 @@ export interface TableRowItem {
     index: Number
 }
 
+export interface OnSort {
+    column: number
+    isDescending: boolean
+}
+
 interface VirtualTableProp {
     columns: TableColumns
     position: number
     items: TableRowItem[]
-    setPosition: (pos: number)=>void
+    setPosition: (pos: number) => void
+    onSort: (onSort: OnSort) => void
 }
 
 export type SetFocusHandle = {
     setFocus: () => void;
 };
   
-const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, position, setPosition, items }, ref) => {
+const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, position, setPosition, items, onSort }, ref) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -169,7 +175,7 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
                 <thead ref={tableHead}>
-                    <Columns columns={columns.columns} />
+                    <Columns columns={columns.columns} onSort={onSort} />
                 </thead>
                 <tbody>
                 <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
@@ -186,7 +192,6 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 
 export default VirtualTable
 
-// TODO Sorting with column click:
 // TODO SubColumn extended sort (Extension)
 // TODO Theming
 // TODO setting column widths per columns id

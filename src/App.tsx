@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { Column, SetFocusHandle, TableRowItem } from './component/index'
+import VirtualTable, { Column, OnSort, SetFocusHandle, TableRowItem } from './component/index'
 
 const App = () => {
 
@@ -62,6 +62,8 @@ const App = () => {
 		setFocus.current?.setFocus()
 	}
 
+	const onSort = (sort: OnSort) => console.log("onSort", sort)
+
 	return (
 		<div className="App">
 			<div>
@@ -69,7 +71,7 @@ const App = () => {
 				<button onClick={onItems}>Fill Items</button>
 			</div>
 			<div className="tableContainer">
-				<VirtualTable ref={setFocus} columns={columns} items={items} position={position} setPosition={setPosition} />
+				<VirtualTable ref={setFocus} columns={columns} items={items} position={position} setPosition={setPosition} onSort={onSort} />
 			</div>
 		</div>
 	)

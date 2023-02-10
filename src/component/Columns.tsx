@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Column } from '.'
+import { Column, OnSort } from '.'
 
 interface ColumnsProps {
     columns: Column[]
+    onSort: (onSort: OnSort) => void
 }
 
-export const Columns = ({columns }: ColumnsProps) => {
+export const Columns = ({ columns, onSort }: ColumnsProps) => {
 
     const [sortIndex, setSortIndex] = useState(-1)
-    const [sortDescending, setsortDescending] = useState(false)
+    const [sortDescending, setSortDescending] = useState(false)
 
     const draggingReady = useRef(false)
 
@@ -138,10 +139,11 @@ export const Columns = ({columns }: ColumnsProps) => {
     const onColumnClick = (index: number, isSortable?: boolean) => {
         if (isSortable) {
             setSortIndex(index)
-            if (index != sortIndex) 
-                setsortDescending(false)
-            else
-                setsortDescending(!sortDescending)
+            const isDescending = (index != sortIndex) 
+                ? false
+                : !sortDescending
+            setSortDescending(isDescending)
+            onSort({column: index, isDescending})
         }
     }
 
