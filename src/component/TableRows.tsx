@@ -7,7 +7,7 @@ interface TableRowsProp {
     position: Number
     startOffset: number
     itemsDisplayCount: number
-    renderRow: (props: TableRowItem)=>JSX.Element
+    renderRow: (props: TableRowItem)=>(JSX.Element|string)[]
 }
 
 const getDisplayItems = (startOffset: number, itemsDisplayCount: number, items: TableRowItem[]) => 
@@ -18,7 +18,7 @@ export const TableRows = ({ renderRow, position, items, itemsDisplayCount, start
         {getDisplayItems(startOffset, itemsDisplayCount, items)
             .map(n => (
                 <tr key={n.index.toString()} className={position == n.index ? 'selected' : ''}>
-                    {renderRow(n)} 
+                    {renderRow(n).map((e, i) => <td key={i}>{e}</td>)}
                 </tr>))}
     </>
 )

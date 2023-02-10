@@ -13,8 +13,8 @@ export interface Column {
 
 export interface TableColumns {
     columns: Column[]
-    renderRow: (props: TableRowItem) => JSX.Element
-    measureRow: ()=>JSX.Element
+    renderRow: (props: TableRowItem) => (JSX.Element|string)[]
+    measureRow: ()=>JSX.Element|string
 }
 
 export interface TableRowItem {
@@ -72,7 +72,6 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
     }, [startOffset])
             
     useResizeObserver(tableRoot, e => {
-        console.log("Resize", itemHeightRef.current, tableHead.current?.clientHeight)
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
         tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
         if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
@@ -125,7 +124,6 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 
     const setCheckedPosition = (pos: number) => {
         var newPos = Math.max(Math.min(items.length - 1, pos), 0)
-        console.log("newPos", newPos)
         if (newPos > startOffset + itemsDisplayCount - 2)
             scrollIntoViewBottom(newPos)
         else if (newPos < startOffset)
@@ -166,7 +164,6 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
         }
     }
 
-    console.log("Rendering Virtual Table")
     return (
         <div className="vtr--tableroot" ref={tableRoot} tabIndex={0}
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>

@@ -5,7 +5,7 @@ interface MeasureRowProp {
     setItemHeight: (height: number) => void
     setItemsCount: (c1: number| undefined, c2: number) => void
     tableRoot: RefObject<HTMLDivElement>
-    measureRow: ()=>JSX.Element
+    measureRow: ()=>JSX.Element|string
 }
 
 export const MeasureRow = ({measureRow, setItemHeight, setItemsCount, tableRoot}: MeasureRowProp) => {
@@ -20,7 +20,7 @@ export const MeasureRow = ({measureRow, setItemHeight, setItemsCount, tableRoot}
 
     return (
         <tr ref={tr}>
-            {measureRow()}
+            <td>{measureRow()}</td>
         </tr>
     )
 }

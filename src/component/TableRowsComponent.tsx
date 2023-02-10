@@ -9,8 +9,8 @@ interface TableRowsComponentProps {
     setItemsCount: (c1: number| undefined, c2: number) => void
     tableRoot: RefObject<HTMLDivElement>
     items: TableRowItem[]
-    renderRow: (props: TableRowItem) => JSX.Element
-    measureRow: () => JSX.Element
+    renderRow: (props: TableRowItem) => (JSX.Element|string)[]
+    measureRow: () => JSX.Element|string
     position: Number
     startOffset: number
     itemsDisplayCount: number

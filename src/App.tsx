@@ -11,8 +11,8 @@ const App = () => {
 	
 	const [columns, setColumns] = useState({
 		columns: [] as Column[],
-		renderRow: (r: TableRowItem) => (<></>),
-		measureRow: () => (<></>)
+		renderRow: (r: TableRowItem) => [] as (JSX.Element|string)[],
+		measureRow: () => "" as JSX.Element|string
 	})
 
 	useEffect(() => setFocus.current?.setFocus(), [])
@@ -24,14 +24,12 @@ const App = () => {
 				{ name: "Date" },
 				{ name: "Details", isRightAligned: true }
 			],
-			renderRow: ({ index } : TableRowItem) => (
-				<>
-					<td>{`Der ${index}. Eintrag`}</td>
-					<td>{`Datum ${index}`}</td>
-					<td>{`Der ${index}. Eintrag in der 3. Spalte`}</td>
-				</>
-			),
-			measureRow: () => (<td>{`Measure`}</td>)
+			renderRow: ({ index }: TableRowItem) => [
+				`Der ${index}. Eintrag`,
+				`Datum ${index}`,
+				`Der ${index}. Eintrag in der 3. Spalte`
+			],
+			measureRow: () => `Measure`
 		})
 
 		const items = [...Array(200).keys()].map(n => ({index: n})) as TableRowItem[]
@@ -48,14 +46,12 @@ const App = () => {
 				{ name: "Neue Spalte 2", isSortable: true, isRightAligned: true },
 				{ name: "Neue Spalte 3" }
 			],
-			renderRow: ({ index } : TableRowItem) => (
-				<>
-					<td>{`Der ${index}. Eintrag`}</td>
-					<td>{`Spalte 1 ${index}`}</td>
-					<td>{`Spalte 2 ${index}`}</td>
-					<td>{`Spalte 3 ${index}`}</td>
-				</>
-			),
+			renderRow: ({ index }: TableRowItem) => [
+				`Der ${index}. Eintrag`,
+				`Spalte 1 ${index}`,
+				`Spalte 2 ${index}`,
+				`Spalte 3 ${index}`,
+			],
 			measureRow: () => (<td>{`Measure`}</td>)
 		})
 	}
