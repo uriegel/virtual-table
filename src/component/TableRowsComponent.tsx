@@ -12,7 +12,7 @@ interface TableRowsComponentProps {
     items: TableRowItem[]
     renderRow: (props: TableRowItem) => (JSX.Element|string)[]
     measureRow: () => JSX.Element|string
-    position: Number
+    position: number
     startOffset: number
     itemsDisplayCount: number
 }

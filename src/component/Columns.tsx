@@ -9,11 +9,15 @@ interface ColumnsProps {
 export const Columns = ({ columns, onSort }: ColumnsProps) => {
 
     const [sortIndex, setSortIndex] = useState(-1)
+    const [subColumnSort, setSubColumnSort] = useState(false)
     const [sortDescending, setSortDescending] = useState(false)
 
     const draggingReady = useRef(false)
 
-    useEffect(() => setSortIndex(-1), [columns])
+    useEffect(() => {
+        setSortIndex(-1)
+        setSubColumnSort(false)
+    }, [columns])
 
     const onMouseMove = (e: React.MouseEvent<HTMLTableRowElement>) => {
         const evt = e.nativeEvent
@@ -130,27 +134,38 @@ export const Columns = ({ columns, onSort }: ColumnsProps) => {
 
     const getcolumnClass = (col: Column, index: number) =>
         [
-            col.isSortable ? "sortable" : null,
+            col.isSortable && !col.subColumn ? "sortable" : null,
             col.isRightAligned ? "rightAligned" : null,
             index == sortIndex ? (sortDescending ? "sortDescending" : "sortAscending") : ""
         ].filter(n => !!n)
             .join(' ')
     
-    const onColumnClick = (index: number, isSortable?: boolean) => {
+    const onColumnClick = (index: number, isColumnSort: boolean, isSortable?: boolean, evt?: React.MouseEvent) => {
         if (isSortable) {
             setSortIndex(index)
-            const isDescending = (index != sortIndex) 
+            setSubColumnSort(isColumnSort)
+            const isDescending = (index != sortIndex || subColumnSort != isColumnSort) 
                 ? false
                 : !sortDescending
             setSortDescending(isDescending)
-            onSort({column: index, isDescending})
+            onSort({ column: index, isDescending, isSubColumn: isColumnSort })
+            if (evt) 
+                evt.stopPropagation()
         }
     }
 
     return (
         <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
             {
-                columns.map((n, i) => (<th key={n.name} className={getcolumnClass(n, i)} onClick={()=>onColumnClick(i, n.isSortable)}>{n.name}</th>))
+                columns.map((n, i) => (<th key={n.name} className={getcolumnClass(n, i)} onClick={() => onColumnClick(i, false, n.isSortable)}>
+                    {n.subColumn
+                        ? (<div className="subColumns">
+                            <span className={`subColumnName${n.isSortable && !subColumnSort ? " sortable" : ""}`}>{n.name}</span>
+                            <span className={`${n.isSortable && subColumnSort ? "sortable" : ""}`}
+                                onClick={evt => onColumnClick(i, true, n.isSortable, evt)}>{n.subColumn}</span>
+                        </div>)
+                        : n.name}
+                </th>))
             }
         </tr>
     )

@@ -9,6 +9,7 @@ export interface Column {
     name: string,
     isSortable?: boolean
     isRightAligned?: boolean
+    subColumn?: string
 }
 
 export interface TableColumns {
@@ -18,12 +19,13 @@ export interface TableColumns {
 }
 
 export interface TableRowItem {
-    index: Number
+    index: number
 }
 
 export interface OnSort {
     column: number
     isDescending: boolean
+    isSubColumn: boolean        
 }
 
 interface VirtualTableProp {
@@ -192,7 +194,6 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 
 export default VirtualTable
 
-// TODO SubColumn extended sort (Extension)
 // TODO Theming
 // TODO setting column widths per columns id
 // TODO Event columnsWidthsChanged

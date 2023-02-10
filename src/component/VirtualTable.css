@@ -68,7 +68,7 @@
     background-color: var(--vtc-caption-background-hover-color);
 }
 
-.vtr--tableroot .sortAscending:before {
+.vtr--tableroot .sortAscending .sortable:before, .vtr--tableroot .sortAscending.sortable:before {
     position: relative;
     bottom: 11px;
     border-left: 4px solid transparent;
@@ -78,7 +78,7 @@
     margin-right: 5px;
 }
 
-.vtr--tableroot .sortDescending:before {
+.vtr--tableroot .sortDescending .sortable:before, .vtr--tableroot .sortDescending.sortable:before {
     position: relative;
     top: 10px;
     border-left: 4px solid transparent;
@@ -90,6 +90,14 @@
 
 .vtr--tableroot th.rightAligned {
     text-align: right;
+}
+
+.vtr--tableroot th .subColumns {
+    display: flex;
+}
+
+.vtr--tableroot th .subColumnName {
+    flex-grow: 1;
 }
 
 .vtr--scrollbar {

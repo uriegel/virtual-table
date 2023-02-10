@@ -4,7 +4,7 @@ import { Column, TableRowItem } from './index'
 
 interface TableRowsProp {
     items: TableRowItem[]
-    position: Number
+    position: number
     startOffset: number
     itemsDisplayCount: number
     renderRow: (props: TableRowItem) => (JSX.Element | string)[]
@@ -18,7 +18,7 @@ export const TableRows = ({ renderRow, position, items, itemsDisplayCount, start
     <>
         {getDisplayItems(startOffset, itemsDisplayCount, items)
             .map(n => (
-                <tr key={n.index.toString()} className={position == n.index ? 'selected' : ''}>
+                <tr key={n.index} className={position == n.index ? 'selected' : ''}>
                     {renderRow(n).map((e, i) => <td className={columns[i].isRightAligned ? "rightAligned" : ""} key={i}>{e}</td>)}
                 </tr>))}
     </>
