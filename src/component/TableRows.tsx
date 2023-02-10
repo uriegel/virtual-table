@@ -10,12 +10,12 @@ interface TableRowsProp {
     renderRow: (props: TableRowItem)=>JSX.Element
 }
 
-const getDisplayItems = (position: Number, startOffset: number, itemsDisplayCount: number, items: TableRowItem[]) => 
+const getDisplayItems = (startOffset: number, itemsDisplayCount: number, items: TableRowItem[]) => 
     R.slice(startOffset, itemsDisplayCount + startOffset, items)
 
 export const TableRows = ({ renderRow, position, items, itemsDisplayCount, startOffset  }: TableRowsProp) => (
     <>
-        {getDisplayItems(position, startOffset, itemsDisplayCount, items)
+        {getDisplayItems(startOffset, itemsDisplayCount, items)
             .map(n => (
                 <tr key={n.index.toString()} className={position == n.index ? 'selected' : ''}>
                     {renderRow(n)} 
