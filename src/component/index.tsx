@@ -127,8 +127,8 @@ const VirtualTable = ({ columns, position, setPosition, items }: VirtualTablePro
         return count
     }
 
-    const onWheel = (revt: React.WheelEvent) => {
-		const evt = revt.nativeEvent
+    const onWheel = (sevt: React.WheelEvent) => {
+		const evt = sevt.nativeEvent
 		if (items.length > itemsDisplayCount) {
 			var delta = evt.deltaY / Math.abs(evt.deltaY) * 3
 			let newPos = startOffset + delta
@@ -140,10 +140,24 @@ const VirtualTable = ({ columns, position, setPosition, items }: VirtualTablePro
 		}        
 	}			
 
+    function onTableMouseDown(sevt: React.MouseEvent) {
+        const element = sevt.target as HTMLElement
+        const tr = element?.closest("tbody tr") as HTMLElement
+        if (tr) {
+            const currentIndex = 
+                Array
+                    .from(tr!.parentElement!.children)
+                    .findIndex(n => n == tr)
+                + startOffset
+            if (currentIndex != -1) 
+                setCheckedPosition(currentIndex)
+        }
+    }
+
     console.log("Rendering Virtual Table")
     return (
         <div className="vtr--tableroot" ref={tableRoot} tabIndex={0}
-                onKeyDown={onKeyDown} onWheel={onWheel}>
+                onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
                 <thead ref={tableHead}>
                     <Columns columns={columns.columns} />
@@ -163,9 +177,10 @@ const VirtualTable = ({ columns, position, setPosition, items }: VirtualTablePro
 
 export default VirtualTable
 
-// TODO set current pos with mouse 
+// TODO Focus Table View
 // TODO Sorting with column click
 // TODO Theming
 // TODO setting column widths per columns id
+// TODO Event columnsWidthsChanged
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
 // TODO Set Row class (selected item, hidden item, exif date)
