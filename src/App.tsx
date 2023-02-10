@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { Column, TableRowItem } from './component/index'
+import VirtualTable, { Column, SetFocusHandle, TableRowItem } from './component/index'
 
 const App = () => {
+
+	const setFocus = useRef<SetFocusHandle>(null)
 
 	const [position, setPosition] = useState(0)
 	const [items, setItems] = useState([] as TableRowItem[])
@@ -12,6 +14,8 @@ const App = () => {
 		renderRow: (r: TableRowItem) => (<></>),
 		measureRow: () => (<></>)
 	})
+
+	useEffect(() => setFocus.current?.setFocus(), [])
 	
 	useEffect(() => {
 		setColumns({
@@ -35,6 +39,7 @@ const App = () => {
 	}, [setColumns, setItems])
 	
 	function changeColumns() {
+		setPosition(0)
 		setItems([])		
 		setColumns({
 			columns: [
@@ -58,6 +63,7 @@ const App = () => {
 	function onItems() {
 		const items = [...Array(2000).keys()].map(n => ({index: n})) as TableRowItem[]
 		setItems(items)
+		setFocus.current?.setFocus()
 	}
 
 	return (
@@ -67,7 +73,7 @@ const App = () => {
 				<button onClick={onItems}>Fill Items</button>
 			</div>
 			<div className="tableContainer">
-				<VirtualTable columns={columns} items={items} position={position} setPosition={setPosition} />
+				<VirtualTable ref={setFocus} columns={columns} items={items} position={position} setPosition={setPosition} />
 			</div>
 		</div>
 	)

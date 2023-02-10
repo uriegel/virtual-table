@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, KeyboardEvent, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import './VirtualTable.css'
 import useResizeObserver from '@react-hook/resize-observer'
 import { TableRowsComponent } from './TableRowsComponent'
@@ -26,8 +26,18 @@ interface VirtualTableProp {
     setPosition: (pos: number)=>void
 }
 
-const VirtualTable = ({ columns, position, setPosition, items }: VirtualTableProp) => {
+export type SetFocusHandle = {
+    setFocus: () => void;
+};
+  
+const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, position, setPosition, items }, ref) => {
     
+    useImperativeHandle(ref, () => ({
+        setFocus() {
+            tableRoot.current?.focus()
+        },
+    }))
+
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
 
@@ -173,11 +183,10 @@ const VirtualTable = ({ columns, position, setPosition, items }: VirtualTablePro
                 setScrollPosition={setStartOffset} />
         </div>
     )
-}
+})
 
 export default VirtualTable
 
-// TODO Focus Table View
 // TODO Sorting with column click
 // TODO Theming
 // TODO setting column widths per columns id
