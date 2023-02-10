@@ -85,7 +85,7 @@ export const Scrollbar = ({ count, displayCount, headerHeight, scrollbarHeight,
             className={`vtr--scrollbar ${count < displayCount ? 'hidden' : ''}`}
             style={{ top: `${headerHeight}px`, height: `calc(100% - ${headerHeight}px)` }}
             onMouseDown={onPageMouseDown} >
-            <div className={"vtr--scrollbar-grid"}
+            <div className={"grip"}
                 style={{ top: `${scrollbarGripTop}px`, height: `${gripHeight}px` }}
                 onMouseDown={onGripDown}>
             </div>

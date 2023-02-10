@@ -18,7 +18,7 @@ export const TableRows = ({ renderRow, position, items, itemsDisplayCount, start
     <>
         {getDisplayItems(startOffset, itemsDisplayCount, items)
             .map(n => (
-                <tr key={n.index} className={position == n.index ? 'selected' : ''}>
+                <tr key={n.index} className={position == n.index ? 'isCurrent' : ''}>
                     {renderRow(n).map((e, i) => <td className={columns[i].isRightAligned ? "rightAligned" : ""} key={i}>{e}</td>)}
                 </tr>))}
     </>

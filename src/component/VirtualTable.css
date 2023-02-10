@@ -1,12 +1,25 @@
 :root {
+    --vtr-background-color: white;
+    --vtr-color: black;
+    --vtr-current-color:lightgray;
+    --vtr-current-focus-color: red;
+    --vtr-font-size: 100%;
+    --vtr-selected-background-color: blue;
+    --vtr-scrollbar-width: 12px;
+    --vtr-scrollbar-right-margin: 6px;
+    --vtr-scrollbar-grip-radius: 999px;
+    --vtr-scrollbar-grip-width: 4px;
+    --vtr-scrollbar-grip-right: 1px;
+    --vtr-scrollbar-grip-color: gray;
+    --vtr-scrollbar-grip-active-color: var(--vtr-selected-background-color);
     --vtr-caption-color: white;
     --vtr-caption-background-color: blue;
-    --vtc-caption-background-hover-color: #0063ff;
+    --vtr-caption-background-hover-color: #0063ff;
     --vtr-caption-separator-color: white;
 }
 
 .vtr--tableroot {
-    background-color: white;
+    background-color: var(--vtr-background-color);
     position: absolute;
     width: 100%;
     height: 100%;
@@ -15,9 +28,18 @@
     overflow: hidden;
     user-select: none;
 }
-.vtr--tableroot tr.selected {
-    background-color: burlywood;
+
+.vtr--tableroot tr.isCurrent {
+    outline-color: var(--vtr-current-color);
+    outline-width: 1px;
+    outline-style: solid;
+    outline-offset: -1px;    
 }
+
+.vtr--tableroot:focus tr.isCurrent {
+    outline-color: var(--vtr-current-focus-color);
+}
+
 .vtr--tableroot:focus {
     outline: none;
 }
@@ -34,6 +56,8 @@
     border-spacing: 0px;
     table-layout: fixed;
     width: 100%;
+    color: var(--vtr-color);
+    font-size: var(--vtr-font-size);
 }
 
 .vtr--tableroot thead {
@@ -100,12 +124,29 @@
     flex-grow: 1;
 }
 
+.vtr--tableroot tr td { 
+    padding-left: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: none;
+    transition: padding-right .4s;
+}
+
+.vtr--tableroot tr td:first-child {
+    padding-left: 1px;
+}
+
+.vtr--tableroot.scrollbarActive tr td:last-child {
+    padding-right: calc(3px + var(--vtr-scrollbar-right-margin));
+}
+
 .vtr--scrollbar {
-    width: 16px;
+    width: var(--vtr-scrollbar-width);
     right: 0px;
     position: absolute;
     overflow: hidden;
-    background-color: rgba(132, 175, 15, 0.445);
+    background-color: transparent;
     outline-width: 0px;
     outline-style: none;    
     user-select: none;
@@ -121,8 +162,21 @@
     opacity: 0;
 }
 
-.vtr--scrollbar-grid {
+.vtr--scrollbar .grip {
     position: absolute;
     width: 16px;
-    background-color: blue;
+    border-radius: var(--vtr-scrollbar-grip-radius);
+    background-color: var(--vtr-scrollbar-grip-color);
+    width: var(--vtr-scrollbar-grip-width);
+    right: var(--vtr-scrollbar-grip-right);
+    transition: background-color 0.5s, width 0.5s;    
+}
+
+.vtr--scrollbar .grip:active {
+    background-color: var(--vtr-scrollbar-grip-active-color);
+    transition: background-color 0s;
+}
+
+.vtr--scrollbar:hover .grip {
+    width: calc(100% - var(--vtr-scrollbar-grip-right));
 }

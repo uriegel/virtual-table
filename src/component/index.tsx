@@ -173,7 +173,8 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
     }
 
     return (
-        <div className="vtr--tableroot" ref={tableRoot} tabIndex={0}
+        <div className={`vtr--tableroot ${items.length >= itemsDisplayCount ? 'scrollbarActive' : ''}`}
+                ref={tableRoot} tabIndex={0}
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
                 <thead ref={tableHead}>
@@ -194,7 +195,7 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 
 export default VirtualTable
 
-// TODO Theming
+// TODO TableViewProp with selecteed
 // TODO setting column widths per columns id
 // TODO Event columnsWidthsChanged
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
