@@ -174,7 +174,7 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
                 <tbody>
                 <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
                     position={position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
-                    startOffset={startOffset} tableRoot={tableRoot} />
+                    startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
                 </tbody>
             </table>
             <Scrollbar count={items.length} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}
@@ -186,10 +186,9 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 
 export default VirtualTable
 
-// TODO Right aligned column (with content)
 // TODO Sorting with column click:
 // TODO Column is sortable click changes triangle and sends event per callback (sortAscending::before, sortDescending::before)
-// TODO Column extended sort (Extension)
+// TODO SubColumn extended sort (Extension)
 // TODO Theming
 // TODO setting column widths per columns id
 // TODO Event columnsWidthsChanged
