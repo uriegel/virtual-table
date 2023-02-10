@@ -1,3 +1,10 @@
+:root {
+    --vtr-caption-color: white;
+    --vtr-caption-background-color: blue;
+    --vtc-caption-background-hover-color: #0063ff;
+    --vtr-caption-separator-color: white;
+}
+
 .vtr--tableroot {
     background-color: white;
     position: absolute;
@@ -26,14 +33,35 @@
 }
 
 .vtr--tableroot thead {
-    background-color: rgb(153, 153, 250);
-    color: white;
+    color: var(--vtr-caption-color);
+    background-color: var(--vtr-caption-background-color);
 }
 
 .vtr--tableroot th {
+    text-overflow: ellipsis;
+    user-select: none;
+    text-align: left;
+    font-weight: normal;
     border-left-style: solid;
     border-left-width: 1px;
-    border-left-color: gray;
+    border-left-color: var(--vtr-caption-separator-color);
+    padding-left: 5px;
+    padding-right: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-user-select: none;
+}
+
+.vtr--tableroot th:first-child {
+    border-left-width: 0px;
+}
+
+.vtr--tableroot th.sortable {
+    transition: background-color 0.3s;
+}
+
+.vtr--tableroot th.sortable:hover {
+    background-color: var(--vtc-caption-background-hover-color);
 }
 
 .vtr--scrollbar {

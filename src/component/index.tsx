@@ -6,7 +6,8 @@ import { Scrollbar } from './Scrollbar'
 import { Columns } from './Columns'
 
 export interface Column {
-    name: string
+    name: string,
+    isSortable?: boolean
 }
 
 export interface TableColumns {
@@ -187,8 +188,10 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 
 export default VirtualTable
 
+// TODO Right aligned column (with content)
 // TODO Sorting with column click:
-// TODO Colum is sortable click changes triangle and sends event per callback
+// TODO Column is sortable click changes triangle and sends event per callback (sortAscending::before, sortDescending::before)
+// TODO Column extended sort (Extension)
 // TODO Theming
 // TODO setting column widths per columns id
 // TODO Event columnsWidthsChanged

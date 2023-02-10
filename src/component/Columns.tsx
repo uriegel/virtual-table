@@ -125,7 +125,7 @@ export const Columns = ({columns }: ColumnsProps) => {
     return (
         <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
             {
-                columns.map(n => (<th key={n.name}>{n.name}</th>))
+                columns.map(n => (<th key={n.name} className={n.isSortable ? "sortable" : ""}>{n.name}</th>))
             }
         </tr>
     )

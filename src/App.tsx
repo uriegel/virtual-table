@@ -20,7 +20,7 @@ const App = () => {
 	useEffect(() => {
 		setColumns({
 			columns: [
-				{ name: "Name" },
+				{ name: "Name", isSortable: true },
 				{ name: "Date" },
 				{ name: "Details" }
 			],
