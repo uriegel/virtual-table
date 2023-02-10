@@ -203,6 +203,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ columns
 export default VirtualTable
 
 // TODO column withs always in render
+// TODO in index.tsx set columns and column widths at the same time 
 // TODO setting column widths per columns id
 // TODO deleting localstorage widths
 // TODO Event columnsWidthsChanged
