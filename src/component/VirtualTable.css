@@ -4,6 +4,7 @@
     --vtr-current-color:lightgray;
     --vtr-current-focus-color: red;
     --vtr-font-size: 100%;
+    --vtr-selected-color: white;
     --vtr-selected-background-color: blue;
     --vtr-scrollbar-width: 12px;
     --vtr-scrollbar-right-margin: 6px;
@@ -34,6 +35,11 @@
     outline-width: 1px;
     outline-style: solid;
     outline-offset: -1px;    
+}
+
+.vtr--tableroot tr.isSelected {
+    background-color: var(--vtr-selected-background-color);
+    color: var(--vtr-selected-color);
 }
 
 .vtr--tableroot:focus tr.isCurrent {

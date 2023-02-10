@@ -10,6 +10,7 @@ export interface Column {
     isSortable?: boolean
     isRightAligned?: boolean
     subColumn?: string
+    width?: number
 }
 
 export interface TableColumns {
@@ -20,6 +21,7 @@ export interface TableColumns {
 
 export interface TableRowItem {
     index: number
+    isSelected?: boolean
 }
 
 export interface OnSort {
@@ -34,18 +36,23 @@ interface VirtualTableProp {
     items: TableRowItem[]
     setPosition: (pos: number) => void
     onSort: (onSort: OnSort) => void
+    setWidths?: (widths: number[])=>void
 }
 
-export type SetFocusHandle = {
+export type VirtualTableHandle = {
     setFocus: () => void;
+    setPosition: (pos: number) => void
 };
   
-const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, position, setPosition, items, onSort }, ref) => {
+const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ columns, position, setPosition, items, onSort, setWidths }, ref) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
             tableRoot.current?.focus()
         },
+        setPosition(pos: number) {
+            setCheckedPosition(pos)
+        }
     }))
 
     const tableRoot = useRef<HTMLDivElement>(null)
@@ -178,7 +185,7 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
                 <thead ref={tableHead}>
-                    <Columns columns={columns.columns} onSort={onSort} />
+                    <Columns columns={columns.columns} onSort={onSort} setWidths={setWidths} />
                 </thead>
                 <tbody>
                 <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
@@ -195,8 +202,8 @@ const VirtualTable = forwardRef<SetFocusHandle, VirtualTableProp>(({ columns, po
 
 export default VirtualTable
 
-// TODO TableViewProp with selecteed
+// TODO column withs always in render
 // TODO setting column widths per columns id
+// TODO deleting localstorage widths
 // TODO Event columnsWidthsChanged
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
-// TODO Set Row class (selected item, hidden item, exif date)

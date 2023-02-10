@@ -4,9 +4,10 @@ import { Column, OnSort } from '.'
 interface ColumnsProps {
     columns: Column[]
     onSort: (onSort: OnSort) => void
+    setWidths?: (widths: number[])=>void
 }
 
-export const Columns = ({ columns, onSort }: ColumnsProps) => {
+export const Columns = ({ columns, onSort, setWidths }: ColumnsProps) => {
 
     const [sortIndex, setSortIndex] = useState(-1)
     const [subColumnSort, setSubColumnSort] = useState(false)
@@ -93,29 +94,20 @@ export const Columns = ({ columns, onSort }: ColumnsProps) => {
             }
 
             const onup = (evt: MouseEvent) => {
-                // const getWidths = () => {
-                //     const ths = Array.from(targetColumn!.parentElement!.children) as HTMLElement[]
-                //      return ths.map(th => 
-                //          th.style.width 
-                //             ? parseFloat(th.style.width.substring(0, th.style.width.length - 1))
-                //             : 100 / columns.length
-                //      )
-                // }
+                const getWidths = () => {
+                    const ths = Array.from(targetColumn!.parentElement!.children) as HTMLElement[]
+                    return ths.map(th => 
+                        th.style.width 
+                            ? parseFloat(th.style.width.substring(0, th.style.width.length - 1))
+                            : 100 / columns.length
+                    )
+                }
 
                 window.removeEventListener('mousemove', onmove)
                 window.removeEventListener('mouseup', onup)
                 document.body.style.cursor = 'auto'
-                
-                //const widths = getWidths()
-                
-                // TODO Send event to parent
-                // with callback in props
-                // nooo  this.dispatchEvent(new CustomEvent('columnwidths', { detail: widths }))
-                // TODO Save with ID
-                // if (this.saveWidthIdentifier)
-                    // localStorage.setItem(this.saveWidthIdentifier, JSON.stringify(widths)) 
-                // TOD SetFocus
-                //this.setFocus()
+                if (setWidths)
+                    setWidths(getWidths())
                 evt.preventDefault()
                 evt.stopPropagation()
             }

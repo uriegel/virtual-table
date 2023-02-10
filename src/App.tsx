@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, KeyboardEvent, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { Column, OnSort, SetFocusHandle, TableRowItem } from './component/index'
+import VirtualTable, { Column, OnSort, VirtualTableHandle, TableRowItem } from './component/index'
 
 const App = () => {
 
-	const setFocus = useRef<SetFocusHandle>(null)
+	const virtualTable = useRef<VirtualTableHandle>(null)
 
 	const [position, setPosition] = useState(0)
 	const [items, setItems] = useState([] as TableRowItem[])
@@ -15,7 +15,7 @@ const App = () => {
 		measureRow: () => "" as JSX.Element|string
 	})
 
-	useEffect(() => setFocus.current?.setFocus(), [])
+	useEffect(() => virtualTable.current?.setFocus(), [])
 	
 	useEffect(() => {
 		setColumns({
@@ -39,12 +39,14 @@ const App = () => {
 	function changeColumns() {
 		setPosition(0)
 		setItems([])		
+		const widths = JSON.parse(localStorage.getItem("widrths") ?? "[]") as number[]
+		console.log("witdhs",widths)
 		setColumns({
 			columns: [
-				{ name: "Name", isSortable: true },
-				{ name: "Neue Spalte 1" },
-				{ name: "Neue Spalte 2", isSortable: true, isRightAligned: true },
-				{ name: "Neue Spalte 3" }
+				{ name: "Name", isSortable: true, width: widths.length == 4 ? widths[0] : undefined },
+				{ name: "Neue Spalte 1", width: widths.length == 4 ? widths[1] : undefined },
+				{ name: "Neue Spalte 2", isSortable: true, isRightAligned: true, width: widths.length == 4 ? widths[2] : undefined },
+				{ name: "Neue Spalte 3", width: widths.length == 4 ? widths[3] : undefined }
 			],
 			renderRow: ({ index }: TableRowItem) => [
 				`Der ${index}. Eintrag`,
@@ -59,19 +61,41 @@ const App = () => {
 	function onItems() {
 		const items = [...Array(2000).keys()].map(n => ({index: n})) as TableRowItem[]
 		setItems(items)
-		setFocus.current?.setFocus()
+		virtualTable.current?.setFocus()
 	}
 
 	const onSort = (sort: OnSort) => console.log("onSort", sort)
 
+	const toggleSelection = (item: TableRowItem) => {
+		item.isSelected = !item.isSelected
+		return item
+	}
+
+	const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+		switch (e.code) {
+			case "Insert":
+				setItems(items.map((n, i) => i != position ? n : toggleSelection(n)))
+				virtualTable.current?.setPosition(position + 1)
+                e.preventDefault()
+                e.stopPropagation()
+				break
+		}
+	}
+
+	const setWidths = (widths: number[]) => {
+		if (widths.length == 4)
+			localStorage.setItem("widths", JSON.stringify(widths))
+	} 
+
 	return (
-		<div className="App">
+		<div className="App" onKeyDown={onKeyDown}>
 			<div>
 				<button onClick={changeColumns}>Change Columns</button>
 				<button onClick={onItems}>Fill Items</button>
 			</div>
 			<div className="tableContainer">
-				<VirtualTable ref={setFocus} columns={columns} items={items} position={position} setPosition={setPosition} onSort={onSort} />
+				<VirtualTable ref={virtualTable} columns={columns} items={items} position={position}
+					setPosition={setPosition} onSort={onSort} setWidths={setWidths} />
 			</div>
 		</div>
 	)
