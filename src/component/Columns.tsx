@@ -4,13 +4,11 @@ import { Column, OnSort } from '.'
 interface ColumnsProps {
     columns: Column[]
     columnWidths: number[]
-    //setColumnWidths: (widths: number[])=>void
+    setColumnWidths: (widths: number[])=>void
     onSort: (onSort: OnSort) => void
-    
-    setWidths?: (widths: number[]) => void
 }
 
-export const Columns = ({ columns, onSort, columnWidths, setWidths }: ColumnsProps) => {
+export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: ColumnsProps) => {
 
     const [sortIndex, setSortIndex] = useState(-1)
     const [subColumnSort, setSubColumnSort] = useState(false)
@@ -109,8 +107,7 @@ export const Columns = ({ columns, onSort, columnWidths, setWidths }: ColumnsPro
                 window.removeEventListener('mousemove', onmove)
                 window.removeEventListener('mouseup', onup)
                 document.body.style.cursor = 'auto'
-                if (setWidths)
-                    setWidths(getWidths())
+                    setColumnWidths(getWidths())
                 evt.preventDefault()
                 evt.stopPropagation()
             }

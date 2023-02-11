@@ -35,7 +35,7 @@ interface VirtualTableProp {
     items: TableRowItem[]
     setPosition: (pos: number) => void
     onSort: (onSort: OnSort) => void
-    setWidths?: (widths: number[])=>void
+    onColumnWidths?: (widths: number[])=>void
 }
 
 export type VirtualTableHandle = {
@@ -44,7 +44,7 @@ export type VirtualTableHandle = {
     setColumns: (columns: TableColumns)=>void
 };
   
-const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ position, setPosition, items, onSort, setWidths }, ref) => {
+const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ position, setPosition, items, onSort, onColumnWidths }, ref) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -98,6 +98,11 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
     useEffect(() => {
         startOffsetRef.current = startOffset
     }, [startOffset])
+
+    useEffect(() => {
+        if (onColumnWidths)
+            onColumnWidths(columnWidths)
+    }, [columnWidths, onColumnWidths])
             
     useResizeObserver(tableRoot, e => {
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
@@ -198,7 +203,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
                 <thead ref={tableHead}>
-                    <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setWidths={setWidths} />
+                    <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setColumnWidths={setColumnWidths} />
                 </thead>
                 <tbody>
                 <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
@@ -215,9 +220,6 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
 
 export default VirtualTable
 
-// TODO column withs always in render
-// TODO in index.tsx set columns and column widths at the same time 
-// TODO setting column widths per columns id
 // TODO deleting localstorage widths
-// TODO Event columnsWidthsChanged
+// TODO position state to table
 // TODO Scrollbar pageup, pagedown must stop when reaching grip

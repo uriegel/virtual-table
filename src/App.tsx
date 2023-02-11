@@ -88,7 +88,7 @@ const App = () => {
 			</div>
 			<div className="tableContainer">
 				<VirtualTable ref={virtualTable} items={items} position={position}
-					setPosition={setPosition} onSort={onSort} setWidths={setWidths} />
+					setPosition={setPosition} onSort={onSort} onColumnWidths={setWidths} />
 			</div>
 		</div>
 	)
