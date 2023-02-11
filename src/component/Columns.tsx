@@ -5,7 +5,7 @@ interface ColumnsProps {
     columns: Column[]
     columnWidths: number[]
     setColumnWidths: (widths: number[])=>void
-    onSort: (onSort: OnSort) => void
+    onSort?: (onSort: OnSort) => void
 }
 
 export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: ColumnsProps) => {
@@ -15,6 +15,7 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
     const [sortDescending, setSortDescending] = useState(false)
     
     const draggingReady = useRef(false)
+    const dragging = useRef(false)
 
     useEffect(() => {
         setSortIndex(-1)
@@ -44,6 +45,7 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
     const onMouseDown = (e: React.MouseEvent<HTMLTableRowElement>) => {
         const evt = e.nativeEvent
         if (draggingReady.current) {
+            dragging.current = true
             const th = evt.target as HTMLElement
             const mouseX = evt.offsetX + th.clientLeft
             const dragleft = mouseX < 3
@@ -95,6 +97,9 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
             }
 
             const onup = (evt: MouseEvent) => {
+                
+                const preventClickOnResetting = () => setTimeout(() => dragging.current = false)
+                
                 const getWidths = () => {
                     const ths = Array.from(targetColumn!.parentElement!.children) as HTMLElement[]
                     return ths.map(th => 
@@ -107,7 +112,8 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
                 window.removeEventListener('mousemove', onmove)
                 window.removeEventListener('mouseup', onup)
                 document.body.style.cursor = 'auto'
-                    setColumnWidths(getWidths())
+                setColumnWidths(getWidths())
+                preventClickOnResetting()
                 evt.preventDefault()
                 evt.stopPropagation()
             }
@@ -133,14 +139,15 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
             .join(' ')
     
     const onColumnClick = (index: number, isColumnSort: boolean, isSortable?: boolean, evt?: React.MouseEvent) => {
-        if (isSortable) {
+        if (isSortable && !dragging.current) {
             setSortIndex(index)
             setSubColumnSort(isColumnSort)
             const isDescending = (index != sortIndex || subColumnSort != isColumnSort) 
                 ? false
                 : !sortDescending
             setSortDescending(isDescending)
-            onSort({ column: index, isDescending, isSubColumn: isColumnSort })
+            if (onSort)
+                onSort({ column: index, isDescending, isSubColumn: isColumnSort })
             if (evt) 
                 evt.stopPropagation()
         }

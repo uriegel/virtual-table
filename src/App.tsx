@@ -1,18 +1,17 @@
 import React, { useEffect, KeyboardEvent, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem } from './component/index'
+import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem, createEmptyHandle } from './component/index'
 
 const App = () => {
 
-	const virtualTable = useRef<VirtualTableHandle>(null)
+	const virtualTable = useRef<VirtualTableHandle>(createEmptyHandle())
 
-	const [position, setPosition] = useState(0)
 	const [items, setItems] = useState([] as TableRowItem[])
 	
-	useEffect(() => virtualTable.current?.setFocus(), [])
+	useEffect(() => virtualTable.current.setFocus(), [])
 	
 	useEffect(() => {
-		virtualTable.current?.setColumns({
+		virtualTable.current.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, subColumn: "Ext." },
 				{ name: "Date" },
@@ -34,7 +33,7 @@ const App = () => {
 		setItems([])		
 		const widths = JSON.parse(localStorage.getItem("widths") ?? "[]") as number[]
 		console.log("witdhs",widths)
-		virtualTable.current?.setColumns({
+		virtualTable.current.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, width: widths.length == 4 ? widths[0] : undefined },
 				{ name: "Neue Spalte 1", width: widths.length == 4 ? widths[1] : undefined },
@@ -54,7 +53,7 @@ const App = () => {
 	function onItems() {
 		const items = [...Array(2000).keys()].map(n => ({index: n})) as TableRowItem[]
 		setItems(items)
-		virtualTable.current?.setFocus()
+		virtualTable.current.setFocus()
 	}
 
 	const onSort = (sort: OnSort) => console.log("onSort", sort)
@@ -65,10 +64,11 @@ const App = () => {
 	}
 
 	const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+		// console.log("onKeyDown", e)		        
 		switch (e.code) {
 			case "Insert":
-				setItems(items.map((n, i) => i != position ? n : toggleSelection(n)))
-				virtualTable.current?.setPosition(position + 1)
+				setItems(items.map((n, i) => i != virtualTable.current.getPosition() ? n : toggleSelection(n)))
+				virtualTable.current?.setPosition(virtualTable.current.getPosition() + 1)
                 e.preventDefault()
                 e.stopPropagation()
 				break
@@ -87,8 +87,7 @@ const App = () => {
 				<button onClick={onItems}>Fill Items</button>
 			</div>
 			<div className="tableContainer">
-				<VirtualTable ref={virtualTable} items={items} position={position}
-					setPosition={setPosition} onSort={onSort} onColumnWidths={setWidths} />
+				<VirtualTable ref={virtualTable} items={items} onSort={onSort} onColumnWidths={setWidths} />
 			</div>
 		</div>
 	)

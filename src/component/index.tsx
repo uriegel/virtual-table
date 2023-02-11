@@ -31,20 +31,27 @@ export interface OnSort {
 }
 
 interface VirtualTableProp {
-    position: number
     items: TableRowItem[]
-    setPosition: (pos: number) => void
-    onSort: (onSort: OnSort) => void
+    onPosition?: (position: number)=>void
+    onSort?: (onSort: OnSort) => void
     onColumnWidths?: (widths: number[])=>void
 }
 
 export type VirtualTableHandle = {
-    setFocus: () => void;
-    setPosition: (pos: number) => void
+    setFocus: ()=>void
     setColumns: (columns: TableColumns)=>void
-};
+    setPosition: (pos: number)=>void
+    getPosition: ()=>number
+}
+
+export const createEmptyHandle = () => ({
+    setFocus: () => { },
+    setColumns: (columns: TableColumns)=>{},
+    setPosition: (pos: number) => { },
+    getPosition: ()=>0
+})
   
-const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ position, setPosition, items, onSort, onColumnWidths }, ref) => {
+const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, onPosition, onSort, onColumnWidths }, ref) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -59,12 +66,17 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
             setColumnWidths(columns.columns.find(n => n.width == undefined)
                 ? [...Array(columns.columns.length).keys()].map(n => 100 / columns.columns.length)
                 : columns.columns.map(n => n.width!))
+        },
+        getPosition() {
+            return position
         }
+
     }))
 
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
 
+	const [position, setPosition] = useState(0)
     const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
@@ -77,7 +89,6 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
     
     const itemHeightRef = useRef(0)
     const itemsDisplayCountRef = useRef(0)
-    const positionRef = useRef(0)
     const startOffsetRef = useRef(0)
     const tableHeight = useRef(0)
 
@@ -88,7 +99,8 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
     }, [itemHeight])
 
     useEffect(() => {
-        positionRef.current = position
+        if (onPosition)
+            onPosition(position)
     }, [position])
 
     useEffect(() => {
@@ -107,14 +119,13 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
     useResizeObserver(tableRoot, e => {
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
         tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
-        if (positionRef.current - startOffsetRef.current > itemsDisplayCountRef.current - 2)
-            setStartOffset(Math.max(0, positionRef.current - itemsCount + 2))   
+        if (position - startOffsetRef.current > itemsDisplayCountRef.current - 2)
+            setStartOffset(Math.max(0, position - itemsCount + 2))   
         else if (items.length - startOffsetRef.current < itemsCount)
             setStartOffset(Math.max(0, items.length - itemsCount + 1))   
     })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-        console.log("onKeyDown", e)
         switch (e.code) {
             case "ArrowDown":
                 setCheckedPosition(position + 1)
@@ -220,6 +231,4 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
 
 export default VirtualTable
 
-// TODO deleting localstorage widths
-// TODO position state to table
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
