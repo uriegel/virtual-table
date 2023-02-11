@@ -198,7 +198,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ positio
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
                 <thead ref={tableHead}>
-                    <Columns columns={columns.columns} onSort={onSort} setWidths={setWidths} />
+                    <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setWidths={setWidths} />
                 </thead>
                 <tbody>
                 <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}

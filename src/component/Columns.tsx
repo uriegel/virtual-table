@@ -3,11 +3,14 @@ import { Column, OnSort } from '.'
 
 interface ColumnsProps {
     columns: Column[]
+    columnWidths: number[]
+    //setColumnWidths: (widths: number[])=>void
     onSort: (onSort: OnSort) => void
-    setWidths?: (widths: number[])=>void
+    
+    setWidths?: (widths: number[]) => void
 }
 
-export const Columns = ({ columns, onSort, setWidths }: ColumnsProps) => {
+export const Columns = ({ columns, onSort, columnWidths, setWidths }: ColumnsProps) => {
 
     const [sortIndex, setSortIndex] = useState(-1)
     const [subColumnSort, setSubColumnSort] = useState(false)
@@ -149,7 +152,8 @@ export const Columns = ({ columns, onSort, setWidths }: ColumnsProps) => {
     return (
         <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
             {
-                columns.map((n, i) => (<th key={n.name} className={getcolumnClass(n, i)} onClick={() => onColumnClick(i, false, n.isSortable)}>
+                columns.map((n, i) =>
+                (<th key={n.name} style={{ width: `${columnWidths[i]}%` } } className={getcolumnClass(n, i)} onClick={() => onColumnClick(i, false, n.isSortable)}>
                     {n.subColumn
                         ? (<div className="subColumns">
                             <span className={`subColumnName${n.isSortable && !subColumnSort ? " sortable" : ""}`}>{n.name}</span>
