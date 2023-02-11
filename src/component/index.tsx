@@ -31,7 +31,6 @@ export interface OnSort {
 }
 
 interface VirtualTableProp {
-    columns: TableColumns
     position: number
     items: TableRowItem[]
     setPosition: (pos: number) => void
@@ -42,9 +41,10 @@ interface VirtualTableProp {
 export type VirtualTableHandle = {
     setFocus: () => void;
     setPosition: (pos: number) => void
+    setColumns: (columns: TableColumns)=>void
 };
   
-const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ columns, position, setPosition, items, onSort, setWidths }, ref) => {
+const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ position, setPosition, items, onSort, setWidths }, ref) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -52,6 +52,13 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ columns
         },
         setPosition(pos: number) {
             setCheckedPosition(pos)
+        },
+        setColumns(columns: TableColumns) {
+            setPosition(0)
+            setColumns(columns)
+            setColumnWidths(columns.columns.find(n => n.width == undefined)
+                ? [...Array(columns.columns.length).keys()].map(n => 100 / columns.columns.length)
+                : columns.columns.map(n => n.width!))
         }
     }))
 
@@ -61,7 +68,13 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ columns
     const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
-
+	const [columns, setColumns] = useState({
+		columns: [] as Column[],
+		renderRow: (r: TableRowItem) => [] as (JSX.Element|string)[],
+		measureRow: () => "" as JSX.Element|string
+    })
+    const [columnWidths, setColumnWidths] = useState([] as number[])
+    
     const itemHeightRef = useRef(0)
     const itemsDisplayCountRef = useRef(0)
     const positionRef = useRef(0)

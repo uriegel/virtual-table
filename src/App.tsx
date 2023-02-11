@@ -1,6 +1,6 @@
 import React, { useEffect, KeyboardEvent, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { Column, OnSort, VirtualTableHandle, TableRowItem } from './component/index'
+import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem } from './component/index'
 
 const App = () => {
 
@@ -9,16 +9,10 @@ const App = () => {
 	const [position, setPosition] = useState(0)
 	const [items, setItems] = useState([] as TableRowItem[])
 	
-	const [columns, setColumns] = useState({
-		columns: [] as Column[],
-		renderRow: (r: TableRowItem) => [] as (JSX.Element|string)[],
-		measureRow: () => "" as JSX.Element|string
-	})
-
 	useEffect(() => virtualTable.current?.setFocus(), [])
 	
 	useEffect(() => {
-		setColumns({
+		virtualTable.current?.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, subColumn: "Ext." },
 				{ name: "Date" },
@@ -34,14 +28,13 @@ const App = () => {
 
 		const items = [...Array(20).keys()].map(n => ({index: n})) as TableRowItem[]
 		setItems(items)
-	}, [setColumns, setItems])
+	}, [setItems])
 	
 	function changeColumns() {
-		setPosition(0)
 		setItems([])		
-		const widths = JSON.parse(localStorage.getItem("widrths") ?? "[]") as number[]
+		const widths = JSON.parse(localStorage.getItem("widths") ?? "[]") as number[]
 		console.log("witdhs",widths)
-		setColumns({
+		virtualTable.current?.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, width: widths.length == 4 ? widths[0] : undefined },
 				{ name: "Neue Spalte 1", width: widths.length == 4 ? widths[1] : undefined },
@@ -94,7 +87,7 @@ const App = () => {
 				<button onClick={onItems}>Fill Items</button>
 			</div>
 			<div className="tableContainer">
-				<VirtualTable ref={virtualTable} columns={columns} items={items} position={position}
+				<VirtualTable ref={virtualTable} items={items} position={position}
 					setPosition={setPosition} onSort={onSort} setWidths={setWidths} />
 			</div>
 		</div>

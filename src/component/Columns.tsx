@@ -12,7 +12,7 @@ export const Columns = ({ columns, onSort, setWidths }: ColumnsProps) => {
     const [sortIndex, setSortIndex] = useState(-1)
     const [subColumnSort, setSubColumnSort] = useState(false)
     const [sortDescending, setSortDescending] = useState(false)
-
+    
     const draggingReady = useRef(false)
 
     useEffect(() => {
