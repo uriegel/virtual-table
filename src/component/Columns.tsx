@@ -132,13 +132,17 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
 
     const getcolumnClass = (col: Column, index: number) =>
         [
-            col.isSortable && !col.subColumn ? "sortable" : null,
+            col.isSortable ? "sortable" : null,
+            col.subColumn ? "subcolumn" : null,
             col.isRightAligned ? "rightAligned" : null,
-            index == sortIndex ? (sortDescending ? "sortDescending" : "sortAscending") : ""
+            !col.subColumn && index == sortIndex ? (sortDescending ? "sortDescending" : "sortAscending") : ""
         ].filter(n => !!n)
             .join(' ')
     
     const onColumnClick = (index: number, isColumnSort: boolean, isSortable?: boolean, evt?: React.MouseEvent) => {
+
+        console.log("klick", isColumnSort)
+
         if (isSortable && !dragging.current) {
             setSortIndex(index)
             setSubColumnSort(isColumnSort)
@@ -160,8 +164,8 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
                 (<th key={n.name} style={{ width: `${columnWidths[i]}%` } } className={getcolumnClass(n, i)} onClick={() => onColumnClick(i, false, n.isSortable)}>
                     {n.subColumn
                         ? (<div className="subColumns">
-                            <span className={`subColumnName${n.isSortable && !subColumnSort ? " sortable" : ""}`}>{n.name}</span>
-                            <span className={`${n.isSortable && subColumnSort ? "sortable" : ""}`}
+                            <span className={`subColumnName${i == sortIndex && !subColumnSort ? (sortDescending ? " sortDescending" : " sortAscending") : ""}`}>{n.name}</span>
+                            <span className={`${i == sortIndex && subColumnSort ? (sortDescending ? "sortDescending" : "sortAscending") : ""}`}
                                 onClick={evt => onColumnClick(i, true, n.isSortable, evt)}>{n.subColumn}</span>
                         </div>)
                         : n.name}

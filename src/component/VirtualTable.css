@@ -95,10 +95,22 @@
 }
 
 .vtr--tableroot th.sortable:hover {
-    background-color: var(--vtc-caption-background-hover-color);
+    background-color: var(--vtr-caption-background-hover-color);
+} 
+
+.vtr--tableroot th.sortable.subcolumn:hover {
+    background-color: transparent;
+} 
+
+.vtr--tableroot th.sortable span {
+    transition: background-color 0.3s;
 }
 
-.vtr--tableroot .sortAscending .sortable:before, .vtr--tableroot .sortAscending.sortable:before {
+.vtr--tableroot th.sortable span:hover {
+    background-color: var(--vtr-caption-background-hover-color);
+}
+
+.vtr--tableroot .sortable .sortAscending:before, .vtr--tableroot .sortAscending.sortable:before {
     position: relative;
     bottom: 11px;
     border-left: 4px solid transparent;
@@ -108,7 +120,7 @@
     margin-right: 5px;
 }
 
-.vtr--tableroot .sortDescending .sortable:before, .vtr--tableroot .sortDescending.sortable:before {
+.vtr--tableroot .sortable .sortDescending:before, .vtr--tableroot .sortDescending.sortable:before {
     position: relative;
     top: 10px;
     border-left: 4px solid transparent;
