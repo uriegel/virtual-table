@@ -101,7 +101,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
     useEffect(() => {
         if (onPosition)
             onPosition(position)
-    }, [position])
+    }, [position, onPosition])
 
     useEffect(() => {
         itemsDisplayCountRef.current = itemsDisplayCount
