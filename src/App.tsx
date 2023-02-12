@@ -42,7 +42,12 @@ const App = () => {
 			],
 			renderRow: ({ index }: TableRowItem) => [
 				`Der ${index}. Eintrag`,
-				`Spalte 1 ${index}`,
+				(
+					<>
+						<span>{`Spalte 1 ${index}`}</span>
+						<span>2. span</span>
+					</>
+				),
 				`Spalte 2 ${index}`,
 				`Spalte 3 ${index}`,
 			],
