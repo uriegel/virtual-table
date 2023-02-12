@@ -13,12 +13,12 @@ export interface ScrollbarProp {
 
 export const Scrollbar = ({ count, displayCount, headerHeight, scrollbarHeight,
         scrollPosition, setScrollPosition }: ScrollbarProp) => {
-    const range = Math.max(0, count - displayCount) + 1
+    const range = Math.max(0, count - displayCount)
     const gripHeight = Math.max(scrollbarHeight * (displayCount / count || 1), minScrollbarGripSize)
     const scrollbarGripTop = (scrollbarHeight - gripHeight) * (scrollPosition / range) 
 
     const getGripTop = () => 
-        (scrollbarHeight - gripHeight) * (scrollPosition / (range - 1))
+        (scrollbarHeight - gripHeight) * (scrollPosition / range)
 
     const mouseRepeat = (action: (pos: number)=>void) => {
         action(scrollPosition)
@@ -48,7 +48,7 @@ export const Scrollbar = ({ count, displayCount, headerHeight, scrollbarHeight,
 				const gripTop = getGripTop()
 				if (evt.offsetY > gripTop + gripHeight)
 					newPosition += displayCount - 1
-                setScrollPosition(Math.min(range -1, newPosition))
+                setScrollPosition(Math.min(range - 1, newPosition))
 			}
 		mouseRepeat(action)
 	}
@@ -60,7 +60,7 @@ export const Scrollbar = ({ count, displayCount, headerHeight, scrollbarHeight,
 		const gripTop = getGripTop()
         const startPos = evt.y - gripTop
 
-        const maxPosition = count - displayCount + 1
+        const maxPosition = count - displayCount
 		const onmove = (evt: globalThis.MouseEvent) => {
             const delta = evt.y - startPos
             if (pixelRange) {
@@ -82,7 +82,7 @@ export const Scrollbar = ({ count, displayCount, headerHeight, scrollbarHeight,
 
     return (
         <div 
-            className={`vtr--scrollbar ${count < displayCount ? 'hidden' : ''}`}
+            className={`vtr--scrollbar ${count <= displayCount ? 'hidden' : ''}`}
             style={{ top: `${headerHeight}px`, height: `calc(100% - ${headerHeight}px)` }}
             onMouseDown={onPageMouseDown} >
             <div className={"grip"}

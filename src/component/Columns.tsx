@@ -140,9 +140,6 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
             .join(' ')
     
     const onColumnClick = (index: number, isColumnSort: boolean, isSortable?: boolean, evt?: React.MouseEvent) => {
-
-        console.log("klick", isColumnSort)
-
         if (isSortable && !dragging.current) {
             setSortIndex(index)
             setSubColumnSort(isColumnSort)

@@ -120,9 +120,9 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
         tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
         if (position - startOffsetRef.current > itemsDisplayCountRef.current - 2)
-            setStartOffset(Math.max(0, position - itemsCount + 2))   
+            setStartOffset(Math.max(0, position - itemsCount + 1))   
         else if (items.length - startOffsetRef.current < itemsCount)
-            setStartOffset(Math.max(0, items.length - itemsCount + 1))   
+            setStartOffset(Math.max(0, items.length - itemsCount))   
     })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -161,14 +161,14 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
     }
 
     const scrollIntoViewBottom = (newPos: number) => 
-        setStartOffset(newPos - itemsDisplayCount + 2)
+        setStartOffset(newPos - itemsDisplayCount + 1)
     
     const scrollIntoViewTop = (newPos: number) => 
         setStartOffset(newPos)
 
     const setCheckedPosition = (pos: number) => {
         var newPos = Math.max(Math.min(items.length - 1, pos), 0)
-        if (newPos > startOffset + itemsDisplayCount - 2)
+        if (newPos > startOffset + itemsDisplayCount - 1)
             scrollIntoViewBottom(newPos)
         else if (newPos < startOffset)
             scrollIntoViewTop(newPos)
@@ -176,7 +176,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
     }
 
     const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => {
-        const count = Math.floor(((clientHeight || 0) - (tableHead.current?.clientHeight || 0)) / itemsHeight) + 1
+        const count = Math.floor(((clientHeight || 0) - (tableHead.current?.clientHeight || 0)) / itemsHeight) 
         setItemsDisplayCount(count) 
         return count
     }
@@ -209,7 +209,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
     }
 
     return (
-        <div className={`vtr--tableroot ${items.length >= itemsDisplayCount ? 'scrollbarActive' : ''}`}
+        <div className={`vtr--tableroot ${items.length > itemsDisplayCount ? 'scrollbarActive' : ''}`}
                 ref={tableRoot} tabIndex={0}
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>

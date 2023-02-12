@@ -25,7 +25,7 @@ const App = () => {
 			measureRow: () => `Measure`
 		})
 
-		const items = [...Array(20).keys()].map(n => ({index: n})) as TableRowItem[]
+		const items = [...Array(30).keys()].map(n => ({index: n})) as TableRowItem[]
 		setItems(items)
 	}, [setItems])
 	
