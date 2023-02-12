@@ -188,8 +188,8 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
 			let newPos = startOffset + delta
 			if (newPos < 0)
 				newPos = 0
-			if (newPos > items.length - itemsDisplayCount + 1) 
-				newPos = items.length - itemsDisplayCount + 1
+			if (newPos > items.length - itemsDisplayCount) 
+				newPos = items.length - itemsDisplayCount
 				setStartOffset(newPos)
 		}        
 	}			
