@@ -1,6 +1,6 @@
 import React, { useEffect, KeyboardEvent, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem, createEmptyHandle } from './component/index'
+import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem, createEmptyHandle, SpecialKeys } from './component/index'
 
 const App = () => {
 
@@ -86,6 +86,10 @@ const App = () => {
 			localStorage.setItem("widths", JSON.stringify(widths))
 	} 
 
+	const onEnter = (item: TableRowItem, keys: SpecialKeys) => {
+		console.log("onEnter", item, keys)
+	}
+
 	return (
 		<div className="App" onKeyDown={onKeyDown}>
 			<div>
@@ -93,7 +97,8 @@ const App = () => {
 				<button onClick={onItems}>Fill Items</button>
 			</div>
 			<div className="tableContainer">
-				<VirtualTable ref={virtualTable} items={items} onSort={onSort} onColumnWidths={setWidths} />
+				<VirtualTable ref={virtualTable} items={items} onSort={onSort}
+					onColumnWidths={setWidths} onEnter={onEnter} />
 			</div>
 		</div>
 	)

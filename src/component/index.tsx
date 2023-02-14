@@ -31,11 +31,18 @@ export interface OnSort {
     isSubColumn: boolean        
 }
 
+export interface SpecialKeys {
+    alt: boolean
+    ctrl: boolean
+    shift: boolean
+}
+
 interface VirtualTableProp {
     items: TableRowItem[]
     onPosition?: (position: number)=>void
     onSort?: (onSort: OnSort) => void
-    onColumnWidths?: (widths: number[])=>void
+    onColumnWidths?: (widths: number[]) => void
+    onEnter?: (item: TableRowItem, specialKeys: SpecialKeys) => void
 }
 
 export type VirtualTableHandle = {
@@ -52,7 +59,8 @@ export const createEmptyHandle = () => ({
     getPosition: ()=>0
 })
   
-const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, onPosition, onSort, onColumnWidths }, ref) => {
+const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({
+    items, onPosition, onSort, onColumnWidths, onEnter }, ref) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -160,6 +168,16 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
                 e.preventDefault()
                 e.stopPropagation()
                 break
+            case "Enter":
+                if (onEnter)
+                    onEnter(items[position], {
+                        alt: e.altKey,
+                        shift: e.shiftKey,
+                        ctrl: e.ctrlKey
+                    })
+                e.preventDefault()
+                e.stopPropagation()
+                break
             }
     }
 
@@ -211,6 +229,17 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
         }
     }
 
+    const onDoubleClick = (e: React.MouseEvent) => {
+        if (onEnter)
+            onEnter(items[position], {
+                alt: e.altKey,
+                shift: e.shiftKey,
+                ctrl: e.ctrlKey
+            })
+        e.preventDefault()
+        e.stopPropagation()
+    }
+
     return (
         <div className={`vtr--tableroot ${items.length > itemsDisplayCount ? 'scrollbarActive' : ''}`}
                 ref={tableRoot} tabIndex={0}
@@ -219,7 +248,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
                 <thead ref={tableHead}>
                     <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setColumnWidths={setColumnWidths} />
                 </thead>
-                <tbody>
+                <tbody onDoubleClick={onDoubleClick}>
                 <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
                     position={position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
@@ -233,5 +262,4 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
 })
 
 export default VirtualTable
-// TODO TableRows tr: mousedoubleClick, keydown enter: onEnter-Callback with TableRowItem and alt, shift, ctrl
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
