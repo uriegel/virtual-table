@@ -12,3 +12,6 @@
     background-color: aqua;
 }
 
+tr.invisible {
+    opacity: 0.5;
+}

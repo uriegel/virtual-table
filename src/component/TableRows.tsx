@@ -7,6 +7,7 @@ interface TableRowsProp {
     position: number
     startOffset: number
     itemsDisplayCount: number
+    getRowClasses: (props: TableRowItem) => string[]
     renderRow: (props: TableRowItem) => (JSX.Element | string)[]
     columns: Column[]
 }
@@ -14,19 +15,20 @@ interface TableRowsProp {
 const getDisplayItems = (startOffset: number, itemsDisplayCount: number, items: TableRowItem[]) => 
     R.slice(startOffset, itemsDisplayCount + startOffset, items)
 
-const getClass = (position: number, index: number, item: TableRowItem) =>
-    [
-        position == index ? 'isCurrent' : null,
-        item.isSelected ? "isSelected": null
-    ].filter(n => !!n)
+const getClass = (position: number, index: number, item: TableRowItem, getRowClasses: (props: TableRowItem) => (string|null)[]) =>
+    getRowClasses(item)
+        .concat([
+            position == index ? 'isCurrent' : null,
+            item.isSelected ? "isSelected" : null
+        ])
+        .filter(n => !!n)
         .join(' ')
 
-
-export const TableRows = ({ renderRow, position, items, itemsDisplayCount, startOffset, columns }: TableRowsProp) => (
+export const TableRows = ({ renderRow, position, items, itemsDisplayCount, startOffset, columns, getRowClasses }: TableRowsProp) => (
     <>
         {getDisplayItems(startOffset, itemsDisplayCount, items)
             .map(n => (
-                <tr key={n.index} className={getClass(position, n.index, n)}>
+                <tr key={n.index} className={getClass(position, n.index, n, getRowClasses)}>
                     {renderRow(n).map((e, i) => <td className={columns[i].isRightAligned ? "rightAligned" : ""} key={i}>{e}</td>)}
                 </tr>))}
     </>

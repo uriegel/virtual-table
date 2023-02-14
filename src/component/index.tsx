@@ -15,6 +15,7 @@ export interface Column {
 
 export interface TableColumns {
     columns: Column[]
+    getRowClasses?: (props: TableRowItem) => string[]
     renderRow: (props: TableRowItem) => (JSX.Element|string)[]
     measureRow: ()=>JSX.Element|string
 }
@@ -80,10 +81,12 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
     const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
-	const [columns, setColumns] = useState({
+	const [columns, setColumns] = useState<TableColumns>({
 		columns: [] as Column[],
 		renderRow: (r: TableRowItem) => [] as (JSX.Element|string)[],
-		measureRow: () => "" as JSX.Element|string
+        measureRow: () => "" as JSX.Element | string,
+        getRowClasses: (r: TableRowItem) => [] as string[]
+       
     })
     const [columnWidths, setColumnWidths] = useState([] as number[])
     
@@ -217,7 +220,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
                     <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setColumnWidths={setColumnWidths} />
                 </thead>
                 <tbody>
-                <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount}
+                <TableRowsComponent items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
                     position={position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
                 </tbody>

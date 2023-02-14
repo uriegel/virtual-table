@@ -22,6 +22,7 @@ const App = () => {
 				`Datum ${index}`,
 				`Der ${index}. Eintrag in der 3. Spalte`
 			],
+			getRowClasses: item => item.index == 4 ? ["invisible"] : [],
 			measureRow: () => `Measure`
 		})
 
