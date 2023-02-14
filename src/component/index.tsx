@@ -233,5 +233,5 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({ items, 
 })
 
 export default VirtualTable
-
+// TODO TableRows tr: mousedoubleClick, keydown enter: onEnter-Callback with TableRowItem and alt, shift, ctrl
 // TODO Scrollbar pageup, pagedown must stop when reaching grip
