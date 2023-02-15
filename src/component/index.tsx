@@ -88,6 +88,7 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({
             else if (newPos < 0)
                 scrollIntoViewTop(newPos)
             setPosition(newPos)
+            setStartOffset(0)
         }
     }))
 
