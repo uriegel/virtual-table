@@ -47,16 +47,18 @@ interface VirtualTableProp {
 
 export type VirtualTableHandle = {
     setFocus: ()=>void
-    setColumns: (columns: TableColumns)=>void
+    setColumns: (columns: TableColumns) => void
     setPosition: (pos: number)=>void
-    getPosition: ()=>number
+    getPosition: () => number
+    setInitialPosition: (pos: number, itemsLength: number)=>void
 }
 
 export const createEmptyHandle = () => ({
     setFocus: () => { },
     setColumns: (columns: TableColumns)=>{},
     setPosition: (pos: number) => { },
-    getPosition: ()=>0
+    getPosition: () => 0,
+    setInitialPosition: (pos: number, itemsLength: number) => { }
 })
   
 const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({
@@ -78,8 +80,15 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({
         },
         getPosition() {
             return position
+        },
+        setInitialPosition(pos: number, itemsLength: number) {
+            var newPos = Math.max(Math.min(itemsLength - 1, pos), 0)
+            if (newPos > itemsDisplayCount - 1)
+                scrollIntoViewBottom(newPos)
+            else if (newPos < 0)
+                scrollIntoViewTop(newPos)
+            setPosition(newPos)
         }
-
     }))
 
     const tableRoot = useRef<HTMLDivElement>(null)
