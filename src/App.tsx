@@ -59,6 +59,14 @@ const App = () => {
 	function onItems() {
 		const items = [...Array(2000).keys()].map(n => ({index: n})) as TableRowItem[]
 		setItems(items)
+		virtualTable.current.setInitialPosition(200, items.length)
+		virtualTable.current.setFocus()
+	}
+
+	function onItems2() {
+		const items = [...Array(7).keys()].map(n => ({index: n})) as TableRowItem[]
+		setItems(items)
+		virtualTable.current.setInitialPosition(0, items.length)
 		virtualTable.current.setFocus()
 	}
 
@@ -70,7 +78,6 @@ const App = () => {
 	}
 
 	const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-		// console.log("onKeyDown", e)		        
 		switch (e.code) {
 			case "Insert":
 				setItems(items.map((n, i) => i != virtualTable.current.getPosition() ? n : toggleSelection(n)))
@@ -95,6 +102,7 @@ const App = () => {
 			<div>
 				<button onClick={changeColumns}>Change Columns</button>
 				<button onClick={onItems}>Fill Items</button>
+				<button onClick={onItems2}>Fill Items 2</button>
 			</div>
 			<div className="tableContainer">
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort}

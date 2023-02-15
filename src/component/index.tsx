@@ -82,13 +82,13 @@ const VirtualTable = forwardRef<VirtualTableHandle, VirtualTableProp>(({
             return position
         },
         setInitialPosition(pos: number, itemsLength: number) {
-            var newPos = Math.max(Math.min(itemsLength - 1, pos), 0)
+            setStartOffset(0)
+            const newPos = Math.max(Math.min(itemsLength - 1, pos), 0)
             if (newPos > itemsDisplayCount - 1)
                 scrollIntoViewBottom(newPos)
             else if (newPos < 0)
                 scrollIntoViewTop(newPos)
             setPosition(newPos)
-            setStartOffset(0)
         }
     }))
 
