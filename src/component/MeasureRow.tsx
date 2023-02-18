@@ -12,7 +12,7 @@ export const MeasureRow = ({measureRow, setItemHeight, setItemsCount, tableRoot}
     const tr = useRef<HTMLTableRowElement>(null)
 
     useResizeObserver(tr, e => {
-        if (e.contentBoxSize[0].blockSize > 0) {
+        if (e.contentBoxSize[0].blockSize > 5) {
             setItemHeight(e.contentBoxSize[0].blockSize)
             setItemsCount(tableRoot.current?.clientHeight, e.contentBoxSize[0].blockSize)
         }
