@@ -192,6 +192,7 @@
 
 .vtr--scrollbar .grip:active {
     background-color: var(--vtr-scrollbar-grip-active-color);
+    width: calc(100% - var(--vtr-scrollbar-grip-right));
     transition: background-color 0s;
 }
 
