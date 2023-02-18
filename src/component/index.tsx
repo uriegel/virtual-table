@@ -160,14 +160,18 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
                 e.stopPropagation()
                 break
             case "End":
-                setCheckedPosition(items.length - 1)
-                e.preventDefault()
-                e.stopPropagation()
+                if (!e.shiftKey) {
+                    setCheckedPosition(items.length - 1)
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
                 break
             case "Home":
-                setCheckedPosition(0)
-                e.preventDefault()
-                e.stopPropagation()
+                if (!e.shiftKey) {
+                    setCheckedPosition(0)
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
                 break
             case "Enter":
                 if (onEnter)
