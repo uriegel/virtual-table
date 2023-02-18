@@ -21,7 +21,6 @@ export interface TableColumns<TItem extends TableRowItem> {
 }
 
 export interface TableRowItem {
-    index: number
     isSelected?: boolean
 }
 

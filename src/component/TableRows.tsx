@@ -27,8 +27,8 @@ const getClass = <TItem extends TableRowItem>(position: number, index: number, i
 export const TableRows = <TItem extends TableRowItem>({ renderRow, position, items, itemsDisplayCount, startOffset, columns, getRowClasses }: TableRowsProp<TItem>) => (
     <>
         {getDisplayItems(startOffset, itemsDisplayCount, items)
-            .map(n => (
-                <tr key={n.index} className={getClass(position, n.index, n, getRowClasses)}>
+            .map((n, i) => (
+                <tr key={i + startOffset} className={getClass(position, i + startOffset, n, getRowClasses)}>
                     {renderRow(n).map((e, i) => <td className={columns[i].isRightAligned ? "rightAligned" : ""} key={i}>{e}</td>)}
                 </tr>))}
     </>

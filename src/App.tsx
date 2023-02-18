@@ -21,12 +21,12 @@ const App = () => {
 				{ name: "Date" },
 				{ name: "Details", isRightAligned: true }
 			],
-			renderRow: ({ index, name }: FolderItem) => [
+			renderRow: ({ name }: FolderItem) => [
 				name,
-				`Datum ${index}`,
-				`Der ${index}. Eintrag in der 3. Spalte`
+				`Datum`,
+				`Der Eintrag in der 3. Spalte`
 			],
-			getRowClasses: item => item.index == 4 ? ["invisible"] : [],
+			getRowClasses: item => item.name == "Name: 4" ? ["invisible"] : [],
 			measureRow: () => `Measure`
 		})
 
@@ -45,16 +45,16 @@ const App = () => {
 				{ name: "Neue Spalte 2", isSortable: true, isRightAligned: true, width: widths.length == 4 ? widths[2] : undefined },
 				{ name: "Neue Spalte 3", width: widths.length == 4 ? widths[3] : undefined }
 			],
-			renderRow: ({ index, name }: FolderItem) => [
-				`Der ${index}. Eintrag`,
+			renderRow: ({ name }: FolderItem) => [
+				name,
 				(
 					<>
-						<span>{name}</span>
+						<span>Span1 und</span>
 						<span>2. span</span>
 					</>
 				),
-				`Spalte 2 ${index}`,
-				`Spalte 3 ${index}`,
+				`Spalte 2`,
+				`Spalte 3`,
 			],
 			measureRow: () => (<td>{`Measure`}</td>)
 		})
