@@ -1,24 +1,28 @@
-import React, { useEffect, KeyboardEvent, useRef, useState } from 'react'
+import { useEffect, KeyboardEvent, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem, createEmptyHandle, SpecialKeys } from './component/index'
+import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem, SpecialKeys } from './component/index'
+
+interface FolderItem extends TableRowItem {
+	name: string
+}
 
 const App = () => {
 
-	const virtualTable = useRef<VirtualTableHandle>(createEmptyHandle())
+	const virtualTable = useRef<VirtualTableHandle<FolderItem>>(null)
 
-	const [items, setItems] = useState([] as TableRowItem[])
+	const [items, setItems] = useState([] as FolderItem[])
 	
-	useEffect(() => virtualTable.current.setFocus(), [])
+	useEffect(() => virtualTable.current?.setFocus(), [])
 	
 	useEffect(() => {
-		virtualTable.current.setColumns({
+		virtualTable.current?.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, subColumn: "Ext." },
 				{ name: "Date" },
 				{ name: "Details", isRightAligned: true }
 			],
-			renderRow: ({ index }: TableRowItem) => [
-				`Der ${index}. Eintrag`,
+			renderRow: ({ index, name }: FolderItem) => [
+				name,
 				`Datum ${index}`,
 				`Der ${index}. Eintrag in der 3. Spalte`
 			],
@@ -26,7 +30,7 @@ const App = () => {
 			measureRow: () => `Measure`
 		})
 
-		const items = [...Array(30).keys()].map(n => ({index: n})) as TableRowItem[]
+		const items = [...Array(30).keys()].map(n => ({index: n, name: `Name: ${n}`})) as FolderItem[]
 		setItems(items)
 	}, [setItems])
 	
@@ -34,18 +38,18 @@ const App = () => {
 		setItems([])		
 		const widths = JSON.parse(localStorage.getItem("widths") ?? "[]") as number[]
 		console.log("witdhs",widths)
-		virtualTable.current.setColumns({
+		virtualTable.current?.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, width: widths.length == 4 ? widths[0] : undefined },
 				{ name: "Neue Spalte 1", width: widths.length == 4 ? widths[1] : undefined },
 				{ name: "Neue Spalte 2", isSortable: true, isRightAligned: true, width: widths.length == 4 ? widths[2] : undefined },
 				{ name: "Neue Spalte 3", width: widths.length == 4 ? widths[3] : undefined }
 			],
-			renderRow: ({ index }: TableRowItem) => [
+			renderRow: ({ index, name }: FolderItem) => [
 				`Der ${index}. Eintrag`,
 				(
 					<>
-						<span>{`Spalte 1 ${index}`}</span>
+						<span>{name}</span>
 						<span>2. span</span>
 					</>
 				),
@@ -57,22 +61,22 @@ const App = () => {
 	}
 
 	function onItems() {
-		const items = [...Array(2000).keys()].map(n => ({index: n})) as TableRowItem[]
+		const items = [...Array(2000).keys()].map(n => ({index: n, name: `Name: ${n}`})) as FolderItem[]
 		setItems(items)
-		virtualTable.current.setInitialPosition(200, items.length)
-		virtualTable.current.setFocus()
+		virtualTable.current?.setInitialPosition(200, items.length)
+		virtualTable.current?.setFocus()
 	}
 
 	function onItems2() {
-		const items = [...Array(7).keys()].map(n => ({index: n})) as TableRowItem[]
+		const items = [...Array(7).keys()].map(n => ({index: n, name: `Name: ${n}`})) as FolderItem[]
 		setItems(items)
-		virtualTable.current.setInitialPosition(0, items.length)
-		virtualTable.current.setFocus()
+		virtualTable.current?.setInitialPosition(0, items.length)
+		virtualTable.current?.setFocus()
 	}
 
 	const onSort = (sort: OnSort) => console.log("onSort", sort)
 
-	const toggleSelection = (item: TableRowItem) => {
+	const toggleSelection = (item: FolderItem) => {
 		item.isSelected = !item.isSelected
 		return item
 	}
@@ -80,8 +84,8 @@ const App = () => {
 	const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
 		switch (e.code) {
 			case "Insert":
-				setItems(items.map((n, i) => i != virtualTable.current.getPosition() ? n : toggleSelection(n)))
-				virtualTable.current?.setPosition(virtualTable.current.getPosition() + 1)
+				setItems(items.map((n, i) => i != virtualTable.current?.getPosition() ? n : toggleSelection(n)))
+				virtualTable.current?.setPosition(virtualTable.current?.getPosition() + 1)
                 e.preventDefault()
                 e.stopPropagation()
 				break
@@ -93,7 +97,7 @@ const App = () => {
 			localStorage.setItem("widths", JSON.stringify(widths))
 	} 
 
-	const onEnter = (item: TableRowItem, keys: SpecialKeys) => {
+	const onEnter = (item: FolderItem, keys: SpecialKeys) => {
 		console.log("onEnter", item, keys)
 	}
 
