@@ -101,6 +101,8 @@ const App = () => {
 		console.log("onEnter", item, keys)
 	}
 
+	const onPosition = (item: FolderItem, pos?: number) => console.log("on item changed", item, pos)
+	
 	return (
 		<div className="App" onKeyDown={onKeyDown}>
 			<div>
@@ -110,7 +112,7 @@ const App = () => {
 			</div>
 			<div className="tableContainer">
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort}
-					onColumnWidths={setWidths} onEnter={onEnter} />
+					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} />
 			</div>
 		</div>
 	)

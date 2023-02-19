@@ -38,7 +38,7 @@ export interface SpecialKeys {
 
 interface VirtualTableProp<TItem extends TableRowItem>  {
     items: TItem[]
-    onPosition?: (position: number)=>void
+    onPosition?: (item: TItem, position?: number)=>void
     onSort?: (onSort: OnSort) => void
     onColumnWidths?: (widths: number[]) => void
     onEnter?: (item: TItem, specialKeys: SpecialKeys) => void
@@ -111,8 +111,8 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
     }, [itemHeight])
 
     useEffect(() => {
-        if (onPosition)
-            onPosition(position)
+        if (onPosition && position < items.length)
+            onPosition(items[position], position)
     }, [position, onPosition])
 
     useEffect(() => {
