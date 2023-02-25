@@ -247,7 +247,7 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
     }
 
     return (
-        <div className={`vtr--tableroot ${items.length > itemsDisplayCount ? 'scrollbarActive' : ''}${className ? " " + className : ""}`}
+        <div className={`vtr--tableroot${items.length > itemsDisplayCount ? ' scrollbarActive' : ''}${className ? " " + className : ""}`}
                 ref={tableRoot} tabIndex={0}
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
