@@ -42,6 +42,7 @@ interface VirtualTableProp<TItem extends TableRowItem>  {
     onSort?: (onSort: OnSort) => void
     onColumnWidths?: (widths: number[]) => void
     onEnter?: (item: TItem, specialKeys: SpecialKeys) => void
+    className?: string
 }
 
 export type VirtualTableHandle<TItem extends TableRowItem> = {
@@ -53,7 +54,7 @@ export type VirtualTableHandle<TItem extends TableRowItem> = {
 }
 
 const VirtualTableImpl = <TItem extends TableRowItem>({
-    items, onPosition, onSort, onColumnWidths, onEnter }: VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
+    items, onPosition, onSort, onColumnWidths, onEnter, className }: VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -246,7 +247,7 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
     }
 
     return (
-        <div className={`vtr--tableroot ${items.length > itemsDisplayCount ? 'scrollbarActive' : ''}`}
+        <div className={`vtr--tableroot ${items.length > itemsDisplayCount ? 'scrollbarActive' : ''}${className ? " " + className : ""}`}
                 ref={tableRoot} tabIndex={0}
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
