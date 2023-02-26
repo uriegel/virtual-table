@@ -21,11 +21,13 @@ export const MeasureRow = <TItem extends TableRowItem>({items, columns, renderRo
         }
     })
 
-    console.log("Measure", items)
-
     return (
-        <tr ref={tr}> 
-            {renderRow(items[0]).map((e, i) => <td key={i}>{e}</td>)}
-        </tr>
-    )
+            <tr ref={tr}> 
+            {
+                items.length > 0
+                ? renderRow(items[0]).map((e, i) => <td key={i}>{e}</td>)
+                : null
+            }
+            </tr>
+        )
 }
