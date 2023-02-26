@@ -175,14 +175,15 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
                 }
                 break
             case "Enter":
-                if (onEnter)
+                if (onEnter) {
                     onEnter(items[position], {
                         alt: e.altKey,
                         shift: e.shiftKey,
                         ctrl: e.ctrlKey
                     })
-                e.preventDefault()
-                e.stopPropagation()
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
                 break
             }
     }
