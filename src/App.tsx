@@ -26,8 +26,7 @@ const App = () => {
 				`Datum`,
 				`Der Eintrag in der 3. Spalte`
 			],
-			getRowClasses: item => item.name == "Name: 4" ? ["invisible"] : [],
-			measureRow: () => `Measure`
+			getRowClasses: item => item.name == "Name: 4" ? ["invisible"] : []
 		})
 
 		const items = [...Array(30).keys()].map(n => ({index: n, name: `Name: ${n}`})) as FolderItem[]
@@ -55,8 +54,7 @@ const App = () => {
 				),
 				`Spalte 2`,
 				`Spalte 3`,
-			],
-			measureRow: () => (<td>{`Measure`}</td>)
+			]
 		})
 	}
 

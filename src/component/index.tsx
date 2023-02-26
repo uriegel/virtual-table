@@ -17,7 +17,6 @@ export interface TableColumns<TItem extends TableRowItem> {
     columns: Column[]
     getRowClasses?: (props: TItem) => string[]
     renderRow: (props: TItem) => (JSX.Element|string)[]
-    measureRow: ()=>JSX.Element|string
 }
 
 export interface TableRowItem {
@@ -94,7 +93,6 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
 	const [columns, setColumns] = useState<TableColumns<TItem>>({
 		columns: [] as Column[],
 		renderRow: (r: TableRowItem) => [] as (JSX.Element|string)[],
-        measureRow: () => "" as JSX.Element | string,
         getRowClasses: (r: TableRowItem) => [] as string[]
        
     })
@@ -257,7 +255,7 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
                 </thead>
                 <tbody onDoubleClick={onDoubleClick}>
                 <TableRowsComponent<TItem> items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
-                    position={position} renderRow={columns.renderRow} measureRow={columns.measureRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                    position={position} renderRow={columns.renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                     startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
                 </tbody>
             </table>
