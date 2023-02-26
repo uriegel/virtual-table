@@ -1,6 +1,6 @@
 {
     "name": "virtual-table-react",
-    "version": "10.0.1",
+    "version": "10.0.6",
     "description": "A virtual list view implementation with multiple columns",
     "author": "uriegel",
     "license": "MIT",
@@ -48,9 +48,9 @@
             "not op_mini all"
         ],
         "development": [
-        "last 1 chrome version",
-        "last 1 firefox version",
-        "last 1 safari version"
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
         ]
     }
 }

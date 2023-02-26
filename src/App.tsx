@@ -36,7 +36,6 @@ const App = () => {
 	function changeColumns() {
 		setItems([])		
 		const widths = JSON.parse(localStorage.getItem("widths") ?? "[]") as number[]
-		console.log("witdhs",widths)
 		virtualTable.current?.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, width: widths.length == 4 ? widths[0] : undefined },

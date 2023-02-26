@@ -129,11 +129,13 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
             
     useResizeObserver(tableRoot, e => {
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
-        tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
-        if (position - startOffsetRef.current > itemsDisplayCountRef.current - 2)
-            setStartOffset(Math.max(0, position - itemsCount + 1))   
-        else if (items.length - startOffsetRef.current < itemsCount)
-            setStartOffset(Math.max(0, items.length - itemsCount))   
+        if (itemsCount != Infinity) {
+            tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
+            if (position - startOffsetRef.current > itemsDisplayCountRef.current - 2)
+                setStartOffset(Math.max(0, position - itemsCount + 1))   
+            else if (items.length - startOffsetRef.current < itemsCount)
+                setStartOffset(Math.max(0, items.length - itemsCount))   
+        }
     })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -203,7 +205,8 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
 
     const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => {
         const count = Math.floor(((clientHeight || 0) - (tableHead.current?.clientHeight || 0)) / itemsHeight) 
-        setItemsDisplayCount(count) 
+        if (count != Infinity)
+            setItemsDisplayCount(count) 
         return count
     }
 
