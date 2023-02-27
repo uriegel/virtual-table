@@ -15,3 +15,7 @@
 tr.invisible {
     opacity: 0.5;
 }
+
+.dragStarted {
+    filter: blur(2px);
+}

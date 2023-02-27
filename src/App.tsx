@@ -11,6 +11,7 @@ const App = () => {
 	const virtualTable = useRef<VirtualTableHandle<FolderItem>>(null)
 
 	const [items, setItems] = useState([] as FolderItem[])
+	const [dragStarted, setDragStarted] = useState(false)
 	
 	useEffect(() => virtualTable.current?.setFocus(), [])
 	
@@ -26,6 +27,14 @@ const App = () => {
 				`Datum`,
 				`Der Eintrag in der 3. Spalte`
 			],
+			draggable: true,
+			onDragStart: evt => {
+				evt.dataTransfer?.setData("internalCopy", "true")
+				setDragStarted(true)
+			},
+			onDragEnd: evt => {
+				setDragStarted(false)
+			},
 			getRowClasses: item => item.name == "Name: 4" ? ["invisible"] : []
 		})
 
@@ -107,7 +116,7 @@ const App = () => {
 				<button onClick={onItems}>Fill Items</button>
 				<button onClick={onItems2}>Fill Items 2</button>
 			</div>
-			<div className="tableContainer">
+			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort}
 					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} />
 			</div>

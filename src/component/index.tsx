@@ -16,7 +16,11 @@ export interface Column {
 export interface TableColumns<TItem extends TableRowItem> {
     columns: Column[]
     getRowClasses?: (props: TItem) => string[]
-    renderRow: (props: TItem) => (JSX.Element|string)[]
+    renderRow: (props: TItem) => (JSX.Element | string)[]
+    draggable?: boolean
+    onDragStart?: (evt: React.DragEvent) => void
+    onDrag?: (evt: React.DragEvent) => void
+    onDragEnd?: (evt: React.DragEvent)=>void
 }
 
 export interface TableRowItem {
@@ -258,8 +262,9 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
                 </thead>
                 <tbody onDoubleClick={onDoubleClick}>
                 <TableRowsComponent<TItem> items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
-                    position={position} renderRow={columns.renderRow} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
-                    startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
+                        position={position} renderRow={columns.renderRow} draggable={columns.draggable} onDragStart={columns.onDragStart} onDrag={columns.onDrag}
+                        onDragEnd={columns.onDragEnd} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                        startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
                 </tbody>
             </table>
             <Scrollbar count={items.length} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}

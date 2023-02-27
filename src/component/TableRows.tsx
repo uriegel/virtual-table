@@ -9,6 +9,10 @@ interface TableRowsProp<TItem extends TableRowItem> {
     itemsDisplayCount: number
     getRowClasses: (props: TItem) => string[]
     renderRow: (props: TItem) => (JSX.Element | string)[]
+    draggable?: boolean
+    onDragStart?: (evt: React.DragEvent) => void
+    onDrag?: (evt: React.DragEvent) => void
+    onDragEnd?: (evt: React.DragEvent)=>void
     columns: Column[]
 }
 
@@ -24,11 +28,13 @@ const getClass = <TItem extends TableRowItem>(position: number, index: number, i
         .filter(n => !!n)
         .join(' ')
 
-export const TableRows = <TItem extends TableRowItem>({ renderRow, position, items, itemsDisplayCount, startOffset, columns, getRowClasses }: TableRowsProp<TItem>) => (
+export const TableRows = <TItem extends TableRowItem>({ renderRow, position, items, itemsDisplayCount, startOffset,
+    draggable, onDragStart, onDrag, onDragEnd, columns, getRowClasses }: TableRowsProp<TItem>) => (
     <>
         {getDisplayItems(startOffset, itemsDisplayCount, items)
             .map((n, i) => (
-                <tr key={i + startOffset} className={getClass(position, i + startOffset, n, getRowClasses)}>
+                <tr key={i + startOffset} className={getClass(position, i + startOffset, n, getRowClasses)} draggable={draggable}
+                        onDragStart={draggable ? onDragStart : undefined} onDrag={draggable ? onDrag : undefined} onDragEnd={draggable ? onDragEnd : undefined}>
                     {renderRow(n).map((e, i) => <td className={columns[i].isRightAligned ? "rightAligned" : ""} key={i}>{e}</td>)}
                 </tr>))}
     </>
