@@ -18,9 +18,6 @@ export interface TableColumns<TItem extends TableRowItem> {
     getRowClasses?: (props: TItem) => string[]
     renderRow: (props: TItem) => (JSX.Element | string)[]
     draggable?: boolean
-    onDragStart?: (evt: React.DragEvent) => void
-    onDrag?: (evt: React.DragEvent) => void
-    onDragEnd?: (evt: React.DragEvent)=>void
 }
 
 export interface TableRowItem {
@@ -45,6 +42,9 @@ interface VirtualTableProp<TItem extends TableRowItem>  {
     onSort?: (onSort: OnSort) => void
     onColumnWidths?: (widths: number[]) => void
     onEnter?: (item: TItem, specialKeys: SpecialKeys) => void
+    onDragStart?: (evt: React.DragEvent) => void
+    onDrag?: (evt: React.DragEvent) => void
+    onDragEnd?: (evt: React.DragEvent)=>void
     className?: string
 }
 
@@ -57,7 +57,7 @@ export type VirtualTableHandle<TItem extends TableRowItem> = {
 }
 
 const VirtualTableImpl = <TItem extends TableRowItem>({
-    items, onPosition, onSort, onColumnWidths, onEnter, className }: VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
+    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className }: VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -262,8 +262,8 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
                 </thead>
                 <tbody onDoubleClick={onDoubleClick}>
                 <TableRowsComponent<TItem> items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
-                        position={position} renderRow={columns.renderRow} draggable={columns.draggable} onDragStart={columns.onDragStart} onDrag={columns.onDrag}
-                        onDragEnd={columns.onDragEnd} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
+                        position={position} renderRow={columns.renderRow} draggable={columns.draggable} onDragStart={onDragStart} onDrag={onDrag}
+                        onDragEnd={onDragEnd} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                         startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
                 </tbody>
             </table>

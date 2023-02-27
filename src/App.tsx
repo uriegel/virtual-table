@@ -28,13 +28,6 @@ const App = () => {
 				`Der Eintrag in der 3. Spalte`
 			],
 			draggable: true,
-			onDragStart: evt => {
-				evt.dataTransfer?.setData("internalCopy", "true")
-				setDragStarted(true)
-			},
-			onDragEnd: evt => {
-				setDragStarted(false)
-			},
 			getRowClasses: item => item.name == "Name: 4" ? ["invisible"] : []
 		})
 
@@ -108,6 +101,13 @@ const App = () => {
 	}
 
 	const onPosition = (item: FolderItem, pos?: number) => console.log("on item changed", item, pos)
+
+	const onDragStart = (evt: React.DragEvent) => {
+		evt.dataTransfer?.setData("internalCopy", "true")
+		setDragStarted(true)
+	}
+	
+	const onDragEnd = (evt: React.DragEvent) => setDragStarted(false)
 	
 	return (
 		<div className="App" onKeyDown={onKeyDown}>
@@ -117,7 +117,7 @@ const App = () => {
 				<button onClick={onItems2}>Fill Items 2</button>
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
-				<VirtualTable ref={virtualTable} items={items} onSort={onSort}
+				<VirtualTable ref={virtualTable} items={items} onSort={onSort} onDragStart={onDragStart} onDragEnd={onDragEnd}
 					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} />
 			</div>
 		</div>
