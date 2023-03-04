@@ -18,6 +18,7 @@ export interface TableColumns<TItem extends TableRowItem> {
     getRowClasses?: (props: TItem) => string[]
     renderRow: (props: TItem) => (JSX.Element | string)[]
     draggable?: boolean
+    withoutHead?: boolean
 }
 
 export interface TableRowItem {
@@ -57,7 +58,8 @@ export type VirtualTableHandle<TItem extends TableRowItem> = {
 }
 
 const VirtualTableImpl = <TItem extends TableRowItem>({
-    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className }: VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
+    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className }:
+        VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
     useImperativeHandle(ref, () => ({
         setFocus() {
@@ -133,8 +135,8 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
             
     useResizeObserver(tableRoot, e => {
         const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
+        tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
         if (itemsCount != Infinity) {
-            tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
             if (position - startOffsetRef.current > itemsDisplayCountRef.current - 2)
                 setStartOffset(Math.max(0, position - itemsCount + 1))   
             else if (items.length - startOffsetRef.current < itemsCount)
@@ -257,9 +259,11 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
                 ref={tableRoot} tabIndex={0}
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
-                <thead ref={tableHead}>
-                    <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setColumnWidths={setColumnWidths} />
-                </thead>
+                {!columns.withoutHead
+                    ? (<thead ref={tableHead}>
+                        <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setColumnWidths={setColumnWidths} />
+                    </thead>)
+                    : null}
                 <tbody onDoubleClick={onDoubleClick}>
                 <TableRowsComponent<TItem> items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
                         position={position} renderRow={columns.renderRow} draggable={columns.draggable} onDragStart={onDragStart} onDrag={onDrag}

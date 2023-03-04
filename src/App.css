@@ -19,3 +19,11 @@ tr.invisible {
 .dragStarted {
     filter: blur(2px);
 }
+
+.card {
+    height: 60px;
+    margin: 10px;
+    vertical-align: middle;
+    border-radius: 20px;
+    background-color: bisque;
+}

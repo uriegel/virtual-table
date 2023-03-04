@@ -73,6 +73,27 @@ const App = () => {
 		virtualTable.current?.setFocus()
 	}
 
+	function onItems3() {
+
+		virtualTable.current?.setColumns({
+			columns: [
+				{ name: "Name" },
+			],
+			renderRow: ({ name }: FolderItem) => [
+				(
+					<div className="card" >
+						<div>{name}</div>
+					</div>
+				)
+			],
+			withoutHead: true
+		})		
+		const items = [...Array(70).keys()].map(n => ({index: n, name: `Name: ${n}`})) as FolderItem[]
+		setItems(items)
+		virtualTable.current?.setInitialPosition(0, items.length)
+		virtualTable.current?.setFocus()
+	}
+
 	const onSort = (sort: OnSort) => console.log("onSort", sort)
 
 	const toggleSelection = (item: FolderItem) => {
@@ -115,6 +136,7 @@ const App = () => {
 				<button onClick={changeColumns}>Change Columns</button>
 				<button onClick={onItems}>Fill Items</button>
 				<button onClick={onItems2}>Fill Items 2</button>
+				<button onClick={onItems3}>Card view</button>
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort} onDragStart={onDragStart} onDragEnd={onDragEnd}
@@ -125,3 +147,4 @@ const App = () => {
 }
 
 export default App
+// TODO don't inherit from TableRowTtem
