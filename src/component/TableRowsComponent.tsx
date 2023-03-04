@@ -1,7 +1,7 @@
 import { RefObject } from 'react'
 import { MeasureRow } from './MeasureRow'
 import { TableRows } from './TableRows'
-import { Column, TableRowItem } from './index'
+import { Column } from './index'
 
 interface TableRowsComponentProps<TItem> {
     columns: Column[]
@@ -21,7 +21,7 @@ interface TableRowsComponentProps<TItem> {
     itemsDisplayCount: number
 }
 
-export const TableRowsComponent = <TItem extends TableRowItem>({ itemHeight, renderRow, items, setItemHeight, setItemsCount, tableRoot,
+export const TableRowsComponent = <TItem extends object>({ itemHeight, renderRow, items, setItemHeight, setItemsCount, tableRoot,
         itemsDisplayCount, position, startOffset, draggable, onDragStart, onDrag, onDragEnd, columns, getRowClasses }: TableRowsComponentProps<TItem>) => 
     itemHeight > 0
     ? TableRows({ items, itemsDisplayCount, position, startOffset, renderRow, draggable, onDragStart, onDrag, onDragEnd, columns, getRowClasses })  

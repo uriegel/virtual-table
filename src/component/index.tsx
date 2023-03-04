@@ -13,7 +13,7 @@ export interface Column {
     width?: number
 }
 
-export interface TableColumns<TItem extends TableRowItem> {
+export interface TableColumns<TItem> {
     columns: Column[]
     getRowClasses?: (props: TItem) => string[]
     renderRow: (props: TItem) => (JSX.Element | string)[]
@@ -21,7 +21,7 @@ export interface TableColumns<TItem extends TableRowItem> {
     withoutHead?: boolean
 }
 
-export interface TableRowItem {
+export interface SelectableItem {
     isSelected?: boolean
 }
 
@@ -37,7 +37,7 @@ export interface SpecialKeys {
     shift: boolean
 }
 
-interface VirtualTableProp<TItem extends TableRowItem>  {
+interface VirtualTableProp<TItem>  {
     items: TItem[]
     onPosition?: (item: TItem, position?: number)=>void
     onSort?: (onSort: OnSort) => void
@@ -49,7 +49,7 @@ interface VirtualTableProp<TItem extends TableRowItem>  {
     className?: string
 }
 
-export type VirtualTableHandle<TItem extends TableRowItem> = {
+export type VirtualTableHandle<TItem> = {
     setFocus: ()=>void
     setColumns: (columns: TableColumns<TItem>) => void
     setPosition: (pos: number)=>void
@@ -57,7 +57,7 @@ export type VirtualTableHandle<TItem extends TableRowItem> = {
     setInitialPosition: (pos: number, itemsLength: number)=>void
 }
 
-const VirtualTableImpl = <TItem extends TableRowItem>({
+const VirtualTableImpl = <TItem extends Object>({
     items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className }:
         VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
@@ -98,8 +98,8 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
 	const [columns, setColumns] = useState<TableColumns<TItem>>({
 		columns: [] as Column[],
-		renderRow: (r: TableRowItem) => [] as (JSX.Element|string)[],
-        getRowClasses: (r: TableRowItem) => [] as string[]
+		renderRow: (r: TItem) => [] as (JSX.Element|string)[],
+        getRowClasses: (r: TItem) => [] as string[]
        
     })
     const [columnWidths, setColumnWidths] = useState([] as number[])
@@ -279,7 +279,7 @@ const VirtualTableImpl = <TItem extends TableRowItem>({
 }
 
 const VirtualTable = forwardRef(VirtualTableImpl) as
-  <TItem extends TableRowItem>(p: VirtualTableProp<TItem> & { ref?: Ref<VirtualTableHandle<TItem>> }) => ReactElement
+  <TItem>(p: VirtualTableProp<TItem> & { ref?: Ref<VirtualTableHandle<TItem>> }) => ReactElement
 
 export default VirtualTable
 // TODO Scrollbar pageup, pagedown must stop when reaching grip

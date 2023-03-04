@@ -1,8 +1,8 @@
 import { useEffect, KeyboardEvent, useRef, useState } from 'react'
 import './App.css'
-import VirtualTable, { OnSort, VirtualTableHandle, TableRowItem, SpecialKeys } from './component/index'
+import VirtualTable, { OnSort, VirtualTableHandle, SpecialKeys, SelectableItem } from './component/index'
 
-interface FolderItem extends TableRowItem {
+interface FolderItem extends SelectableItem {
 	name: string
 }
 

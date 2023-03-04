@@ -1,8 +1,8 @@
 import * as R from 'ramda'
 import React from 'react'
-import { Column, TableRowItem } from './index'
+import { Column, SelectableItem } from './index'
 
-interface TableRowsProp<TItem extends TableRowItem> {
+interface TableRowsProp<TItem> {
     items: TItem[]
     position: number
     startOffset: number
@@ -16,19 +16,19 @@ interface TableRowsProp<TItem extends TableRowItem> {
     columns: Column[]
 }
 
-const getDisplayItems = <TItem extends TableRowItem>(startOffset: number, itemsDisplayCount: number, items: TItem[]) => 
+const getDisplayItems = <TItem extends object>(startOffset: number, itemsDisplayCount: number, items: TItem[]) => 
     R.slice(startOffset, itemsDisplayCount + startOffset, items)
 
-const getClass = <TItem extends TableRowItem>(position: number, index: number, item: TItem, getRowClasses: (props: TItem) => (string|null)[]) =>
+const getClass = <TItem extends object>(position: number, index: number, item: TItem, getRowClasses: (props: TItem) => (string|null)[]) =>
     getRowClasses(item)
         .concat([
             position == index ? 'isCurrent' : null,
-            item.isSelected ? "isSelected" : null
+            (item as SelectableItem)?.isSelected ? "isSelected" : null
         ])
         .filter(n => !!n)
         .join(' ')
 
-export const TableRows = <TItem extends TableRowItem>({ renderRow, position, items, itemsDisplayCount, startOffset,
+export const TableRows = <TItem extends object>({ renderRow, position, items, itemsDisplayCount, startOffset,
     draggable, onDragStart, onDrag, onDragEnd, columns, getRowClasses }: TableRowsProp<TItem>) => (
     <>
         {getDisplayItems(startOffset, itemsDisplayCount, items)
