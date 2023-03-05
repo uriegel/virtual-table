@@ -102,7 +102,7 @@ const App = () => {
 	}
 
 	const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-		switch (e.code) {
+		switch (e.key) {
 			case "Insert":
 				setItems(items.map((n, i) => i != virtualTable.current?.getPosition() ? n : toggleSelection(n)))
 				virtualTable.current?.setPosition(virtualTable.current?.getPosition() + 1)

@@ -146,8 +146,8 @@ const VirtualTableImpl = <TItem extends Object>({
     })                      
 
     const onKeyDown = (e: React.KeyboardEvent) => {
-        console.log("keydown", e, e.code)
-        switch (e.code) {
+        console.log("keydown 2", e, e.key)
+        switch (e.key) {
             case "ArrowDown":
                 setCheckedPosition(position + 1)
                 e.preventDefault()
