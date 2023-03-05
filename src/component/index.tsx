@@ -47,6 +47,7 @@ interface VirtualTableProp<TItem>  {
     onDrag?: (evt: React.DragEvent) => void
     onDragEnd?: (evt: React.DragEvent)=>void
     className?: string
+    tabIndex?: number
 }
 
 export type VirtualTableHandle<TItem> = {
@@ -58,7 +59,7 @@ export type VirtualTableHandle<TItem> = {
 }
 
 const VirtualTableImpl = <TItem extends Object>({
-    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className }:
+    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex }:
         VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
     useImperativeHandle(ref, () => ({
@@ -145,6 +146,7 @@ const VirtualTableImpl = <TItem extends Object>({
     })                      
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+        console.log("keydown", e.code)
         switch (e.code) {
             case "ArrowDown":
                 setCheckedPosition(position + 1)
@@ -256,7 +258,7 @@ const VirtualTableImpl = <TItem extends Object>({
 
     return (
         <div className={`vtr--tableroot${items.length > itemsDisplayCount ? ' scrollbarActive' : ''}${className ? " " + className : ""}`}
-                ref={tableRoot} tabIndex={0}
+                ref={tableRoot} tabIndex={tabIndex || 0 }
                 onKeyDown={onKeyDown} onWheel={onWheel} onMouseDown={onTableMouseDown}>
             <table>
                 {!columns.withoutHead
