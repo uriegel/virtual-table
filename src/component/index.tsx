@@ -1,4 +1,4 @@
-import React, { forwardRef, KeyboardEvent, ReactElement, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, ReactElement, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import './VirtualTable.css'
 import useResizeObserver from '@react-hook/resize-observer'
 import { TableRowsComponent } from './TableRowsComponent'
@@ -119,7 +119,7 @@ const VirtualTableImpl = <TItem extends Object>({
     useEffect(() => {
         if (onPosition && position < items.length)
             onPosition(items[position], position)
-    }, [position, onPosition])
+    }, [position, onPosition, items])
 
     useEffect(() => {
         itemsDisplayCountRef.current = itemsDisplayCount

@@ -133,13 +133,13 @@ const App = () => {
 	return (
 		<div className="App" onKeyDown={onKeyDown}>
 			<div>
-				<button onClick={changeColumns}>Change Columns</button>
-				<button onClick={onItems}>Fill Items</button>
-				<button onClick={onItems2}>Fill Items 2</button>
-				<button onClick={onItems3}>Card view</button>
+				<button tabIndex={1} onClick={changeColumns}>Change Columns</button>
+				<button tabIndex={2} onClick={onItems}>Fill Items</button>
+				<button tabIndex={3} onClick={onItems2}>Fill Items 2</button>
+				<button tabIndex={5} onClick={onItems3}>Card view</button>
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
-				<VirtualTable ref={virtualTable} items={items} onSort={onSort} onDragStart={onDragStart} onDragEnd={onDragEnd}
+				<VirtualTable ref={virtualTable} items={items} onSort={onSort} tabIndex={4} onDragStart={onDragStart} onDragEnd={onDragEnd}
 					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} />
 			</div>
 		</div>
