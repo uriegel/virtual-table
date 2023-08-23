@@ -220,13 +220,15 @@ const VirtualTableImpl = <TItem extends Object>({
     const onWheel = (sevt: React.WheelEvent) => {
 		const evt = sevt.nativeEvent
 		if (items.length > itemsDisplayCount) {
-			var delta = evt.deltaY / Math.abs(evt.deltaY) * 3
-			let newPos = startOffset + delta
-			if (newPos < 0)
-				newPos = 0
-			if (newPos > items.length - itemsDisplayCount) 
-				newPos = items.length - itemsDisplayCount
-				setStartOffset(newPos)
+            var delta = evt.deltaY / Math.abs(evt.deltaY) * 3
+            if (!Number.isNaN(delta)) {
+                let newPos = startOffset + delta
+                if (newPos < 0)
+                    newPos = 0
+                if (newPos > items.length - itemsDisplayCount) 
+                    newPos = items.length - itemsDisplayCount
+                    setStartOffset(newPos)
+            }
 		}        
 	}			
 
