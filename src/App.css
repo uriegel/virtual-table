@@ -27,3 +27,32 @@ tr.invisible {
     border-radius: 20px;
     background-color: bisque;
 }
+
+.itemNode {
+    display: inline-block;
+}
+.itemNode.none {
+    opacity: 0;
+}
+.itemNode:hover > div {
+    border-color: black transparent transparent transparent;
+}
+.itemNode > div {
+    width: 0;
+    margin: 2px 4px;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 4.5px 0 4.5px;
+    border-color: gray transparent transparent transparent;
+    transition: transform 0.3s, border-color 0.4s;
+    transform: rotate(-90deg);
+}
+
+.itemNode.opened > div {
+    transform: rotate(0deg);
+}            
+
+.depth {
+    display: inline-block;
+    width: 10px;
+}

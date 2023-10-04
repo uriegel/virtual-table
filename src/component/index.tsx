@@ -15,8 +15,8 @@ export interface Column {
 
 export interface TableColumns<TItem> {
     columns: Column[]
-    getRowClasses?: (props: TItem) => string[]
-    renderRow: (props: TItem) => (JSX.Element | string)[]
+    getRowClasses?: (props: TItem)=>string[]
+    renderRow: (props: TItem, click: (id: number)=>void) => (JSX.Element | string)[]
     draggable?: boolean
     withoutHead?: boolean
 }
@@ -40,11 +40,12 @@ export interface SpecialKeys {
 interface VirtualTableProp<TItem>  {
     items: TItem[]
     onPosition?: (item: TItem, position?: number)=>void
-    onSort?: (onSort: OnSort) => void
-    onColumnWidths?: (widths: number[]) => void
-    onEnter?: (item: TItem, specialKeys: SpecialKeys) => void
-    onDragStart?: (evt: React.DragEvent) => void
-    onDrag?: (evt: React.DragEvent) => void
+    onSort?: (onSort: OnSort)=>void
+    onColumnWidths?: (widths: number[])=>void
+    onEnter?: (item: TItem, specialKeys: SpecialKeys, mouseActivated?: boolean)=>void
+    onClick?: (item: TItem, id: number)=>void
+    onDragStart?: (evt: React.DragEvent)=>void
+    onDrag?: (evt: React.DragEvent)=>void
     onDragEnd?: (evt: React.DragEvent)=>void
     className?: string
     tabIndex?: number
@@ -52,14 +53,14 @@ interface VirtualTableProp<TItem>  {
 
 export type VirtualTableHandle<TItem> = {
     setFocus: ()=>void
-    setColumns: (columns: TableColumns<TItem>) => void
+    setColumns: (columns: TableColumns<TItem>)=>void
     setPosition: (pos: number)=>void
-    getPosition: () => number
+    getPosition: ()=>number
     setInitialPosition: (pos: number, itemsLength: number)=>void
 }
 
 const VirtualTableImpl = <TItem extends Object>({
-    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex }:
+    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex, onClick }:
         VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
     useImperativeHandle(ref, () => ({
@@ -252,7 +253,7 @@ const VirtualTableImpl = <TItem extends Object>({
                 alt: e.altKey,
                 shift: e.shiftKey,
                 ctrl: e.ctrlKey
-            })
+            }, true)
         e.preventDefault()
         e.stopPropagation()
     }
@@ -271,7 +272,7 @@ const VirtualTableImpl = <TItem extends Object>({
                 <TableRowsComponent<TItem> items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
                         position={position} renderRow={columns.renderRow} draggable={columns.draggable} onDragStart={onDragStart} onDrag={onDrag}
                         onDragEnd={onDragEnd} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
-                        startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} />
+                        startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} click={id => onClick && onClick(items[position], id) } />
                 </tbody>
             </table>
             <Scrollbar count={items.length} displayCount={itemsDisplayCount} headerHeight={tableHead.current?.clientHeight ?? 0}

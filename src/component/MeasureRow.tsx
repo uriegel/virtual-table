@@ -8,7 +8,7 @@ interface MeasureRowProp<TItem> {
     setItemHeight: (height: number) => void
     setItemsCount: (c1: number| undefined, c2: number) => void
     tableRoot: RefObject<HTMLDivElement>
-    renderRow: (props: TItem) => (JSX.Element | string)[]
+    renderRow: (props: TItem, click: (id: number)=>void) => (JSX.Element | string)[]
 }
 
 export const MeasureRow = <TItem extends object>({items, columns, renderRow, setItemHeight, setItemsCount, tableRoot}: MeasureRowProp<TItem>) => {
@@ -25,7 +25,7 @@ export const MeasureRow = <TItem extends object>({items, columns, renderRow, set
             <tr ref={tr}> 
             {
                 items.length > 0
-                ? renderRow(items[0]).map((e, i) => <td key={i}>{e}</td>)
+                ? renderRow(items[0], ()=>{}).map((e, i) => <td key={i}>{e}</td>)
                 : null
             }
             </tr>
