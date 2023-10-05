@@ -6,9 +6,10 @@ interface ColumnsProps {
     columnWidths: number[]
     setColumnWidths: (widths: number[])=>void
     onSort?: (onSort: OnSort) => void
+    onCustomColumnClick?: (id: number)=>void
 }
 
-export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: ColumnsProps) => {
+export const Columns = ({ columns, onSort, columnWidths, setColumnWidths, onCustomColumnClick }: ColumnsProps) => {
 
     const [sortIndex, setSortIndex] = useState(-1)
     const [subColumnSort, setSubColumnSort] = useState(false)
@@ -154,6 +155,13 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
         }
     }
 
+    const onCustomClick = (e: React.MouseEvent<HTMLElement>, id: number) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (onCustomColumnClick)
+            onCustomColumnClick(id)
+    }
+
     return (
         <tr onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseLeave={onMouseLeave}>
             {
@@ -165,6 +173,8 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths }: Colu
                             <span className={`${i == sortIndex && subColumnSort ? (sortDescending ? "sortDescending" : "sortAscending") : ""}`}
                                 onClick={evt => onColumnClick(i, true, n.isSortable, evt)}>{n.subColumn}</span>
                         </div>)
+                        : n.renderColumn
+                        ? n.renderColumn(n.name, onCustomClick)
                         : n.name}
                 </th>))
             }

@@ -35,7 +35,9 @@ const object: Data = {
 	contact: {
 		name: "PQ",
 		id: "I-123",
-		number: 451
+		number: 451,
+		wahr: true,
+		falsch: false
 	},
 	familiy: [
 		"father",
@@ -68,7 +70,15 @@ const App = () => {
 		virtualTable.current?.setColumns({
 			columns: [
 				{ name: "Name", isSortable: true, subColumn: "Ext." },
-				{ name: "Date" },
+				{
+					name: "Date", isSortable: true, renderColumn: (n, click) => (
+						<>
+							<span className={"opener"} onClick={e => click(e, 234)}>+</span>
+							<span className={"columnClass"}>{`custom: ${n}`}</span>
+						</>
+						
+					)
+				},
 				{ name: "Details", isRightAligned: true }
 			],
 			renderRow: ({ name }: FolderItem) => [
@@ -91,7 +101,7 @@ const App = () => {
 			return ([{
 				name: key,
 				key: parentKey + key,
-				value: kind === Kind.Value ? value : "",
+				value: kind === Kind.Value ? String(value) : "",
 				kind,
 				opened,
 				depth
@@ -225,7 +235,9 @@ const App = () => {
 		})
 		setItems(objectToItems(object))
 	}
-	
+
+	const onColumnClick = (id: number) => console.log("Column was clicked", id)
+			
 	return (
 		<div className="App" onKeyDown={onKeyDown}>
 			<div>
@@ -237,7 +249,7 @@ const App = () => {
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort} tabIndex={4} onDragStart={onDragStart} onDragEnd={onDragEnd}
-					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} onClick={onItemClick} />
+					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} onClick={onItemClick} onColumnClick={onColumnClick}/>
 			</div>
 		</div>
 	)

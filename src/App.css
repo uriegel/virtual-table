@@ -56,3 +56,15 @@ tr.invisible {
     display: inline-block;
     width: 10px;
 }
+
+.columnClass {
+    color: chartreuse;
+}
+
+.opener {
+    padding: 0px 10px;
+}
+
+.vtr--tableroot th.sortable .opener:hover {
+    background-color: lightblue;
+}

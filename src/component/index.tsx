@@ -11,6 +11,7 @@ export interface Column {
     isRightAligned?: boolean
     subColumn?: string
     width?: number
+    renderColumn?: (name: string, click: (e: React.MouseEvent<HTMLElement>, id: number)=>void)=>string | JSX.Element
 }
 
 export interface TableColumns<TItem> {
@@ -42,11 +43,12 @@ interface VirtualTableProp<TItem>  {
     onPosition?: (item: TItem, position?: number)=>void
     onSort?: (onSort: OnSort)=>void
     onColumnWidths?: (widths: number[])=>void
+    onColumnClick?: (id: number)=>void
     onEnter?: (item: TItem, specialKeys: SpecialKeys, mouseActivated?: boolean)=>void
     onClick?: (item: TItem, id: number)=>void
     onDragStart?: (evt: React.DragEvent)=>void
     onDrag?: (evt: React.DragEvent)=>void
-    onDragEnd?: (evt: React.DragEvent)=>void
+    onDragEnd?: (evt: React.DragEvent) => void
     className?: string
     tabIndex?: number
 }
@@ -60,7 +62,7 @@ export type VirtualTableHandle<TItem> = {
 }
 
 const VirtualTableImpl = <TItem extends Object>({
-    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex, onClick }:
+    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex, onClick, onColumnClick, }:
         VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
     useImperativeHandle(ref, () => ({
@@ -265,7 +267,7 @@ const VirtualTableImpl = <TItem extends Object>({
             <table>
                 {!columns.withoutHead
                     ? (<thead ref={tableHead}>
-                        <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setColumnWidths={setColumnWidths} />
+                        <Columns columns={columns.columns} onSort={onSort} columnWidths={columnWidths} setColumnWidths={setColumnWidths} onCustomColumnClick={onColumnClick} />
                     </thead>)
                     : null}
                 <tbody onDoubleClick={onDoubleClick}>
