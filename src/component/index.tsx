@@ -17,7 +17,7 @@ export interface Column {
 export interface TableColumns<TItem> {
     columns: Column[]
     getRowClasses?: (props: TItem)=>string[]
-    renderRow: (props: TItem, click: (id: number)=>void) => (JSX.Element | string)[]
+    renderRow: (props: TItem, click?: (id: number)=>void) => (JSX.Element | string)[]
     draggable?: boolean
     withoutHead?: boolean
 }
