@@ -61,6 +61,7 @@ const App = () => {
 
 	const [items, setItems] = useState([] as FolderItem[])
 	const [dragStarted, setDragStarted] = useState(false)
+	const [dragging, setDragging] = useState(false)
 
 	const expandedRows = useRef(new Set())
 
@@ -223,7 +224,7 @@ const App = () => {
 				(<>
 					{[...Array(value.depth).keys()].map(_ => <span className='depth'></span>)}
 					<div className={`itemNode${(value.kind === Kind.Value ? " none" : "")}${value.opened ? " opened" : ""}`}
-						onClick={value.kind !== Kind.Value ? () => click(1) : () => { }}>
+						onClick={value.kind !== Kind.Value ? () => click && click(1) : () => { }}>
 						<div></div>
 					</div>
 					<span>
@@ -237,9 +238,21 @@ const App = () => {
 	}
 
 	const onColumnClick = (id: number) => console.log("Column was clicked", id)
+
+    const onDragEnter = (evt: React.DragEvent) => {
+		dragEnterRefs++
+        setDragging(true)
+		console.log("drag enter", dragEnterRefs)
+    }
+
+    const onDragLeave = (evt: React.DragEvent) => {
+		if (--dragEnterRefs == 0)
+        	setDragging(false)
+		console.log("drag leave", dragEnterRefs)
+    }        
 			
 	return (
-		<div className="App" onKeyDown={onKeyDown}>
+		<div className={`App${dragging ? " dragging": ""}`} onKeyDown={onKeyDown} onDragEnter={onDragEnter} onDragLeave={onDragLeave}>
 			<div>
 				<button tabIndex={1} onClick={changeColumns}>Change Columns</button>
 				<button tabIndex={2} onClick={onItems}>Fill Items</button>
@@ -254,6 +267,6 @@ const App = () => {
 		</div>
 	)
 }
-
+var dragEnterRefs = 0
 export default App
 // TODO don't inherit from TableRowTtem

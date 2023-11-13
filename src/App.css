@@ -68,3 +68,7 @@ tr.invisible {
 .vtr--tableroot th.sortable .opener:hover {
     background-color: lightblue;
 }
+
+.dragging {
+    background-color: yellow;
+}
