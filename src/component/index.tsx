@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, ReactElement, Ref, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import './VirtualTable.css'
 import useResizeObserver from '@react-hook/resize-observer'
 import { TableRowsComponent } from './TableRowsComponent'
