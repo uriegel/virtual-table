@@ -70,7 +70,7 @@ const VirtualTableImpl = <TItem extends Object>({
             tableRoot.current?.focus()
         },
         setPosition(pos: number) {
-            setTimeout(() => setCheckedPosition(pos))
+            setCheckedPosition(pos)
         },
         setColumns(columns: TableColumns<TItem>) {
             setPosition(0)
