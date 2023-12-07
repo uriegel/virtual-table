@@ -96,7 +96,9 @@ const VirtualTableImpl = <TItem extends Object>({
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
 
-	const [position, setPosition] = useState(0)
+    const setPosition = (pos: number) => setTimeout(() => setPositionState(pos))
+
+	const [position, setPositionState] = useState(0)
     const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
