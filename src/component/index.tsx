@@ -70,7 +70,7 @@ const VirtualTableImpl = <TItem extends Object>({
             tableRoot.current?.focus()
         },
         setPosition(pos: number) {
-            setCheckedPosition(pos)
+            setTimeout(() => setCheckedPosition(pos))
         },
         setColumns(columns: TableColumns<TItem>) {
             setPosition(0)
@@ -96,9 +96,7 @@ const VirtualTableImpl = <TItem extends Object>({
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
 
-    const setPosition = (pos: number) => setTimeout(() => setPositionState(pos))
-
-	const [position, setPositionState] = useState(0)
+	const [position, setPosition] = useState(0)
     const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
