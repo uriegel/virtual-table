@@ -11,7 +11,7 @@ interface MeasureRowProp<TItem> {
     renderRow: (props: TItem, click: (id: number)=>void) => (JSX.Element | string)[]
 }
 
-export const MeasureRow = <TItem extends object>({items, columns, renderRow, setItemHeight, setItemsCount, tableRoot}: MeasureRowProp<TItem>) => {
+export const MeasureRow = <TItem extends object>({items, renderRow, setItemHeight, setItemsCount, tableRoot}: MeasureRowProp<TItem>) => {
     const tr = useRef<HTMLTableRowElement>(null)
 
     useResizeObserver(tr, e => {

@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, Ref, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, ReactElement, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import './VirtualTable.css'
 import useResizeObserver from '@react-hook/resize-observer'
 import { TableRowsComponent } from './TableRowsComponent'
@@ -76,7 +76,7 @@ const VirtualTableImpl = <TItem extends Object>({
             setPosition(0)
             setColumns(columns)
             setColumnWidths(columns.columns.find(n => n.width == undefined)
-                ? [...Array(columns.columns.length).keys()].map(n => 100 / columns.columns.length)
+                ? [...Array(columns.columns.length).keys()].map(() => 100 / columns.columns.length)
                 : columns.columns.map(n => n.width!))
         },
         getPosition() {
@@ -102,8 +102,8 @@ const VirtualTableImpl = <TItem extends Object>({
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
 	const [columns, setColumns] = useState<TableColumns<TItem>>({
 		columns: [] as Column[],
-		renderRow: (r: TItem) => [] as (JSX.Element|string)[],
-        getRowClasses: (r: TItem) => [] as string[]
+		renderRow: () => [] as (JSX.Element|string)[],
+        getRowClasses: () => [] as string[]
        
     })
     const [columnWidths, setColumnWidths] = useState([] as number[])
@@ -205,7 +205,7 @@ const VirtualTableImpl = <TItem extends Object>({
         setStartOffset(newPos)
 
     const setCheckedPosition = (pos: number) => {
-        var newPos = Math.max(Math.min(items.length - 1, pos), 0)
+        const newPos = Math.max(Math.min(items.length - 1, pos), 0)
         if (newPos > startOffset + itemsDisplayCount - 1)
             scrollIntoViewBottom(newPos)
         else if (newPos < startOffset)
@@ -223,7 +223,7 @@ const VirtualTableImpl = <TItem extends Object>({
     const onWheel = (sevt: React.WheelEvent) => {
 		const evt = sevt.nativeEvent
 		if (items.length > itemsDisplayCount) {
-            var delta = evt.deltaY / Math.abs(evt.deltaY) * 3
+            const delta = evt.deltaY / Math.abs(evt.deltaY) * 3
             if (!Number.isNaN(delta)) {
                 let newPos = startOffset + delta
                 if (newPos < 0)
@@ -271,7 +271,7 @@ const VirtualTableImpl = <TItem extends Object>({
                     </thead>)
                     : null}
                 <tbody onDoubleClick={onDoubleClick}>
-                <TableRowsComponent<TItem> items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (_ => [])}
+                <TableRowsComponent<TItem> items={items} itemHeight={itemHeight} itemsDisplayCount={itemsDisplayCount} getRowClasses={columns.getRowClasses || (() => [])}
                         position={position} renderRow={columns.renderRow} draggable={columns.draggable} onDragStart={onDragStart} onDrag={onDrag}
                         onDragEnd={onDragEnd} setItemHeight={setItemHeight} setItemsCount={setItemsCount}
                         startOffset={startOffset} tableRoot={tableRoot} columns={columns.columns} click={id => onClick && onClick(items[position], id) } />

@@ -55,6 +55,8 @@ const object: Data = {
 	]
 }
 
+let dragEnterRefs = 0
+
 const App = () => {
 
 	const virtualTable = useRef<VirtualTableHandle<FolderItem>>(null)
@@ -193,7 +195,7 @@ const App = () => {
 
 	const onEnter = (item: FolderItem, _: SpecialKeys, mouseActivated?: boolean) => !mouseActivated && toggleItem(item)
 
-	const onItemClick = (item: FolderItem, id: number) => toggleItem(item)
+	const onItemClick = (item: FolderItem) => toggleItem(item)
 
 	const toggleItem = (item: FolderItem) => {
 		if (expandedRows.current.has(item.key))
@@ -211,7 +213,7 @@ const App = () => {
 		setDragStarted(true)
 	}
 	
-	const onDragEnd = (evt: React.DragEvent) => setDragStarted(false)
+	const onDragEnd = () => setDragStarted(false)
 
 	const onObjectView = () => {
 		setItems([])		
@@ -222,7 +224,7 @@ const App = () => {
 			],
 			renderRow: (value: FolderItem, click) => [
 				(<>
-					{[...Array(value.depth).keys()].map(_ => <span className='depth'></span>)}
+					{[...Array(value.depth).keys()].map(() => <span className='depth'></span>)}
 					<div className={`itemNode${(value.kind === Kind.Value ? " none" : "")}${value.opened ? " opened" : ""}`}
 						onClick={value.kind !== Kind.Value ? () => click && click(1) : () => { }}>
 						<div></div>
@@ -239,15 +241,15 @@ const App = () => {
 
 	const onColumnClick = (id: number) => console.log("Column was clicked", id)
 
-    const onDragEnter = (evt: React.DragEvent) => {
+    const onDragEnter = () => {
 		dragEnterRefs++
         setDragging(true)
 		console.log("drag enter", dragEnterRefs)
     }
 
-    const onDragLeave = (evt: React.DragEvent) => {
+    const onDragLeave = () => {
 		if (--dragEnterRefs == 0)
-        	setDragging(false)
+			setDragging(false)
 		console.log("drag leave", dragEnterRefs)
     }        
 			
@@ -267,6 +269,5 @@ const App = () => {
 		</div>
 	)
 }
-var dragEnterRefs = 0
 export default App
 // TODO don't inherit from TableRowTtem

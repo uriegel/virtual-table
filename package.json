@@ -4,7 +4,10 @@
     "description": "A virtual list view implementation with multiple columns",
     "author": "uriegel",
     "license": "MIT",
-    "repository": "uriegel/virtual-table",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/uriegel/virtual-table.git"
+    },
     "main": "dist/index.js",
     "files": [
         "dist"
@@ -15,21 +18,27 @@
         "ramda": "^0.28.0"
     },
     "devDependencies": {
-        "@types/node": "^16.18.11",
-        "@types/react": "^16.14.27",
-        "@types/react-dom": "^16.9.12",
-        "cp": "^0.2.0",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0",
-        "react-scripts": "5.0.1",
-        "typescript": "^4.9.5"
+        "@types/react": "^18.2.43",
+        "@types/react-dom": "^18.2.17",
+        "@typescript-eslint/eslint-plugin": "^6.14.0",
+        "@typescript-eslint/parser": "^6.14.0",
+        "@vitejs/plugin-react": "^4.2.1",
+        "eslint": "^8.55.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.5",
+        "functional-extensions": "^1.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^5.2.2",
+        "vite": "^5.0.8"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "do publish test": "npm run typescript && npm run copy &&  npm publish --dry-run",
-        "do publish": "npm run typescript && npm run copy && npm publish",
-        "typescript": "tsc -p src/component",
-        "copy": "cp src/component/VirtualTable.css dist/"
+        "dev": "vite",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "do publish test": "npm run build && npm run copy && npm publish --dry-run",
+        "do publish": "npm run build && npm run copy && npm publish",
+        "build": "tsc -p src/component",
+        "copy": "cp src/component/*.css dist/"
     },
     "eslintConfig": {
         "rules": {

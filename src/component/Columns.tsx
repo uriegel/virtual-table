@@ -126,7 +126,7 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths, onCust
         }
     }
 
-    const onMouseLeave = (e: React.MouseEvent<HTMLTableRowElement>) => {
+    const onMouseLeave = () => {
         draggingReady.current = false
         document.body.style.cursor = 'auto'        
     }
