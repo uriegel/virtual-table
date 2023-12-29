@@ -256,7 +256,13 @@ const App = () => {
 		if (--dragEnterRefs == 0)
 			setDragging(false)
 		console.log("drag leave", dragEnterRefs)
-    }        
+	}        
+	
+	const changeValue = () => {
+		const changedIems = [...items]
+		changedIems[5].name = "Value was changed"
+		setItems(changedIems)
+	}
 			
 	return (
 		<div className={`App${dragging ? " dragging": ""}`} onKeyDown={onKeyDown} onDragEnter={onDragEnter} onDragLeave={onDragLeave}>
@@ -266,6 +272,7 @@ const App = () => {
 				<button tabIndex={3} onClick={onItems2}>Fill Items 2</button>
 				<button tabIndex={5} onClick={onItems3}>Card view</button>
 				<button tabIndex={6} onClick={onObjectView}>Object View</button>
+				<button tabIndex={7} onClick={changeValue}>Change value 5</button>
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort} tabIndex={4} onDragStart={onDragStart} onDragEnd={onDragEnd}
