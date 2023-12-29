@@ -40,12 +40,13 @@ export interface SpecialKeys {
 
 interface VirtualTableProp<TItem>  {
     items: TItem[]
-    onPosition?: (item: TItem, position?: number)=>void
+    onPosition?: (item: TItem, position: number)=>void
     onSort?: (onSort: OnSort)=>void
     onColumnWidths?: (widths: number[])=>void
     onColumnClick?: (id: number)=>void
     onEnter?: (item: TItem, specialKeys: SpecialKeys, mouseActivated?: boolean)=>void
-    onClick?: (item: TItem, id: number)=>void
+    onClick?: (item: TItem, id: number) => void
+    onItemClick?: (item: TItem, position: number, ctrl: boolean)=>void
     onDragStart?: (evt: React.DragEvent)=>void
     onDrag?: (evt: React.DragEvent)=>void
     onDragEnd?: (evt: React.DragEvent) => void
@@ -62,7 +63,7 @@ export type VirtualTableHandle<TItem> = {
 }
 
 const VirtualTableImpl = <TItem extends Record<string, unknown>>({
-    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex, onClick, onColumnClick, }:
+    items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex, onClick, onItemClick, onColumnClick, }:
         VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     
     useImperativeHandle(ref, () => ({
@@ -204,13 +205,15 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
     const scrollIntoViewTop = (newPos: number) => 
         setStartOffset(newPos)
 
-    const setCheckedPosition = (pos: number) => {
+    const setCheckedPosition = (pos: number, fromMouse?: boolean, ctrlKey?: boolean) => {
         const newPos = Math.max(Math.min(items.length - 1, pos), 0)
         if (newPos > startOffset + itemsDisplayCount - 1)
             scrollIntoViewBottom(newPos)
         else if (newPos < startOffset)
             scrollIntoViewTop(newPos)
         setPosition(newPos)
+        if (fromMouse && onItemClick)
+            onItemClick(items[newPos], newPos, ctrlKey == true)
     }
 
     const setItemsCount = (clientHeight: number | undefined, itemsHeight: number) => {
@@ -245,7 +248,7 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
                     .findIndex(n => n == tr)
                 + startOffset
             if (currentIndex != -1) 
-                setCheckedPosition(currentIndex)
+                setCheckedPosition(currentIndex, true, sevt.ctrlKey)
         }
     }
 

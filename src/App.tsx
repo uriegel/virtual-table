@@ -188,6 +188,11 @@ const App = () => {
 		}
 	}
 
+	const onItemClick = (item: FolderItem, _: number, ctrlKey: boolean) => {
+		if (ctrlKey == true)
+			toggleSelection(item)
+	}
+
 	const setWidths = (widths: number[]) => {
 		if (widths.length == 4)
 			localStorage.setItem("widths", JSON.stringify(widths))
@@ -195,7 +200,7 @@ const App = () => {
 
 	const onEnter = (item: FolderItem, _: SpecialKeys, mouseActivated?: boolean) => !mouseActivated && toggleItem(item)
 
-	const onItemClick = (item: FolderItem) => toggleItem(item)
+	const onTogglerClick = (item: FolderItem) => toggleItem(item)
 
 	const toggleItem = (item: FolderItem) => {
 		if (expandedRows.current.has(item.key))
@@ -206,7 +211,7 @@ const App = () => {
 		setItems(objectToItems(object))
 	}
 
-	const onPosition = (item: FolderItem, pos?: number) => console.log("on item changed", item, pos)
+	const onPosition = (item: FolderItem, pos: number) => console.log("on item changed", item, pos)
 
 	const onDragStart = (evt: React.DragEvent) => {
 		evt.dataTransfer?.setData("internalCopy", "true")
@@ -264,7 +269,7 @@ const App = () => {
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort} tabIndex={4} onDragStart={onDragStart} onDragEnd={onDragEnd}
-					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} onClick={onItemClick} onColumnClick={onColumnClick}/>
+					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} onClick={onTogglerClick} onColumnClick={onColumnClick} onItemClick={onItemClick}/>
 			</div>
 		</div>
 	)
