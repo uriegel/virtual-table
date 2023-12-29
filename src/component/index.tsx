@@ -61,7 +61,7 @@ export type VirtualTableHandle<TItem> = {
     setInitialPosition: (pos: number, itemsLength: number)=>void
 }
 
-const VirtualTableImpl = <TItem extends Object>({
+const VirtualTableImpl = <TItem extends Record<string, unknown>>({
     items, onPosition, onSort, onColumnWidths, onEnter, onDragStart, onDrag, onDragEnd, className, tabIndex, onClick, onColumnClick, }:
         VirtualTableProp<TItem>, ref: Ref<VirtualTableHandle<TItem>>) => {
     

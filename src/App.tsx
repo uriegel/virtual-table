@@ -8,7 +8,7 @@ enum Kind {
 	Array
 }
 
-const getKind = (item: any) => 
+const getKind = (item: unknown) => 
 	Array.isArray(item)
 	? Kind.Array
 	: item instanceof Object
@@ -26,7 +26,7 @@ interface FolderItem extends SelectableItem {
 }
 
 type Data = {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 const object: Data = {
@@ -108,7 +108,7 @@ const App = () => {
 				kind,
 				opened,
 				depth
-			}] as FolderItem[]).concat(opened ? objectToItems(value, key, depth + 1) : [])
+			}] as FolderItem[]).concat(opened ? objectToItems(value as Data, key, depth + 1) : [])
 		})  
 
 	function changeColumns() {
