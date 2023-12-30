@@ -81,7 +81,7 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
                 : columns.columns.map(n => n.width!))
         },
         getPosition() {
-            return position
+            return refPosition.current
         },
         setInitialPosition(pos: number, itemsLength: number) {
             setStartOffset(0)
@@ -97,7 +97,7 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
     const tableRoot = useRef<HTMLDivElement>(null)
     const tableHead = useRef<HTMLTableSectionElement>(null)
 
-	const [position, setPosition] = useState(0)
+	const [position, setStatePosition] = useState(0)
     const [itemHeight, setItemHeight ] = useState(0)
     const [startOffset, setStartOffset] = useState(0)
     const [itemsDisplayCount, setItemsDisplayCount] = useState(100)
@@ -108,6 +108,13 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
        
     })
     const [columnWidths, setColumnWidths] = useState([] as number[])
+
+    const refPosition = useRef(position)
+
+    const setPosition = (pos: number) => {
+        refPosition.current = pos
+        setStatePosition(pos)
+    }
     
     const itemHeightRef = useRef(0)
     const itemsDisplayCountRef = useRef(0)
