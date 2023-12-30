@@ -57,7 +57,7 @@ interface VirtualTableProp<TItem>  {
 export type VirtualTableHandle<TItem> = {
     setFocus: ()=>void
     setColumns: (columns: TableColumns<TItem>)=>void
-    setPosition: (pos: number)=>void
+    setPosition: (pos: number, newItems?: TItem[])=>void
     getPosition: ()=>number
     setInitialPosition: (pos: number, itemsLength: number)=>void
 }
@@ -70,8 +70,8 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
         setFocus() {
             tableRoot.current?.focus()
         },
-        setPosition(pos: number) {
-            setCheckedPosition(pos)
+        setPosition(pos: number, newItems?: TItem[]) {
+            setCheckedPosition(pos, newItems)
         },
         setColumns(columns: TableColumns<TItem>) {
             setPosition(0)
@@ -205,8 +205,8 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
     const scrollIntoViewTop = (newPos: number) => 
         setStartOffset(newPos)
 
-    const setCheckedPosition = (pos: number, fromMouse?: boolean, ctrlKey?: boolean) => {
-        const newPos = Math.max(Math.min(items.length - 1, pos), 0)
+    const setCheckedPosition = (pos: number, newItems?: TItem[], fromMouse?: boolean, ctrlKey?: boolean) => {
+        const newPos = Math.max(Math.min((newItems || items).length - 1, pos), 0)
         if (newPos > startOffset + itemsDisplayCount - 1)
             scrollIntoViewBottom(newPos)
         else if (newPos < startOffset)
@@ -248,7 +248,7 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
                     .findIndex(n => n == tr)
                 + startOffset
             if (currentIndex != -1) 
-                setCheckedPosition(currentIndex, true, sevt.ctrlKey)
+                setCheckedPosition(currentIndex, items, true, sevt.ctrlKey)
         }
     }
 
