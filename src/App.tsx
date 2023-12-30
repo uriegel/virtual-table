@@ -263,6 +263,15 @@ const App = () => {
 		changedIems[5].name = "Value was changed"
 		setItems(changedIems)
 	}
+
+	const insertTop = () => {
+		const newItems = [{ index: 0, name: "Name: top" } as FolderItem, ...items]
+		const pos = virtualTable.current?.getPosition() || 0
+		const name = items[pos].name
+		const newPos = newItems.findIndex(n => n.name == name)
+		setItems(newItems)
+		virtualTable.current?.setPosition(newPos, newItems)
+	}
 			
 	return (
 		<div className={`App${dragging ? " dragging": ""}`} onKeyDown={onKeyDown} onDragEnter={onDragEnter} onDragLeave={onDragLeave}>
@@ -273,6 +282,7 @@ const App = () => {
 				<button tabIndex={5} onClick={onItems3}>Card view</button>
 				<button tabIndex={6} onClick={onObjectView}>Object View</button>
 				<button tabIndex={7} onClick={changeValue}>Change value 5</button>
+				<button tabIndex={8} onClick={insertTop}>Insert top</button>
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
 				<VirtualTable ref={virtualTable} items={items} onSort={onSort} tabIndex={4} onDragStart={onDragStart} onDragEnd={onDragEnd}
