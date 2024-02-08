@@ -64,6 +64,8 @@ const App = () => {
 	const [items, setItems] = useState([] as FolderItem[])
 	const [dragStarted, setDragStarted] = useState(false)
 	const [dragging, setDragging] = useState(false)
+	const [selected, setSelected] = useState("")
+	const [clickCount, setClickCount] = useState(0)
 
 	const expandedRows = useRef(new Set())
 
@@ -211,7 +213,11 @@ const App = () => {
 		setItems(objectToItems(object))
 	}
 
-	const onPosition = (item: FolderItem, pos: number) => console.log("on item changed", item, pos)
+	const onPosition = (item: FolderItem, pos: number) => {
+		console.log("on item changed", item, pos)
+		setSelected(item.name)
+		setClickCount(clickCount + 1)
+	}
 
 	const onDragStart = (evt: React.DragEvent) => {
 		evt.dataTransfer?.setData("internalCopy", "true")
@@ -283,9 +289,10 @@ const App = () => {
 				<button tabIndex={6} onClick={onObjectView}>Object View</button>
 				<button tabIndex={7} onClick={changeValue}>Change value 5</button>
 				<button tabIndex={8} onClick={insertTop}>Insert top</button>
+				<span>{`${selected} click count: ${clickCount}`}</span>
 			</div>
 			<div className={`tableContainer${dragStarted ? " dragStarted" : ""}`}>
-				<VirtualTable ref={virtualTable} items={items} onSort={onSort} tabIndex={4} onDragStart={onDragStart} onDragEnd={onDragEnd}
+				<VirtualTable ref={virtualTable} items={items} onSort={onSort} tabIndex={4} onDragStart={onDragStart} onDragEnd={onDragEnd} 
 					onColumnWidths={setWidths} onEnter={onEnter} onPosition={onPosition} onClick={onTogglerClick} onColumnClick={onColumnClick} onItemClick={onItemClick}/>
 			</div>
 		</div>

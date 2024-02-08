@@ -110,6 +110,7 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
     const [columnWidths, setColumnWidths] = useState([] as number[])
 
     const refPosition = useRef(position)
+    const lastSelectedItem = useRef<TItem|null>(null)
 
     const setPosition = (pos: number) => {
         refPosition.current = pos
@@ -128,8 +129,10 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
     }, [itemHeight])
 
     useEffect(() => {
-        if (onPosition && position < items.length)
+        if (onPosition && position < items.length && lastSelectedItem.current != items[position]) {
+            lastSelectedItem.current = items[position]
             onPosition(items[position], position)
+        }
     }, [position, onPosition, items])
 
     useEffect(() => {
