@@ -1,4 +1,3 @@
-import * as R from 'ramda'
 import React from 'react'
 import { Column, SelectableItem } from './index'
 
@@ -18,7 +17,7 @@ interface TableRowsProp<TItem> {
 }
 
 const getDisplayItems = <TItem extends object>(startOffset: number, itemsDisplayCount: number, items: TItem[]) => 
-    R.slice(startOffset, itemsDisplayCount + startOffset, items)
+    items.slice(startOffset, itemsDisplayCount + startOffset)
 
 const getClass = <TItem extends object>(position: number, index: number, item: TItem, getRowClasses: (props: TItem) => (string|null)[]) =>
     getRowClasses(item)
