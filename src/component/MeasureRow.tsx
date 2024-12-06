@@ -7,7 +7,7 @@ interface MeasureRowProp<TItem> {
     columns: Column[]
     setItemHeight: (height: number) => void
     setItemsCount: (c1: number| undefined, c2: number) => void
-    tableRoot: RefObject<HTMLDivElement>
+    tableRoot: RefObject<HTMLDivElement|null>
     renderRow: (props: TItem, click: (id: number)=>void) => (JSX.Element | string)[]
 }
 

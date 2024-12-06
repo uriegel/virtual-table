@@ -8,7 +8,7 @@ interface TableRowsComponentProps<TItem> {
     itemHeight: number
     setItemHeight: (height: number) => void
     setItemsCount: (c1: number| undefined, c2: number) => void
-    tableRoot: RefObject<HTMLDivElement>
+    tableRoot: RefObject<HTMLDivElement|null>
     items: TItem[]
     getRowClasses: (props: TItem) => string[]
     renderRow: (props: TItem, click: (id: number)=>void) => (JSX.Element | string)[]
