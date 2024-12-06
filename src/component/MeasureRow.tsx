@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react'
+import React, { JSX, RefObject, useRef } from 'react'
 import useResizeObserver from '@react-hook/resize-observer'
 import { Column } from '.'
 

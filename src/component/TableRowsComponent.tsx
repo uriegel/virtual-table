@@ -1,4 +1,4 @@
-import { RefObject } from 'react'
+import { JSX, RefObject } from 'react'
 import { MeasureRow } from './MeasureRow'
 import { TableRows } from './TableRows'
 import { Column } from './index'

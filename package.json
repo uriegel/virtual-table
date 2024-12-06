@@ -1,8 +1,10 @@
 {
     "name": "virtual-table-react",
-    "version": "10.9.1",
+    "version": "10.10.0",
+    "type": "module",
     "description": "A virtual list view implementation with multiple columns",
     "author": "uriegel",
+    "keywords": ["react", "table", "virtual table"],
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -13,51 +15,32 @@
         "dist"
     ],
     "dependencies": {
-        "@react-hook/resize-observer": "^1.2.6"
+        "@react-hook/resize-observer": "^2.0.2"
     },
     "devDependencies": {
-        "@types/react": "^18.2.43",
-        "@types/react-dom": "^18.2.17",
-        "@typescript-eslint/eslint-plugin": "^6.14.0",
-        "@typescript-eslint/parser": "^6.14.0",
-        "@vitejs/plugin-react": "^4.2.1",
-        "eslint": "^8.55.0",
-        "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.4.5",
-        "functional-extensions": "^1.2.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "typescript": "^5.2.2",
-        "vite": "^5.0.8"
+        "@types/react": "^19.0.1",
+        "@types/react-dom": "^19.0.1",
+        "typescript-eslint": "^8.17.0",
+        "@vitejs/plugin-react": "^4.3.4",
+        "globals": "^15.13.0",
+        "eslint": "^9.16.0",
+        "eslint-plugin-react-hooks": "^5.1.0",
+        "eslint-plugin-react-refresh": "^0.4.16",
+        "functional-extensions": "^1.9.17",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "typescript": "^5.7.2",
+        "vite": "^6.0.3"
     },
     "scripts": {
         "dev": "vite",
-        "lint": "npm run build && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "lint": "tsc -p src/component && eslint .",
         "do publish test": "npm run build && npm run copy && npm publish --dry-run",
         "do publish": "npm run build && npm run copy && npm publish",
         "build": "tsc -p src/component",
         "copy": "cp src/component/*.css dist/"
     },
     "eslintConfig": {
-        "rules": {
-            "eqeqeq": "off",
-            "no-mixed-operators": "off"
-        },
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
+        "extends": "react-app"
     }
 }
