@@ -19,8 +19,10 @@ export const Columns = ({ columns, onSort, columnWidths, setColumnWidths, onCust
     const dragging = useRef(false)
 
     useEffect(() => {
-        setSortIndex(-1)
-        setSubColumnSort(false)
+        setTimeout(() => {
+            setSortIndex(-1)
+            setSubColumnSort(false)
+        })
     }, [columns])
 
     const onMouseMove = (e: React.MouseEvent<HTMLTableRowElement>) => {

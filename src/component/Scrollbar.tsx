@@ -17,6 +17,8 @@ export const Scrollbar = ({ count, displayCount, headerHeight, scrollbarHeight,
     const gripHeight = Math.max(scrollbarHeight * (displayCount / count || 1), minScrollbarGripSize)
     const scrollbarGripTop = (scrollbarHeight - gripHeight) * (scrollPosition / range) 
 
+    console.log("Scrollbar", count, displayCount, headerHeight, scrollbarHeight, gripHeight, scrollbarGripTop)
+
     const getGripTop = () => 
         (scrollbarHeight - gripHeight) * (scrollPosition / range)
 

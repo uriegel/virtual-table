@@ -1,6 +1,6 @@
 {
     "name": "virtual-table-react",
-    "version": "10.10.0",
+    "version": "10.10.1",
     "type": "module",
     "description": "A virtual list view implementation with multiple columns",
     "author": "uriegel",
@@ -18,19 +18,19 @@
         "@react-hook/resize-observer": "^2.0.2"
     },
     "devDependencies": {
-        "@types/react": "^19.0.1",
+        "@types/react": "^19.2.5",
         "@types/react-dom": "^19.0.1",
         "typescript-eslint": "^8.17.0",
-        "@vitejs/plugin-react": "^4.3.4",
-        "globals": "^15.13.0",
+        "@vitejs/plugin-react": "^5.1.1",
+        "globals": "^16.5.0",
         "eslint": "^9.16.0",
-        "eslint-plugin-react-hooks": "^5.1.0",
+        "eslint-plugin-react-hooks": "^7.0.1",
         "eslint-plugin-react-refresh": "^0.4.16",
-        "functional-extensions": "^1.9.17",
+        "functional-extensions": "^2.7.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "typescript": "^5.7.2",
-        "vite": "^6.0.3"
+        "vite": "^7.2.2"
     },
     "scripts": {
         "dev": "vite",
