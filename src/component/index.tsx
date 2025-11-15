@@ -1,4 +1,4 @@
-import React, { forwardRef, JSX, ReactElement, Ref, useEffect, useImperativeHandle, useRef, useState, useLayoutEffect } from 'react'
+import React, { forwardRef, JSX, ReactElement, Ref, useEffect, useImperativeHandle, useRef, useState, useLayoutEffect, useCallback } from 'react'
 import './VirtualTable.css'
 import useResizeObserver from '@react-hook/resize-observer'
 import { TableRowsComponent } from './TableRowsComponent'
@@ -177,9 +177,8 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
             return () => window.clearTimeout(id)
         }
     }, [itemHeight])
-            
-    useResizeObserver(tableRoot, e => {
-        const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
+
+    const onResize = useCallback((itemsCount: number) => {
         tableHeight.current = (tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0)
         // update measured heights for use in render (avoid reading refs during render)
         setMeasuredHeaderHeight(tableHead.current?.clientHeight ?? 0)
@@ -190,17 +189,24 @@ const VirtualTableImpl = <TItem extends Record<string, unknown>>({
             else if (items.length - startOffsetRef.current < itemsCount)
                 setStartOffset(Math.max(0, items.length - itemsCount))   
         }
-        console.log("resized", e.contentBoxSize[0].blockSize, itemHeightRef.current, tableHeight.current)
+    }, [items.length, position])
+            
+    useEffect(() => {
+        setTimeout(() => onResize(itemsDisplayCount))
+    }, [columns.columns, itemsDisplayCount, onResize])
+
+    useResizeObserver(tableRoot, e => {
+        const itemsCount = setItemsCount(e.contentBoxSize[0].blockSize, itemHeightRef.current)
+        onResize(itemsCount)
     })                      
 
     useLayoutEffect(() => {
         // set initial measured heights asynchronously to avoid synchronous
         // setState calls inside the layout effect body.
-        const id = window.setTimeout(() => {
+        setTimeout(() => {
             setMeasuredHeaderHeight(tableHead.current?.clientHeight ?? 0)
             setMeasuredTableHeight((tableRoot.current?.clientHeight ?? 0) - (tableHead.current?.clientHeight ?? 0))
         }, 0)
-        return () => window.clearTimeout(id)
     }, [])
 
     const onKeyDown = (e: React.KeyboardEvent) => {
