@@ -39,6 +39,13 @@
 
 .vtr--tableroot tr.isSelected {
     background-color: var(--vtr-selected-background-color);
+    filter: saturate(10%);
+    color: var(--vtr-selected-color);
+}
+
+.vtr--tableroot:focus tr.isSelected {
+    background-color: var(--vtr-selected-background-color);
+    filter: saturate(100%);
     color: var(--vtr-selected-color);
 }
 
