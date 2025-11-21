@@ -10,3 +10,8 @@ body {
 #root {
 	height: 100vh;
 }
+:root {
+	--vtr-current-focus-color: red;
+	--vtr-selected-background-color: red;
+	--vtr-current-selected-focus-color-invert: 1;
+}

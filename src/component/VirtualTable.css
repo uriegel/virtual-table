@@ -1,8 +1,9 @@
 :root {
     --vtr-background-color: white;
     --vtr-color: black;
-    --vtr-current-color:lightgray;
+    --vtr-current-color: lightgray;
     --vtr-current-focus-color: red;
+    --vtr-current-selected-focus-color-invert: 0;
     --vtr-font-size: 100%;
     --vtr-selected-color: white;
     --vtr-selected-background-color: blue;
@@ -50,7 +51,18 @@
 }
 
 .vtr--tableroot:focus tr.isCurrent {
-    outline-color: var(--vtr-current-focus-color);
+    position: relative;
+}
+.vtr--tableroot:focus tr.isCurrent::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--vtr-current-focus-color);
+    border-radius: inherit;
+    pointer-events: none;
+}
+.vtr--tableroot:focus tr.isCurrent.isSelected::after {
+    filter: invert(var(--vtr-current-selected-focus-color-invert));
 }
 
 .vtr--tableroot:focus {
