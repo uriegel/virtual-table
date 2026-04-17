@@ -224,7 +224,11 @@ const App = () => {
 		setDragStarted(true)
 	}
 	
-	const onDragEnd = () => setDragStarted(false)
+	const onDragEnd = () => {
+		console.log("Ende")
+		setDragStarted(false)
+
+	}   
 
 	const onObjectView = () => {
 		setItems([])		
@@ -254,7 +258,8 @@ const App = () => {
 
     const onDragEnter = () => {
 		dragEnterRefs++
-        setDragging(true)
+		setDragging(true)
+		setDragStarted(false)
 		console.log("drag enter", dragEnterRefs)
     }
 

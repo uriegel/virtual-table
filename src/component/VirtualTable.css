@@ -3,7 +3,7 @@
     --vtr-color: black;
     --vtr-current-color: lightgray;
     --vtr-current-focus-color: red;
-    --vtr-current-selected-focus-color-invert: 0;
+    --vtr-current-selected-focus-color: cyan;
     --vtr-font-size: 100%;
     --vtr-selected-color: white;
     --vtr-selected-background-color: blue;
@@ -28,6 +28,7 @@
     outline-width: 0px;
     outline-style: none;
     overflow: hidden;
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -53,16 +54,11 @@
 .vtr--tableroot:focus tr.isCurrent {
     position: relative;
 }
-.vtr--tableroot:focus tr.isCurrent::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 1px solid var(--vtr-current-focus-color);
-    border-radius: inherit;
-    pointer-events: none;
+.vtr--tableroot:focus tr.isCurrent {
+    outline-color: var(--vtr-current-focus-color);
 }
-.vtr--tableroot:focus tr.isCurrent.isSelected::after {
-    filter: invert(var(--vtr-current-selected-focus-color-invert));
+.vtr--tableroot:focus tr.isCurrent.isSelected {
+    outline-color: var(--vtr-current-selected-focus-color);
 }
 
 .vtr--tableroot:focus {
@@ -70,6 +66,7 @@
 }
 
 .vtr--tableroot td {
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -92,6 +89,7 @@
 
 .vtr--tableroot th {
     text-overflow: ellipsis;
+    -webkit-user-select: none;
     user-select: none;
     text-align: left;
     font-weight: normal;
@@ -102,7 +100,6 @@
     padding-right: 5px;
     overflow: hidden;
     white-space: nowrap;
-    -webkit-user-select: none;
 }
 
 .vtr--tableroot th:first-child {
@@ -166,6 +163,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    -webkit-user-select: none;
     user-select: none;
     transition: padding-right .4s;
 }
@@ -186,6 +184,7 @@
     background-color: transparent;
     outline-width: 0px;
     outline-style: none;    
+    -webkit-user-select: none;
     user-select: none;
     display: flex;
     flex-direction: column;
